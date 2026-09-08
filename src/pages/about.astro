@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Newsletter from '../components/Newsletter.astro';
-import { SITE, LINKS } from '../consts';
+import { SITE, LINKS, FOUNDER_SAME_AS } from '../consts';
 
 const title = '關於平凡人光頭｜ATPI 溝通 4 大肌肉框架創始人';
 const description =
@@ -51,6 +51,7 @@ const personSchema = {
     '影響力健身房創辦人、ATPI 溝通 4 大肌肉框架創始人。累積 200 場以上演講，輔導超過 2000 位學員。',
   url: `${SITE.url}/about/`,
   worksFor: { '@id': `${SITE.url}/#organization` },
+  sameAs: [...FOUNDER_SAME_AS],
   knowsAbout: ['影響力溝通', 'ATPI', '影響力肌肉', '公眾演說', '顧問式銷售'],
 };
 

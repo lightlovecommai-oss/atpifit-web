@@ -22,6 +22,15 @@ export const LINKS = {
    一律填**公開個人檔案頁**而不是加好友短網址——短網址是轉址、不是可索引的檔案頁。 */
 export const SAME_AS = [
   'https://page.line.me/993pajiy',
+  'https://www.skool.com/influence-8679',
+] as const;
+
+/* 創辦人本人的帳號，掛在 about 頁的 Person 底下、不掛 Organization——
+   這三個是「人」的檔案頁，混進品牌 sameAs 會讓實體判斷變模糊。 */
+export const FOUNDER_SAME_AS = [
+  'https://www.instagram.com/normalivor/',
+  'https://www.youtube.com/@normalivor',
+  'https://www.facebook.com/profile.php?id=1498193088',
 ] as const;
 
 /* 訂閱走跟影響力健檢同一支 Apps Script：後端一次寫 Google Sheet ＋ 推 LaunChill。
