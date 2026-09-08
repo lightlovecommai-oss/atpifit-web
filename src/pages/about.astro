@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { SITE, LINKS } from '../consts';
+
+const title = '關於平凡人光頭｜ATPI 溝通 4 大肌肉框架創始人';
+const description =
+  '徐哲彥，藝名平凡人光頭，影響力健身房創辦人、ATPI 溝通 4 大肌肉框架創始人。從家裡背兩千萬債開始，把「怎麼開口」練成一套可以教的系統，累積 200 場以上演講、輔導超過 2000 位學員。';
+
+/* ⚠️ 這頁的每一個數字與經歷都有出處，不可自行增補或改寫：
+   生平與數字＝productkit 7-KOL通路/01-活動通文案.md:110–150、262–264
+   本名藝名＝productkit 6-BNI通路/5分鐘簡報-影響力肌肉/README-講稿與Run-Down.md:48–52
+   ⚠️ 頭銜只能寫「ATPI 溝通 4 大肌肉框架創始人」（「溝通變現創辦人」已作廢）。
+   ⚠️ 安東尼羅賓只能寫「到現場上過課」，不可寫「師承」。
+   ⚠️ 不可宣稱「發明健身房模式」。 */
+const numbers = [
+  { n: '200+', label: '場演講' },
+  { n: '2000+', label: '位學員' },
+  { n: '10 年', label: '反覆驗證這套公式' },
+];
+
+const proof = [
+  { scene: '一對一', body: '2 小時陌生開發，成交 20 萬。' },
+  { scene: '一對多', body: '3 小時新品發表會，1000 萬營業額。' },
+  { scene: '帶團隊', body: '帶一個業務團隊，6 個月從 300 萬做到 3000 萬。' },
+  { scene: '帶機構', body: '輔導一家教育機構，公司營收從 50 萬一個月，到穩定 200 萬以上。' },
+];
+
+const faq = [
+  {
+    q: '平凡人光頭是誰？',
+    a: '本名徐哲彥，藝名平凡人光頭，影響力健身房創辦人、ATPI 溝通 4 大肌肉框架創始人。累積 200 場以上演講，輔導超過 2000 位學員，把「怎麼開口」整理成一套可以逐塊訓練的方法。',
+  },
+  {
+    q: '為什麼叫「平凡人」光頭？',
+    a: '因為他不是天生會講話的人。這套方法的前提就是影響力不是天賦，是練出來的肌肉，所以名字裡刻意留著「平凡人」三個字，提醒這條路是練出來的，不是抽到的。',
+  },
+  {
+    q: '他教的東西跟一般的口才課有什麼不同？',
+    a: '一般口才課教的是怎麼講，這套教的是講完之後對方有沒有真的改變。ATPI 把影響力拆成吸引、信任、專業、推進四塊肌肉，每一塊都用對方的反應當檢查點，不用自我感覺當檢查點。',
+  },
+];
+
+const personSchema = {
+  '@type': 'Person',
+  '@id': `${SITE.url}/about/#person`,
+  name: '平凡人光頭',
+  alternateName: ['徐哲彥', '光頭'],
+  jobTitle: 'ATPI 溝通 4 大肌肉框架創始人',
+  description:
+    '影響力健身房創辦人、ATPI 溝通 4 大肌肉框架創始人。累積 200 場以上演講，輔導超過 2000 位學員。',
+  url: `${SITE.url}/about/`,
+  worksFor: { '@id': `${SITE.url}/#organization` },
+  knowsAbout: ['影響力溝通', 'ATPI', '影響力肌肉', '公眾演說', '顧問式銷售'],
+};
+
+const schema = [
+  {
+    '@type': 'AboutPage',
+    '@id': `${SITE.url}/about/#webpage`,
+    name: title,
+    description,
+    url: `${SITE.url}/about/`,
+    inLanguage: 'zh-Hant-TW',
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    mainEntity: { '@id': `${SITE.url}/about/#person` },
+  },
+  personSchema,
+  {
+    '@type': 'FAQPage',
+    '@id': `${SITE.url}/about/#faq`,
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <section class="section">
+    <div class="wrap">
+      <p class="kicker">關於</p>
+      <h1>我不是天生會講的人，<span class="hl">我是練出來的</span></h1>
+      <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
+      <p class="lead head-lead">徐哲彥，藝名平凡人光頭。影響力健身房創辦人，ATPI 溝通 4 大肌肉框架創始人。</p>
+
+      <ul class="numbers">
+        {numbers.map((x) => (
+          <li>
+            <b class="bignum">{x.n}</b>
+            <span>{x.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap-text">
+      <h2>我是怎麼發現這件事的</h2>
+      <p>十年前，我家裡背了兩千萬的債。</p>
+      <p>那不是我欠的，但它就在那裡。我很清楚一件事：沒有人會來救我，我只能為自己的未來拼出一條路。</p>
+      <p>於是我把手上最後 100 萬拿去繳學費，飛到對岸去學「怎麼開口」。回來之後我做的第一件事，是隔著一個海峽，簽下一個從沒見過面的陌生客戶，120 萬。</p>
+      <p class="emph">那一刻我確定了一件事：這不是天賦，這有公式。</p>
+
+      <h2>我在自己身上投了 200 萬學費</h2>
+      <p>這些年我在自己身上投了大約 200 萬的學費：溝通與銷講 100 萬、身心靈 25 萬、財商 20 萬，加上數不清的小課。安東尼羅賓的會場只是其中一站，我站在幾千人裡面，跟大家一起舉手。</p>
+      <p>我不是天生會講的人。我只是很早就決定一件事：</p>
+      <blockquote class="quote">
+        <p>與其省下學費，不如把自己變成值得被投資的人。</p>
+        <cite>平凡人光頭</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>後來的十年，我把這個公式反覆驗證</h2>
+      <p class="lead">同一套方法，換不同的場景，結果是一樣的。</p>
+      <div class="grid grid-2 proof">
+        {proof.map((p) => (
+          <article class="card">
+            <span class="scene">{p.scene}</span>
+            <p>{p.body}</p>
+          </article>
+        ))}
+      </div>
+      <p class="note">這些是我自己走過的路。你的數字不會跟我一樣，因為場景不一樣、起點也不一樣。這裡放出來，是要說明這套方法在很多種場合都成立，不是要你複製同一個結果。</p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap-text">
+      <h2>為什麼開一間健身房</h2>
+      <p>因為我發現最難的不是學會，是練得下去。</p>
+      <p>多數人上完課，筆記寫得滿滿的，回到現場還是用回原來的講法。不是課不好，是溝通這件事跟身體一樣，看再多影片都不會變壯，要真的動、真的拿到回饋、真的調整。</p>
+      <p>所以我把它做成一間館：先量一次，知道自己四塊肌肉現在的樣子；然後每天練一點，記下對方的反應；卡住的時候，有教練幫你看你自己看不到的地方。</p>
+
+      <h2>練這個，是為了什麼</h2>
+      <p>影響力這種東西，用來拿下別人也可以，用來讓別人變好也可以。我選後面那條。</p>
+      <p>把它練強，不是為了說贏誰、壓過誰，是為了讓你有能力，把你真正的價值，送進你想幫的那個人心裡。</p>
+      <blockquote class="quote">
+        <p>影響力的盡頭不是成交，是有人因為你變好。</p>
+        <cite>平凡人光頭</cite>
+      </blockquote>
+
+      <div class="btn-row">
+        <a class="btn btn-main" href={LINKS.quiz}
+           data-cta-id="about_quiz" data-cta-position="body">免費做影響力健檢</a>
+        <a class="btn btn-sub" href="/method/">看這套方法</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-text">
+      <Newsletter source="about" variant="sub" />
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap-text">
+      <h2>常見問題</h2>
+      <dl class="faq">
+        {faq.map((f) => (
+          <>
+            <dt>{f.q}</dt>
+            <dd>{f.a}</dd>
+          </>
+        ))}
+      </dl>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head-lead { max-width: 50ch; margin-top: 14px; }
+
+  .numbers {
+    list-style: none; padding: 0; margin: 44px 0 0;
+    display: flex; flex-wrap: wrap; gap: 20px 56px;
+  }
+  .numbers li { display: flex; flex-direction: column; }
+  .numbers span { margin-top: 2px; font-size: 15px; color: var(--ink-soft); }
+
+  .proof { margin-top: 32px; grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 640px) { .proof { grid-template-columns: 1fr; } }
+  .scene {
+    display: inline-block; font-size: 13px; font-weight: 700;
+    letter-spacing: .06em; color: var(--act-deep);
+    background: var(--a-tint); border-radius: 999px; padding: 4px 12px;
+  }
+  .proof p { margin-top: 12px; font-size: 17px; line-height: 1.85; }
+
+  .note {
+    margin-top: 28px; font-size: 15px; color: var(--ink-soft);
+    line-height: 1.9; max-width: 62ch;
+  }
+
+  .emph { font-size: 20px !important; font-weight: 700; color: var(--act-deep); }
+
+  .faq { margin-top: 24px; }
+  .faq dt { font-weight: 700; font-size: 18px; margin-top: 28px; }
+  .faq dd { margin: 8px 0 0; color: var(--ink-soft); line-height: 1.9; }
+</style>

@@ -1,0 +1,227 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, LINKS } from '../consts';
+
+const title = '超引力成交學｜影響力健身房的教練課';
+const description =
+  '超引力成交學是影響力健身房的教練課系列，把 ATPI 四塊影響力肌肉從單塊練習串成真實場景走得通的一條路。對外兩個課：超引力顧問課 L1–L8、超引力公眾演說課 L1–L13。';
+
+/* ⚠️ 對外只有兩個 SKU，中間段落不單獨販售。價格鎖在字典（3.28 萬／10.8 萬）。
+   ⚠️ 8800 是隱藏產品，不上官網。99 元是館的會員費，不屬超引力成交學。
+   ⚠️ 作廢：一階／二階／三階／Level 1-3／引力式系列／8週·12週／1+1 系統。 */
+const stages = [
+  {
+    code: 'L1–L4', name: '鍛鍊段',
+    body: '一課一塊肌肉。L1 練吸引、L2 練信任、L3 練專業、L4 練推進，四堂涵蓋十二個小肌群。這一段練的是單點零件，目的是先讓每一塊都動得起來。',
+  },
+  {
+    code: 'L5–L8', name: '放大段',
+    body: '把四塊肌肉串成你自己的一對一路徑。同樣是那四塊，但這裡練的是怎麼在一場真實的對話裡把它們接起來。',
+  },
+  {
+    code: 'L9–L13', name: '演說段',
+    body: '把同一條路搬上舞台。從一對一換到一對多，肌肉沒變，動作變了。',
+  },
+];
+
+const courses = [
+  {
+    name: '超引力顧問課',
+    range: 'L1–L8',
+    price: '3.28 萬',
+    stages: '鍛鍊段＋放大段',
+    who: '一對一還沒跑順，講完之後對方沒有下一步。',
+    dim: 'T',
+  },
+  {
+    name: '超引力公眾演說課',
+    range: 'L1–L13',
+    price: '10.8 萬',
+    stages: '鍛鍊段＋放大段＋演說段',
+    who: '一對一已經會了，卡在一次只能面對一個人。',
+    dim: 'I',
+  },
+];
+
+const how = [
+  '班級 20 人以內，課中拆成 4 到 5 人小組做對練，Hot Seat 輪流。',
+  '乾貨課是錄播，自己先看；直播只上討論課，把時間全部拿來對練與校正。',
+  '一週的迴路：看錄播乾貨，進影響力健身房打卡練 2 到 3 天，回到討論課做對練與顧問校正。',
+  '回放一年，討論會籍一年，一年內都可以回來參加討論課。',
+  '課程之前有一次入學體測，結業之後複測做前後對照。體測不佔模組編號。',
+  '報名後 7 天內可退款。',
+];
+
+const faq = [
+  {
+    q: '超引力成交學跟影響力健身房是什麼關係？',
+    a: '影響力健身房是館名，也是母品牌；超引力成交學是這間館裡的教練課系列。就像健身房本身跟教練課的關係。日後還會有別的教練課掛在同一個館名下。',
+  },
+  {
+    q: '超引力成交學有幾種課？',
+    a: '對外只有兩個：超引力顧問課，內容是 L1 到 L8，包含鍛鍊段與放大段；超引力公眾演說課，內容是 L1 到 L13，也就是前面全部再加上演說段。中間的段落不單獨販售。',
+  },
+  {
+    q: '為什麼不能只買演說的部分？',
+    a: '因為你在台上做的每一件事，都是一對一的放大版。一對一走不通的路，人一多只會斷得更快。演說段建立在前面八個模組的基礎上，抽掉地基單獨學，學到的會是形式而不是能力。',
+  },
+  {
+    q: '我要怎麼知道自己適合哪一個？',
+    a: '這個選擇不會由你自己在網頁上決定。它會在諮詢現場，把你的狀況攤開來看過之後才決定，我們不預設賣哪一個。開始的方式是先做一次免費的影響力健檢。',
+  },
+  {
+    q: '「成交」這個詞會不會太業務導向？',
+    a: '成交在這裡的意思是讓人願意行動，不是話術與施壓。這套課從頭到尾的立場是：先有真實與信任，行動才會發生。技巧是工具，真實才是地基。',
+  },
+];
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': `${SITE.url}/courses/#webpage`,
+    name: title,
+    description,
+    url: `${SITE.url}/courses/`,
+    inLanguage: 'zh-Hant-TW',
+    isPartOf: { '@id': `${SITE.url}/#website` },
+  },
+  ...courses.map((c) => ({
+    '@type': 'Course',
+    '@id': `${SITE.url}/courses/#${c.range.toLowerCase().replace(/[^a-z0-9]/g, '')}`,
+    name: c.name,
+    description: `${c.stages}，內容涵蓋 ${c.range}。適合的情況：${c.who}`,
+    inLanguage: 'zh-Hant-TW',
+    provider: { '@id': `${SITE.url}/#organization` },
+    url: `${SITE.url}/courses/`,
+  })),
+  {
+    '@type': 'FAQPage',
+    '@id': `${SITE.url}/courses/#faq`,
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <section class="section">
+    <div class="wrap">
+      <p class="kicker">課程</p>
+      <h1>超引力成交學，<span class="hl">館裡的教練課</span></h1>
+      <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
+      <p class="lead head-lead">影響力健身房是館，你可以自己進來練。超引力成交學是這間館裡的教練課，把四塊肌肉從單塊練習，串成一條在真實場景裡走得通的路。</p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <h2>三個段落，十三個模組</h2>
+      <p class="lead">一個模組等於一週，全系列從 L1 排到 L13。</p>
+      <ol class="stages">
+        {stages.map((s) => (
+          <li class="card">
+            <span class="code">{s.code}</span>
+            <h3>{s.name}</h3>
+            <p>{s.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>兩個課，怎麼選</h2>
+      <p class="lead">對外只有這兩個，中間的段落不單獨販售。</p>
+      <div class="grid grid-2 courses">
+        {courses.map((c) => (
+          <article class="card muscle" data-dim={c.dim}>
+            <span class="muscle-tag">{c.range}</span>
+            <h3>{c.name}</h3>
+            <p class="price">{c.price}</p>
+            <p class="stages-line">{c.stages}</p>
+            <p class="who"><b>適合的情況</b><br />{c.who}</p>
+          </article>
+        ))}
+      </div>
+      <p class="note">實際上這個選擇不會由你自己在網頁上決定。它會在諮詢現場，把你的狀況攤開來看過之後才決定，我們不預設賣哪一個。</p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap-text">
+      <h2>上課方式</h2>
+      <ul class="how">
+        {how.map((h) => <li>{h}</li>)}
+      </ul>
+
+      <h2>名字裡的「引力」</h2>
+      <p>引力是結果，不是方法。</p>
+      <p>在健身房把溝通練成一身肌力，強到自然產生引力場，客戶被你吸過來。練是過程，引力是那個過程的結果。這也是為什麼這套課不教你怎麼追著客戶跑，而是教你把自己練到讓對的人自己走過來。</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-text">
+      <aside class="cta">
+        <p class="kicker">怎麼開始</p>
+        <h2>先量一次，再談要不要練</h2>
+        <p class="lead">影響力健檢會問你 12 題，量出四塊肌肉現在的樣子，並告訴你先練哪一塊最有感。免費，大約三分鐘。做完之後如果想談，我們再約諮詢。</p>
+        <a class="btn btn-main" href={LINKS.quiz}
+           data-cta-id="courses_quiz" data-cta-position="bottom">免費做影響力健檢</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap-text">
+      <h2>常見問題</h2>
+      <dl class="faq">
+        {faq.map((f) => (
+          <>
+            <dt>{f.q}</dt>
+            <dd>{f.a}</dd>
+          </>
+        ))}
+      </dl>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head-lead { max-width: 50ch; margin-top: 14px; }
+
+  .stages { list-style: none; padding: 0; margin-top: 32px; display: grid; gap: 14px; }
+  .code {
+    display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .06em;
+    color: var(--act-deep); background: var(--a-tint); border-radius: 999px; padding: 4px 12px;
+  }
+  .stages h3 { margin-top: 12px; font-size: 20px; }
+  .stages p { margin-top: 8px; }
+
+  .courses { margin-top: 32px; grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 640px) { .courses { grid-template-columns: 1fr; } }
+  .price {
+    margin-top: 8px !important; font-size: 30px; font-weight: 800;
+    letter-spacing: -.01em; color: var(--dim-deep) !important;
+  }
+  .stages-line { margin-top: 2px !important; font-size: 15px; color: var(--ink-soft) !important; }
+  .who { margin-top: 18px !important; font-size: 16px; }
+  .who b { font-size: 13px; letter-spacing: .04em; color: var(--ink-soft); }
+
+  .note { margin-top: 28px; font-size: 15px; color: var(--ink-soft); line-height: 1.9; max-width: 62ch; }
+
+  .how { margin-top: 20px; padding-left: 20px; }
+  .how li { margin-top: 10px; line-height: 1.9; }
+
+  .cta { background: var(--a-tint); border-radius: 20px; padding: clamp(28px, 5vw, 44px); text-align: center; }
+  .cta h2 { font-size: clamp(21px, 3vw, 26px); }
+  .cta .lead { margin: 10px auto 24px; max-width: 46ch; }
+
+  .faq { margin-top: 24px; }
+  .faq dt { font-weight: 700; font-size: 18px; margin-top: 28px; }
+  .faq dd { margin: 8px 0 0; color: var(--ink-soft); line-height: 1.9; }
+</style>

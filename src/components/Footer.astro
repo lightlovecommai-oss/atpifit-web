@@ -1,0 +1,56 @@
+---
+import { NAV, LINKS, SITE } from '../consts';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap-wide">
+    <div class="cols">
+      <div class="col-brand">
+        <img src="/assets/logo-lockup.svg" alt={SITE.nameFull} width="160" height="40" />
+        <!-- 中文主標語仍在標語庫輪播測試中（字典 01:484），這裡放已定錨的使命句，不假裝它是 slogan。 -->
+        <p class="tag">讓每個人用自己最真實的聲音，創造影響力。</p>
+      </div>
+
+      <nav class="col" aria-label="網站導覽">
+        <h2>網站</h2>
+        {NAV.map((i) => <a href={i.href}>{i.label}</a>)}
+      </nav>
+
+      <nav class="col" aria-label="開始使用">
+        <h2>開始</h2>
+        <a href={LINKS.quiz}>免費影響力健檢</a>
+        <a href={LINKS.gym}>影響力健身房</a>
+        <a href={LINKS.booking}>預約諮詢</a>
+      </nav>
+    </div>
+
+    <!-- 八招 ③：四色橫線的第一個崗位＝頁尾收邊（所有製作物必有）。順序 A→T→P→I 固定。 -->
+    <div class="atpi-rule" role="presentation" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+    <p class="legal">
+      <span>© {year} {SITE.nameFull}</span>
+      <span class="dot">·</span>
+      <a href="/privacy">隱私權</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { margin-top: 80px; padding: 56px 0 40px; border-top: 1px solid var(--line); background: var(--bg-alt); }
+  .cols { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 36px; margin-bottom: 32px; }
+  .col-brand img { height: 40px; width: auto; }
+  .tag { margin-top: 14px; font-size: 15px; color: var(--ink-soft); max-width: 30ch; }
+  .col h2 { font-size: 13px; font-weight: 700; letter-spacing: .12em; color: var(--ink-soft); margin-bottom: 12px; }
+  .col a { display: block; padding: 5px 0; font-size: 15px; color: var(--ink); text-decoration: none; }
+  .col a:hover { color: var(--act-deep); text-decoration: underline; }
+
+  .legal { margin-top: 20px; font-size: 13px; color: var(--ink-soft); }
+  .legal a { color: var(--ink-soft); }
+  .dot { margin: 0 8px; }
+
+  @media (max-width: 720px) {
+    .cols { grid-template-columns: 1fr 1fr; gap: 28px; }
+    .col-brand { grid-column: 1 / -1; }
+  }
+</style>

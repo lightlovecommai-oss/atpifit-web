@@ -1,0 +1,147 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBlock from '../../components/CtaBlock.astro';
+import { SITE } from '../../consts';
+import '../../styles/prose.css';
+
+export async function getStaticPaths() {
+  const terms = await getCollection('glossary', ({ data }) => !data.draft);
+  return terms.map((term) => ({ params: { slug: term.id }, props: { term, terms } }));
+}
+
+const { term, terms } = Astro.props;
+const { Content } = await render(term);
+const d = term.data;
+const url = `${SITE.url}/glossary/${term.id}`;
+
+const siblings = terms
+  .filter((t) => t.id !== term.id && !t.data.draft)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const schema: Record<string, unknown>[] = [
+  {
+    '@type': 'DefinedTerm',
+    '@id': `${url}#term`,
+    name: d.term,
+    alternateName: d.aliases,
+    description: d.definition,
+    inDefinedTermSet: {
+      '@type': 'DefinedTermSet',
+      '@id': `${SITE.url}/glossary/#set`,
+      name: '影響力健身房名詞表',
+      url: `${SITE.url}/glossary`,
+    },
+    url,
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首頁', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: '名詞', item: `${SITE.url}/glossary` },
+      { '@type': 'ListItem', position: 3, name: d.term, item: url },
+    ],
+  },
+];
+
+if (d.faq.length) {
+  schema.push({
+    '@type': 'FAQPage',
+    '@id': `${url}#faq`,
+    mainEntity: d.faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  });
+}
+---
+
+<BaseLayout title={`${d.term}是什麼？`} description={d.definition} schema={schema}>
+  <article>
+    <header class="head" data-dim={d.dim}>
+      <div class="wrap-text">
+        <nav class="crumbs" aria-label="麵包屑">
+          <a href="/">首頁</a> <span aria-hidden="true">/</span>
+          <a href="/glossary">名詞</a>
+        </nav>
+        <p class="kicker">名詞</p>
+        <h1>{d.term}</h1>
+        {d.aliases.length > 0 && <p class="alias">別名：{d.aliases.join('、')}</p>}
+
+        <!-- 定義句刻意獨立成一塊：這是 AI 搜尋會直接抓去引用的那一句。 -->
+        <p class="definition">{d.definition}</p>
+      </div>
+    </header>
+
+    <div class="wrap-text">
+      <div class="prose"><Content /></div>
+
+      {d.faq.length > 0 && (
+        <section class="faq">
+          <h2>常見問題</h2>
+          <dl>
+            {d.faq.map((f) => (
+              <div class="qa"><dt>{f.q}</dt><dd>{f.a}</dd></div>
+            ))}
+          </dl>
+        </section>
+      )}
+    </div>
+
+    <div class="wrap-text cta-slot"><CtaBlock kind="quiz" source={`glossary:${term.id}`} /></div>
+  </article>
+
+  {siblings.length > 0 && (
+    <section class="section section-alt">
+      <div class="wrap">
+        <h2 class="rel-title">其他名詞</h2>
+        <ul class="siblings">
+          {siblings.map((t) => (
+            <li><a href={`/glossary/${t.id}/`}><b>{t.data.term}</b><span>{t.data.definition}</span></a></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .head { padding: 40px 0 30px; }
+  .crumbs { font-size: 13px; color: var(--ink-soft); margin-bottom: 22px; }
+  .crumbs a { color: var(--ink-soft); text-decoration: none; }
+  .crumbs a:hover { color: var(--act-deep); text-decoration: underline; }
+  .crumbs span { margin: 0 4px; }
+
+  .head h1 { font-size: clamp(30px, 5vw, 42px); }
+  .alias { margin-top: 10px; font-size: 14px; color: var(--ink-soft); }
+
+  .definition {
+    margin-top: 22px; padding: 20px 24px;
+    background: var(--card); border: 1px solid var(--line);
+    border-left: 5px solid var(--dim, var(--act));
+    border-radius: 0 12px 12px 0;
+    font-size: clamp(17px, 2.1vw, 19px); font-weight: 600; line-height: 1.8;
+  }
+  .head[data-dim="A"] { --dim: var(--a); }
+  .head[data-dim="T"] { --dim: var(--t); }
+  .head[data-dim="P"] { --dim: var(--p); }
+  .head[data-dim="I"] { --dim: var(--i); }
+
+  .faq { margin-top: 52px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .faq h2 { font-size: 22px; margin: 24px 0 18px; }
+  .qa + .qa { margin-top: 20px; }
+  .faq dt { font-weight: 700; font-size: 17px; }
+  .faq dd { margin: 6px 0 0; color: var(--ink-soft); line-height: 1.85; }
+
+  .cta-slot { margin-top: 56px; }
+  .rel-title { font-size: 22px; margin-bottom: 20px; }
+  .siblings { list-style: none; padding: 0; display: grid; gap: 10px; }
+  .siblings a {
+    display: block; background: var(--card); border: 1px solid var(--line);
+    border-radius: 12px; padding: 16px 20px; text-decoration: none; color: var(--ink);
+  }
+  .siblings a:hover { border-color: var(--act); }
+  .siblings b { display: block; font-size: 17px; }
+  .siblings span { display: block; margin-top: 4px; font-size: 15px; color: var(--ink-soft); }
+</style>

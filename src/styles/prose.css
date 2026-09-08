@@ -1,0 +1,66 @@
+/* prose.css — Markdown 正文樣式（文章頁與名詞頁）
+   目標是長文可讀性：欄寬 720、行高 1.9、標題與段落的節奏感。 */
+
+.prose { font-size: 17.5px; line-height: 1.9; }
+
+.prose > * + * { margin-top: 1.3em; }
+
+.prose h2 {
+  margin-top: 2.4em; margin-bottom: .1em;
+  font-size: clamp(22px, 3vw, 27px); scroll-margin-top: 90px;
+}
+.prose h3 {
+  margin-top: 1.9em; margin-bottom: -.15em;
+  font-size: clamp(18px, 2.2vw, 20px); scroll-margin-top: 90px;
+}
+
+/* 標題下方那條短磚橘線＝視覺呼吸點，不是四色簽名線（四色線只有兩個崗位） */
+.prose h2::after {
+  content: ""; display: block; width: 42px; height: 3px; border-radius: 2px;
+  background: var(--act); margin-top: 14px;
+}
+
+.prose p { color: var(--ink); }
+.prose strong { font-weight: 700; color: var(--ink); }
+.prose em { font-style: normal; color: var(--act-deep); font-weight: 600; }
+
+.prose a { color: var(--act-deep); text-decoration: underline; }
+.prose a:hover { color: var(--ink); }
+
+.prose ul, .prose ol { padding-left: 1.4em; }
+.prose li + li { margin-top: .5em; }
+.prose li::marker { color: var(--act); }
+
+/* 引用＝品牌金句層。客戶原話請改用 .testimonial 底色框。 */
+.prose blockquote {
+  border-left: 4px solid var(--i);
+  background: var(--i-tint);
+  border-radius: 0 12px 12px 0;
+  padding: 18px 22px;
+  font-weight: 600;
+}
+.prose blockquote p { margin: 0; }
+.prose blockquote > * + * { margin-top: .7em; }
+
+.prose hr { border: 0; border-top: 1px solid var(--line); margin: 2.6em 0; }
+
+.prose img { border-radius: var(--r-card); margin-block: 1.8em; }
+.prose figure figcaption { margin-top: 10px; font-size: 14px; color: var(--ink-soft); text-align: center; }
+
+.prose table { width: 100%; border-collapse: collapse; font-size: 16px; }
+.prose th, .prose td { padding: 11px 14px; border-bottom: 1px solid var(--line); text-align: left; }
+.prose th { background: var(--bg-alt); font-weight: 700; font-size: 14px; }
+.prose tbody tr:hover { background: var(--bg-alt); }
+
+.prose code {
+  background: var(--bg-alt); border: 1px solid var(--line);
+  border-radius: 5px; padding: 2px 6px; font-size: .9em;
+}
+.prose pre { padding: 18px; border-radius: 12px; overflow-x: auto; }
+.prose pre code { background: none; border: 0; padding: 0; }
+
+/* 表格在窄螢幕可橫向捲，不要壓爛版面 */
+@media (max-width: 640px) {
+  .prose { font-size: 17px; }
+  .prose table { display: block; overflow-x: auto; white-space: nowrap; }
+}

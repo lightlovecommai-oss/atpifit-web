@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import Newsletter from '../../components/Newsletter.astro';
+import { SITE } from '../../consts';
+
+const posts = (await getCollection('articles', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const title = '文章';
+const description =
+  '把影響力當肌肉練。吸引、信任、專業、推進四塊肌肉的方法，溝通現場的實例，以及可以馬上用的一個小動作。';
+
+const schema = {
+  '@type': 'CollectionPage',
+  '@id': `${SITE.url}/articles/#collection`,
+  name: `${title}｜${SITE.name}`,
+  description,
+  url: `${SITE.url}/articles`,
+  isPartOf: { '@id': `${SITE.url}/#website` },
+  hasPart: posts.map((p) => ({
+    '@type': 'Article',
+    headline: p.data.title,
+    description: p.data.description,
+    datePublished: p.data.pubDate.toISOString(),
+    url: `${SITE.url}/articles/${p.id}`,
+  })),
+};
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <section class="section">
+    <div class="wrap">
+      <p class="kicker">文章</p>
+      <h1>影響力是<span class="hl">練</span>出來的</h1>
+      <p class="lead head-lead">這裡放的是課堂上講的方法，拆成看得懂、也做得出來的樣子。每一篇最後都會落到一個你今天就能試的小動作。</p>
+
+      {posts.length === 0 ? (
+        <p class="empty">文章正在寫，很快就會有第一篇。</p>
+      ) : (
+        <div class="grid grid-2 list">
+          {posts.map((p) => (
+            <ArticleCard
+              href={`/articles/${p.id}/`}
+              title={p.data.title}
+              description={p.data.description}
+              category={p.data.category}
+              pubDate={p.data.pubDate}
+              dim={p.data.dim}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap"><Newsletter source="articles-index" /></div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head-lead { max-width: 52ch; margin-top: 14px; }
+  .list { margin-top: 44px; }
+  .empty { margin-top: 32px; color: var(--ink-soft); }
+</style>

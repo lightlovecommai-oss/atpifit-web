@@ -1,0 +1,51 @@
+---
+import { LINKS } from '../consts';
+import Newsletter from './Newsletter.astro';
+
+interface Props {
+  kind: 'quiz' | 'subscribe' | 'course';
+  source?: string;
+}
+const { kind, source = 'article' } = Astro.props;
+
+/* 一頁只有一顆主行動鈕（Nike 原則）。文章頁的那顆就是這裡。 */
+const copy = {
+  quiz: {
+    kicker: '下一步',
+    title: '先量一次，再決定練哪塊',
+    lead: '影響力健檢會問你 12 題，量出吸引、信任、專業、推進四塊肌肉現在的樣子，並告訴你先練哪一塊最有感。免費，大約三分鐘。',
+    label: '免費做一次影響力健檢',
+    href: LINKS.quiz,
+    id: 'article_quiz',
+  },
+  course: {
+    kicker: '下一步',
+    title: '想把這些練成身體記得的動作',
+    lead: '看完文章知道方法，跟做得出來是兩件事。課程是把這些拆成一堂一堂的練習，帶著你在真實對話裡練到會。',
+    label: '看目前開的課',
+    href: LINKS.lp,
+    id: 'article_course',
+  },
+} as const;
+---
+
+{kind === 'subscribe' ? (
+  <Newsletter source={source} />
+) : (
+  <aside class="cta">
+    <p class="kicker">{copy[kind].kicker}</p>
+    <h2>{copy[kind].title}</h2>
+    <p class="lead">{copy[kind].lead}</p>
+    <a class="btn btn-main" href={copy[kind].href}
+       data-cta-id={copy[kind].id} data-cta-position="bottom">{copy[kind].label}</a>
+  </aside>
+)}
+
+<style>
+  .cta {
+    background: var(--a-tint); border-radius: 20px;
+    padding: clamp(28px, 5vw, 44px); text-align: center;
+  }
+  .cta h2 { font-size: clamp(21px, 3vw, 26px); }
+  .cta .lead { margin: 10px auto 24px; max-width: 46ch; }
+</style>

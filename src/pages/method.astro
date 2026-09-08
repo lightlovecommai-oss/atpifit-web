@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { SITE, LINKS } from '../consts';
+
+const title = 'ATPI 四塊影響力肌肉｜方法論';
+const description =
+  '影響力可以拆成吸引、信任、專業、推進四塊肌肉，每一塊都有方向、有動作、有檢查點。這頁把整套方法攤開：四塊在解決什麼、為什麼是這個順序、怎麼練、怎麼驗收。';
+
+/* 值全部鎖在字典 01。結果句 01:58–61、方向問句 01:116、12 小肌群、身體對照，一律不自行改寫。 */
+const muscles = [
+  {
+    dim: 'A', en: 'ATTRACT', name: '吸引肌肉',
+    ask: '他願意留多久？', result: '讓他想靠近', body: '背',
+    role: '點火。把溫度從零帶到有，特色是快生快滅。',
+    subs: ['讓他開口', '讓他追問', '讓他記得'],
+    slug: 'attract-muscle',
+  },
+  {
+    dim: 'T', en: 'TRUST', name: '信任肌肉',
+    ask: '誰先給？', result: '讓他願意說', body: '核心',
+    role: '抬底線。一旦建立就不容易掉回去，四塊裡唯一不可逆的。',
+    subs: ['讓他敢說', '讓他交心', '讓他當真'],
+    slug: 'trust-muscle',
+  },
+  {
+    dim: 'P', en: 'PROFESSIONAL', name: '專業肌肉',
+    ask: '怎麼證明你能解？', result: '讓他要找你', body: '胸',
+    role: '墊天花板。但底線沒到的時候，專業講得越多越糟。',
+    subs: ['讓他釐清', '讓他有感', '讓他放心'],
+    slug: 'professional-muscle',
+  },
+  {
+    dim: 'I', en: 'IMPACT', name: '推進肌肉',
+    ask: '他還差什麼？', result: '讓他願意動', body: '下肢',
+    role: '閥門。溫度到了不趁熱推進，它就會涼掉。',
+    subs: ['讓他想要', '讓他敢要', '讓他答應'],
+    slug: 'impact-muscle',
+  },
+];
+
+const faq = [
+  {
+    q: 'ATPI 是什麼意思？',
+    a: 'A 是 ATTRACT 吸引肌肉、T 是 TRUST 信任肌肉、P 是 PROFESSIONAL 專業肌肉、I 是 IMPACT 推進肌肉。這是把影響力拆開之後的四塊，順序永遠是 A→T→P→I，不會依照分數高低重排。',
+  },
+  {
+    q: '四塊肌肉是相加還是相乘？',
+    a: '相乘。這代表還沒練起來的那一塊會拖住整體，也代表練那一塊漲最多，所以先練它最有感。要注意的是相乘是在描述關係，不是說少一塊就等於零。',
+  },
+  {
+    q: 'ATPI 有沒有包含聲音、表情、肢體？',
+    a: '沒有，這是刻意排除的。ATPI 只管說什麼、練什麼，也就是內容；聲音、身體、節奏、停頓屬於表達的載體，是另一個系統。在健身房的比喻裡，ATPI 是重訓，表達載體是有氧與柔軟度。',
+  },
+  {
+    q: '為什麼叫「肌肉」不叫「能力」？',
+    a: '因為「力」是天賦語氣，聽起來像有或沒有；「肌肉」是可練語氣，練了就長。這個用詞差異是整套方法的立場：影響力是肌肉，只會越練越強。',
+  },
+  {
+    q: '這套方法只有做業務的人用得到嗎？',
+    a: '不是。四塊肌肉處理的是「怎麼讓你說的話真的在對方身上發生作用」，這件事在家庭、職場、合作、教學裡都一樣。實際使用的場景大約三成人際、三成家庭、四成商務創業。',
+  },
+];
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': `${SITE.url}/method/#webpage`,
+    name: title,
+    description,
+    url: `${SITE.url}/method/`,
+    inLanguage: 'zh-Hant-TW',
+    isPartOf: { '@id': `${SITE.url}/#website` },
+  },
+  {
+    '@type': 'FAQPage',
+    '@id': `${SITE.url}/method/#faq`,
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <section class="section">
+    <div class="wrap">
+      <p class="kicker">方法</p>
+      <h1>影響力可以拆開，<span class="hl">所以可以練</span></h1>
+      <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
+      <p class="lead head-lead">整團的「影響力」沒辦法練，因為你不知道要練什麼。拆成四塊、再拆成十二個看得到的行為之後，每一個都有具體的動作可以做，也有對方的反應可以檢查。</p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <h2>四塊肌肉，各自在解決什麼</h2>
+      <p class="lead">每一塊都對應一個問句。你在對話裡卡住的地方，通常就是其中一個問句你還沒有答案。</p>
+
+      <div class="grid grid-2 muscles">
+        {muscles.map((m) => (
+          <article class="card muscle" data-dim={m.dim}>
+            <span class="muscle-tag">{m.dim}　{m.en}</span>
+            <h3>{m.name}</h3>
+            <p class="muscle-result">{m.result}</p>
+            <dl class="spec">
+              <dt>要練的方向</dt><dd>{m.ask}</dd>
+              <dt>在關係裡的角色</dt><dd>{m.role}</dd>
+              <dt>三個小肌群</dt><dd>{m.subs.join('・')}</dd>
+              <dt>身體上的對照</dt><dd>{m.body}</dd>
+            </dl>
+            <a class="more" href={`/glossary/${m.slug}/`}>看這塊怎麼練 →</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-text">
+      <h2>順序不是隨便排的</h2>
+      <p>A、T、P、I 這個順序描述的是一段關係怎麼升溫。A 是點火，把溫度從零帶到有；T 是抬底線，信任一旦建立就不容易掉回去；P 是墊天花板，但底線沒到的時候，專業講得越多越糟；I 是閥門，溫度到了不趁熱推進，它就會涼掉。</p>
+
+      <div class="atpi-rule"><i></i><i></i><i></i><i></i></div>
+
+      <p class="rule-line">信賴感是門檻，解決問題是放大器；門檻沒過，專業是負分。</p>
+
+      <p>這也解釋了一個很常見的挫折：你明明準備得很充分、東西講得很清楚，對方卻沒有反應。因為 P 在 T 還沒到位的時候是不生效的，你在墊一個還沒立起來的天花板。</p>
+
+      <h2>四塊是相乘，不是相加</h2>
+      <p>這件事有一個很實用的推論：<strong>還沒練起來的那一塊，練起來漲最多。</strong></p>
+      <p>假設你的專業已經很強，再往上加，整體感受不會差太多；但如果信任那塊還沒開始練，把它拉起來一點，整體會明顯不一樣。這就是為什麼健檢做完之後，我們給的建議永遠是「先練這塊最有感」，而不是告訴你哪裡不好。</p>
+
+      <h2>ATPI 不管什麼</h2>
+      <p>ATPI 只管「說什麼、練什麼」，也就是內容本身。聲音、表情、肢體、節奏、停頓，這些屬於表達的載體，是另一個系統。</p>
+      <p>這是刻意排除，不是漏掉。在健身房的比喻裡，ATPI 是重訓，表達載體是有氧與柔軟度，兩個都需要，但不會混在同一張課表裡練。</p>
+
+      <h2>怎麼知道自己練起來了</h2>
+      <p>用對方的反應當尺，不用自我感覺當尺。</p>
+      <p>判斷你的信任肌肉有沒有練起來，不是問你覺得自己夠不夠真誠，而是看對方有沒有開始跟你說他原本不會說的事。十二個小肌群的名字主詞全都在對方身上，這是刻意的設計：多數溝通訓練問「你做了什麼」，這套問「他變成什麼樣」。</p>
+
+      <div class="btn-row">
+        <a class="btn btn-main" href={LINKS.quiz}
+           data-cta-id="method_quiz" data-cta-position="body">免費做影響力健檢</a>
+        <a class="btn btn-sub" href="/glossary/">看完整名詞表</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap-text">
+      <Newsletter source="method" variant="sub" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-text">
+      <h2>常見問題</h2>
+      <dl class="faq">
+        {faq.map((f) => (
+          <>
+            <dt>{f.q}</dt>
+            <dd>{f.a}</dd>
+          </>
+        ))}
+      </dl>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head-lead { max-width: 50ch; margin-top: 14px; }
+
+  /* 固定 2×2，不用 auto-fit：四塊要排成整齊一組，不能被斷成 3+1（順序 A→T→P→I 是規範） */
+  .muscles { margin-top: 36px; grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 640px) { .muscles { grid-template-columns: 1fr; } }
+
+  .muscle-result {
+    margin-top: 4px !important; font-size: 17px !important;
+    font-weight: 700; color: var(--dim-deep) !important;
+  }
+
+  .spec { margin-top: 18px; font-size: 15px; }
+  .spec dt {
+    font-size: 13px; font-weight: 700; color: var(--ink-soft);
+    letter-spacing: .04em; margin-top: 12px;
+  }
+  .spec dt:first-child { margin-top: 0; }
+  .spec dd { margin: 3px 0 0; line-height: 1.75; }
+
+  .more {
+    display: inline-block; margin-top: 20px; font-size: 15px;
+    font-weight: 600; color: var(--dim-deep); text-decoration: none;
+  }
+  .more:hover { text-decoration: underline; }
+
+  .rule-line {
+    margin: 4px 0 28px; font-size: 19px; font-weight: 700;
+    line-height: 1.8; text-align: center; color: var(--act-deep);
+  }
+
+  .faq { margin-top: 24px; }
+  .faq dt { font-weight: 700; font-size: 18px; margin-top: 28px; }
+  .faq dd { margin: 8px 0 0; color: var(--ink-soft); line-height: 1.9; }
+</style>

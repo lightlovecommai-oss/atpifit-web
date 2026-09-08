@@ -1,0 +1,46 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  category: string;
+  pubDate: Date;
+  dim?: 'A' | 'T' | 'P' | 'I';
+}
+const { href, title, description, category, pubDate, dim } = Astro.props;
+const iso = pubDate.toISOString().slice(0, 10);
+const shown = pubDate.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<article class="card item" data-dim={dim}>
+  <p class="meta">
+    <span class="cat">{category}</span>
+    <time datetime={iso}>{shown}</time>
+  </p>
+  <h3><a href={href}>{title}</a></h3>
+  <p class="desc">{description}</p>
+</article>
+
+<style>
+  .item { display: flex; flex-direction: column; gap: 8px; transition: border-color .15s ease; }
+  .item:hover { border-color: var(--act); }
+
+  /* 有指定肌肉的文章，左邊帶那塊肌肉的顏色 */
+  .item[data-dim] { border-left: 4px solid var(--line); }
+  .item[data-dim="A"] { border-left-color: var(--a); }
+  .item[data-dim="T"] { border-left-color: var(--t); }
+  .item[data-dim="P"] { border-left-color: var(--p); }
+  .item[data-dim="I"] { border-left-color: var(--i); }
+
+  .meta { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-soft); }
+  .cat { font-weight: 700; color: var(--act-deep); }
+
+  .item h3 { font-size: 20px; line-height: 1.45; }
+  .item h3 a { color: var(--ink); text-decoration: none; }
+  .item:hover h3 a { color: var(--act-deep); }
+  /* 讓整張卡可點，但保留連結語意給輔助技術 */
+  .item h3 a::after { content: ""; position: absolute; inset: 0; }
+  .item { position: relative; }
+
+  .desc { font-size: 15.5px; line-height: 1.75; color: var(--ink-soft); }
+</style>

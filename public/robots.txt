@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+
+# 廣告落地頁不進索引，避免跟正式內容頁互相稀釋
+Disallow: /lp/
+
+# AI 搜尋爬蟲：明確開放。被引用是我們要的，不是要防的。
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://atpifit.com/sitemap-index.xml

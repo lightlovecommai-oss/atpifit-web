@@ -1,0 +1,76 @@
+---
+import { NAV, LINKS, SITE } from '../consts';
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+---
+
+<header class="site-header">
+  <div class="wrap-wide bar">
+    <a href="/" class="brand" aria-label={`${SITE.nameFull} 首頁`}>
+      <img src="/assets/logo-lockup.svg" alt="" width="127" height="44" />
+      <span class="visually-hidden">{SITE.nameFull}</span>
+    </a>
+
+    <input type="checkbox" id="nav-toggle" class="visually-hidden" />
+    <label for="nav-toggle" class="burger" aria-label="開啟選單">
+      <span></span><span></span><span></span>
+    </label>
+
+    <nav class="nav" aria-label="主選單">
+      {NAV.map((item) => (
+        <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
+      ))}
+      <a class="btn btn-main nav-cta" href={LINKS.quiz}
+         data-cta-id="header_quiz" data-cta-position="header">免費影響力健檢</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(247, 241, 236, .92);
+    backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar { display: flex; align-items: center; gap: 20px; min-height: 68px; }
+  .brand { display: flex; align-items: center; flex-shrink: 0; }
+  /* lockup 的 viewBox 含保護空間（圖標高 ½），所以框要比看起來需要的再大一點 */
+  .brand img { height: 44px; width: auto; }
+
+  .nav { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+  .nav > a {
+    padding: 8px 14px; border-radius: 10px; font-size: 15px; font-weight: 600;
+    color: var(--ink); text-decoration: none;
+  }
+  .nav > a:hover { background: var(--a-tint); }
+  .nav > a[aria-current="page"] { color: var(--act-deep); }
+
+  /* header 的 CTA 是導流入口，刻意做小：主行動鈕的 56px 規格留給頁面內那顆唯一主鈕。
+     ⚠️ 字級掉到 19px 以下就不能用 --act 當底（白字只有 4.09:1），一律換 --act-deep（5.07:1）。 */
+  .nav-cta {
+    min-height: 42px; padding: 9px 18px; font-size: 15px; margin-left: 10px;
+    background: var(--act-deep);
+  }
+  .nav-cta:hover { background: var(--ink-2); color: #fff; }
+
+  .burger { display: none; }
+
+  @media (max-width: 900px) {
+    .burger {
+      display: flex; flex-direction: column; justify-content: center; gap: 5px;
+      margin-left: auto; width: 44px; height: 44px; padding: 10px; cursor: pointer;
+    }
+    .burger span { display: block; height: 2px; background: var(--ink); border-radius: 2px; }
+
+    .nav {
+      display: none; position: absolute; left: 0; right: 0; top: 100%;
+      flex-direction: column; align-items: stretch; gap: 2px;
+      background: var(--bg); border-bottom: 1px solid var(--line);
+      padding: 12px 24px 20px;
+    }
+    #nav-toggle:checked ~ .nav { display: flex; }
+    .nav > a { padding: 13px 12px; font-size: 16px; }
+    .nav-cta { margin: 10px 0 0; min-height: 52px; font-size: 16px; }
+  }
+</style>

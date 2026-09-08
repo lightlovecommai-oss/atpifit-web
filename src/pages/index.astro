@@ -1,0 +1,278 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { LINKS, SITE } from '../consts';
+
+const title = '影響力健身房 ATPIFit｜把影響力當肌肉練';
+const description =
+  '影響力不是天生的個性，是可以量、可以練、可以驗收的能力。ATPI 把它拆成吸引、信任、專業、推進四塊肌肉，先量一次，再一次練一塊。';
+
+/* 四塊影響力肌肉。
+   正式名一律「〇〇肌肉」，不寫「〇〇力」也不簡寫成「〇〇肌」（字典 01:40–47）。
+   結果句是給對外入口用的那一套，值鎖死在字典 01:58–61，不可自行改寫：
+   A 讓他想靠近／T 讓他願意說／P 讓他要找你／I 讓他願意動。
+   英文標籤定稿 ATTRACT／TRUST／PROFESSIONAL／IMPACT（01:53，其餘寫法已作廢）。 */
+const muscles = [
+  {
+    dim: 'A',
+    en: 'ATTRACT',
+    name: '吸引肌肉',
+    result: '讓他想靠近',
+    body: '同一句話，有人講完沒人接，有人講完全場轉頭。差別在你有沒有給對方一個想再聽下去的理由。',
+  },
+  {
+    dim: 'T',
+    en: 'TRUST',
+    name: '信任肌肉',
+    result: '讓他願意說',
+    body: '對方說「我再考慮一下」，通常不是真的在考慮。他心裡真正的那句話沒出來，你就只能用猜的。',
+  },
+  {
+    dim: 'P',
+    en: 'PROFESSIONAL',
+    name: '專業肌肉',
+    result: '讓他要找你',
+    body: '專業不是你懂多少，是他聽完之後認定你就是那個人：這件事，找你就對了。',
+  },
+  {
+    dim: 'I',
+    en: 'IMPACT',
+    name: '推進肌肉',
+    result: '讓他願意動',
+    body: '聊得很好但沒有下一步，等於沒發生。推進是把好感變成一個具體的、今天就會動的動作。',
+  },
+];
+
+/* 八招 ⑧ 全貌感：全圖露出、現在位置亮、還沒走到的叫「還沒解鎖」，終點落骨層。 */
+const roadmap = [
+  { step: '01', name: '量一次', now: true, body: '12 題影響力健檢，三分鐘知道自己四塊肌肉現在的樣子，以及先練哪一塊最有感。' },
+  { step: '02', name: '一次練一塊', now: false, body: '進影響力健身房，每天一個小動作、記一塊肌肉。練了才知道哪裡真的變了。' },
+  { step: '03', name: '練到會用', now: false, body: '把方法帶進真實的對話現場，談合作、帶團隊、講你正在做的事。' },
+];
+
+const faq = [
+  {
+    q: '影響力健身房是什麼？',
+    a: '影響力健身房（英文 ATPIFit）是一間把影響力當肌肉來練的場館，也是整個品牌的招牌。它用 ATPI 四塊影響力肌肉，也就是吸引、信任、專業、推進，把抽象的影響力拆成可以量測、可以逐塊練習的能力，並提供影響力健檢、每日練習與課程。',
+  },
+  {
+    q: 'ATPI 是什麼意思？',
+    a: 'ATPI 是影響力的四塊肌肉：A 吸引肌肉（ATTRACT）讓他想靠近、T 信任肌肉（TRUST）讓他願意說、P 專業肌肉（PROFESSIONAL）讓他要找你、I 推進肌肉（IMPACT）讓他願意動。四塊是相乘的關係，任何一塊趨近零，整體影響力都會嚴重折損。',
+  },
+  {
+    q: '影響力健檢要花多久？要付費嗎？',
+    a: '影響力健檢是免費的，12 題、大約三分鐘。做完會拿到四塊肌肉的分數，以及先練哪一塊最有感的建議。',
+  },
+  {
+    q: '我不是業務，也需要練影響力嗎？',
+    a: '需要。只要你要讓別人理解你在做什麼、願意跟你一起做，影響力就是你每天在用的能力。ATPI 四塊肌肉在人際溝通、家庭對話與商務創業上都適用。',
+  },
+  {
+    q: '影響力健身房跟超引力成交學是什麼關係？',
+    a: '影響力健身房是館名，也是母品牌；超引力成交學是這間館裡的教練課系列。就像健身房本身跟教練課的關係：你可以先自己進場練，也可以另外報名教練課。',
+  },
+];
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': `${SITE.url}/#webpage`,
+    url: SITE.url,
+    name: title,
+    description,
+    inLanguage: 'zh-Hant-TW',
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    about: { '@id': `${SITE.url}/#organization` },
+  },
+  {
+    '@type': 'FAQPage',
+    '@id': `${SITE.url}/#faq`,
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <!-- ═══ Hero：一頁只有一顆主行動鈕（24 §3.8 Nike 原則）＝下面這顆「做影響力健檢」 ═══ -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">影響力健身房 ATPIFit</p>
+      <h1>影響力是肌肉，<span class="hl">越練越強</span></h1>
+      <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
+      <p class="lead hero-lead">它不是天生的個性，也不是講話技巧的天分。它是一種可以量、可以練、也可以驗收的能力，前提是你知道自己現在練到哪。</p>
+
+      <div class="btn-row hero-cta">
+        <a class="btn btn-main" href={LINKS.quiz} data-cta="quiz" data-cta-position="home-hero">
+          免費做影響力健檢
+        </a>
+        <a class="btn btn-sub" href="/method">先看看這套方法</a>
+      </div>
+      <p class="hero-note">12 題、約三分鐘，做完就知道先練哪一塊最有感。</p>
+    </div>
+  </section>
+
+  <!-- ═══ 問題共鳴 ═══ -->
+  <section class="section section-alt">
+    <div class="wrap-text">
+      <p class="kicker">為什麼要練</p>
+      <h2>你講得很好，可是<span class="hl">對方沒動</span></h2>
+      <p class="lead pain-lead">報價寄出去，對方說再看看。會議上你講完了，大家點頭，然後沒有然後。內容明明是對的，只是那句話沒有落到他心裡。</p>
+      <p class="pain-body">多數人遇到這種狀況，會再去找更厲害的話術。但話術像打氣打出來的肌肉，看起來壯，一鬆手就消；真正的力量在你看不見的核心。真正在運作的是底下那四塊肌肉，它們決定了同樣一句話從你嘴裡說出來，有沒有份量。</p>
+    </div>
+  </section>
+
+  <!-- ═══ 四塊影響力肌肉 ═══ -->
+  <section class="section">
+    <div class="wrap">
+      <p class="kicker">ATPI 四塊影響力肌肉</p>
+      <h2>影響力可以拆開，<span class="hl">一塊一塊練</span></h2>
+      <p class="lead sec-lead">溝通不是藝術，而是科學。能拆解，就能練；能練，就能量出進步。</p>
+
+      <div class="grid muscles">
+        {muscles.map((m) => (
+          <!-- 標題只放正式名；結果句另起一行當描述，不拿它當維度標籤（字典 01:87）。 -->
+          <article class="card muscle" data-dim={m.dim}>
+            <span class="muscle-tag">{m.dim}　{m.en}</span>
+            <h3>{m.name}</h3>
+            <p class="muscle-result">{m.result}</p>
+            <p>{m.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <p class="muscles-note">四塊不是加起來，是<b>相乘</b>。所以還沒練起來的那一塊，練起來漲最多，<b>先練那塊最有感</b>。</p>
+    </div>
+  </section>
+
+  <!-- ═══ 全貌感：進度地圖（八招 ⑧）═══ -->
+  <section class="section section-alt">
+    <div class="wrap">
+      <p class="kicker">你會怎麼走</p>
+      <h2>全部的路<span class="hl">先給你看</span></h2>
+
+      <ol class="road">
+        {roadmap.map((r) => (
+          <li class="road-item" data-now={r.now ? 'yes' : 'no'}>
+            <span class="road-step num">{r.step}</span>
+            <div class="road-body">
+              <h3>{r.name}</h3>
+              <p>{r.body}</p>
+              <p class="road-state">{r.now ? '你現在在這' : '還沒解鎖'}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <!-- 八招 ③ 四色橫線的第二個崗位：進度。寬度＝實際比例，不當裝飾線。 -->
+      <div class="atpi-rule road-rule" role="presentation"><i></i><i></i><i></i><i></i></div>
+
+      <p class="road-end">走到最後，不是你變成一個很會講話的人，而是<b>你說的話開始有人願意照著做，因為他們相信的是你這個人</b>。</p>
+    </div>
+  </section>
+
+  <!-- ═══ 骨層句 ═══ -->
+  <section class="section">
+    <div class="wrap-text">
+      <!-- 骨層句見光（金句庫部署鐵則①）。值＝productkit 14 §5，署名不可省。 -->
+      <blockquote class="quote">
+        <p>影響力的盡頭不是成交，是有人因為你變好。</p>
+        <cite>平凡人光頭</cite>
+      </blockquote>
+      <p class="bone-body">影響力這種東西，用來拿下別人也可以，用來讓別人變好也可以，我們選後面那條。練得強不是為了壓過誰，是為了有能力把你想給的東西，真的給出去。</p>
+    </div>
+  </section>
+
+  <!-- ═══ 電子報：首頁已經有主鈕，這裡退成次行動 ═══ -->
+  <section class="section">
+    <div class="wrap"><Newsletter source="home" variant="sub" /></div>
+  </section>
+
+  <!-- ═══ 常見問題：跟上面 FAQPage 結構化資料同一份內容 ═══ -->
+  <section class="section section-alt">
+    <div class="wrap-text">
+      <p class="kicker">常見問題</p>
+      <h2>先回答<span class="hl">你可能會問的</span></h2>
+      <dl class="faq">
+        {faq.map((f) => (
+          <div class="qa"><dt>{f.q}</dt><dd>{f.a}</dd></div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- ═══ 八招 ⑦ 收尾句 ═══ -->
+  <section class="section">
+    <div class="wrap-text center">
+      <p class="closing">你不用變成另一個人，<br />只要讓真實的你呈現出來。</p>
+      <div class="btn-row closing-cta">
+        <a class="btn btn-sub" href={LINKS.quiz} data-cta="quiz" data-cta-position="home-closing">
+          去做影響力健檢
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { padding: clamp(48px, 8vw, 88px) 0 clamp(40px, 6vw, 64px); }
+  .hero-lead { max-width: 46ch; margin-top: 20px; }
+  .hero-cta { margin-top: 32px; }
+  .hero-note { margin-top: 14px; font-size: 14px; color: var(--ink-soft); }
+
+  .pain-lead { margin-top: 16px; }
+  .pain-body { margin-top: 18px; color: var(--ink-soft); }
+
+  .sec-lead { max-width: 44ch; margin-top: 14px; }
+  /* 固定 2×2，不用 auto-fit：四塊要排成整齊一組，不能被斷成 3+1（順序 A→T→P→I 是規範） */
+  .muscles { margin-top: 36px; grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 640px) { .muscles { grid-template-columns: 1fr; } }
+  .muscles h3 { font-size: 19px; }
+  .muscles p { margin-top: 10px; font-size: 16px; color: var(--ink-soft); }
+  .muscle-result { margin-top: 4px !important; font-size: 17px !important;
+                   font-weight: 700; color: var(--dim-deep) !important; }
+  .muscles-note { margin-top: 24px; font-size: 16px; color: var(--ink-soft); }
+  .muscles-note b { color: var(--ink); }
+
+  .road { list-style: none; padding: 0; margin-top: 36px; display: grid; gap: 16px; }
+  .road-item {
+    display: flex; gap: 18px; align-items: flex-start;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-card); padding: 22px 24px;
+  }
+  /* 還沒走到的格子刻意降對比＝看得到但還沒亮，不是「缺口」 */
+  .road-item[data-now="no"] { background: transparent; border-style: dashed; }
+  .road-step { font-size: 15px; font-weight: 800; color: var(--act); letter-spacing: .04em; padding-top: 4px; }
+  .road-item[data-now="no"] .road-step { color: var(--ink-soft); }
+  .road-body h3 { font-size: 19px; }
+  .road-body p { margin-top: 8px; font-size: 16px; color: var(--ink-soft); }
+  .road-state {
+    display: inline-block; margin-top: 12px !important;
+    font-size: 12px; font-weight: 700; letter-spacing: .06em;
+    padding: 3px 10px; border-radius: 999px;
+    background: var(--a-tint); color: var(--act-deep) !important;
+  }
+  .road-item[data-now="no"] .road-state { background: var(--line); color: var(--ink-soft) !important; }
+
+  .road-rule { margin-top: 26px; }
+  .road-end { margin-top: 20px; font-size: 17px; color: var(--ink-soft); max-width: 56ch; }
+  .road-end b { color: var(--ink); }
+
+  .bone-body { margin-top: 24px; color: var(--ink-soft); }
+
+  .faq { margin-top: 28px; }
+  .qa + .qa { margin-top: 22px; }
+  .faq dt { font-weight: 700; font-size: 17px; }
+  .faq dd { margin: 6px 0 0; color: var(--ink-soft); line-height: 1.85; }
+
+  .center { text-align: center; }
+  .closing-cta { margin-top: 26px; justify-content: center; }
+
+  @media (max-width: 520px) {
+    .hero-cta .btn, .closing-cta .btn { width: 100%; }
+    .road-item { flex-direction: column; gap: 6px; }
+  }
+</style>

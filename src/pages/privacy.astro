@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+
+const title = '隱私權政策';
+const description = '影響力健身房 ATPIFit 蒐集哪些資料、怎麼用、放在哪裡，以及你可以要求我們做什麼。';
+
+const updated = '2026-09-08';
+
+const schema = {
+  '@type': 'WebPage',
+  '@id': `${SITE.url}/privacy/#webpage`,
+  name: title,
+  description,
+  url: `${SITE.url}/privacy/`,
+  inLanguage: 'zh-Hant-TW',
+  isPartOf: { '@id': `${SITE.url}/#website` },
+};
+---
+
+<BaseLayout title={title} description={description} schema={schema} noindex={true}>
+  <section class="section">
+    <div class="wrap-text">
+      <p class="kicker">隱私權政策</p>
+      <h1>你的資料，我們怎麼處理</h1>
+      <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
+      <p class="lead">最後更新：{updated}</p>
+
+      <h2>我們蒐集什麼</h2>
+      <ul>
+        <li><b>你主動給我們的：</b>訂閱電子報時填的電子郵件；做影響力健檢時填的姓名、聯絡方式與作答內容；報名或諮詢時填的表單資料。</li>
+        <li><b>瀏覽時自動產生的：</b>造訪的頁面、停留時間、來源網站、裝置與瀏覽器類型、概略地理位置（到城市層級）。這些透過 Google Analytics 蒐集，不包含可以直接識別你的資訊。</li>
+      </ul>
+
+      <h2>我們拿來做什麼</h2>
+      <ul>
+        <li>寄送你訂閱的電子報與課程相關通知。</li>
+        <li>產生你的影響力健檢結果，並在你有需要時做前後對照。</li>
+        <li>了解哪些內容有用、哪些沒用，用來改進網站與教材。</li>
+        <li>衡量廣告成效。</li>
+      </ul>
+      <p>我們不會把你的個人資料販售或出租給任何第三方。</p>
+
+      <h2>資料放在哪裡</h2>
+      <p>我們使用以下服務來儲存與處理資料，各自有自己的隱私權政策：</p>
+      <ul>
+        <li><b>Google（Sheets、Analytics、Tag Manager）：</b>名單儲存與網站流量分析。</li>
+        <li><b>LaunChill：</b>電子報寄送。</li>
+        <li><b>LINE：</b>如果你透過 LINE 官方帳號與我們互動。</li>
+        <li><b>Meta：</b>廣告成效衡量。傳送時會先把電子郵件做雜湊處理，我們不會傳送明文。</li>
+      </ul>
+
+      <h2>Cookie 與追蹤</h2>
+      <p>本站使用 Cookie 與類似技術來記住你的偏好、分析流量、衡量廣告成效。你可以在瀏覽器設定裡拒絕或刪除 Cookie，但部分功能可能因此無法正常運作。</p>
+
+      <h2>你可以要求我們做什麼</h2>
+      <p>你隨時可以要求查詢、更正或刪除我們持有的你的個人資料，也可以要求停止寄送電子報。每一封電子報的最下方都有退訂連結，按一下就會生效。</p>
+      <p>如果要提出其他請求，寫信到下面的信箱，我們會在合理時間內處理。</p>
+
+      <h2>未成年人</h2>
+      <p>本站的服務對象是成年人。我們不會刻意蒐集未滿十八歲者的個人資料。</p>
+
+      <h2>政策異動</h2>
+      <p>這份政策可能會隨著服務調整而更新，更新後會直接改這一頁，並更新頁首的日期。</p>
+
+      <h2>聯絡我們</h2>
+      <p>有任何關於個人資料的問題，請寄到 <a href="mailto:hello@atpifit.com">hello@atpifit.com</a>。</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  h2 { margin-top: 44px; font-size: 21px; }
+  p, li { line-height: 1.9; }
+  p { margin-top: 12px; }
+  ul { margin-top: 12px; padding-left: 20px; }
+  li { margin-top: 8px; }
+  a { color: var(--act-deep); }
+</style>

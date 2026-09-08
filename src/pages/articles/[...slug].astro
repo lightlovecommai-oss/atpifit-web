@@ -1,0 +1,161 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBlock from '../../components/CtaBlock.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { SITE } from '../../consts';
+import '../../styles/prose.css';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('articles', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, posts } }));
+}
+
+const { post, posts } = Astro.props;
+const { Content } = await render(post);
+const d = post.data;
+
+const url = `${SITE.url}/articles/${post.id}`;
+const fmt = (x: Date) => x.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
+
+/* 相關文章：先同肌肉、再同分類，補到 3 篇。 */
+const others = posts.filter((p) => p.id !== post.id && !p.data.draft);
+const related = [
+  ...others.filter((p) => d.dim && p.data.dim === d.dim),
+  ...others.filter((p) => p.data.category === d.category),
+]
+  .filter((p, i, arr) => arr.findIndex((x) => x.id === p.id) === i)
+  .slice(0, 3);
+
+const schema: Record<string, unknown>[] = [
+  {
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    headline: d.title,
+    description: d.description,
+    datePublished: d.pubDate.toISOString(),
+    dateModified: (d.updatedDate ?? d.pubDate).toISOString(),
+    inLanguage: 'zh-Hant-TW',
+    articleSection: d.category,
+    keywords: d.tags.join(', '),
+    author: { '@id': `${SITE.url}/about#person` },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    isPartOf: { '@id': `${SITE.url}/#website` },
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首頁', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: '文章', item: `${SITE.url}/articles` },
+      { '@type': 'ListItem', position: 3, name: d.title, item: url },
+    ],
+  },
+];
+
+/* FAQ 結構化資料＝AI 搜尋最容易直接引用的格式。有寫 faq 才輸出。 */
+if (d.faq.length) {
+  schema.push({
+    '@type': 'FAQPage',
+    '@id': `${url}#faq`,
+    mainEntity: d.faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  });
+}
+---
+
+<BaseLayout title={d.title} description={d.description} image={d.image} schema={schema}>
+  <article>
+    <header class="head">
+      <div class="wrap-text">
+        <nav class="crumbs" aria-label="麵包屑">
+          <a href="/">首頁</a> <span aria-hidden="true">/</span>
+          <a href="/articles">文章</a> <span aria-hidden="true">/</span>
+          <span>{d.category}</span>
+        </nav>
+
+        <h1>{d.title}</h1>
+        <p class="lead">{d.description}</p>
+
+        <p class="meta">
+          <time datetime={d.pubDate.toISOString().slice(0, 10)}>{fmt(d.pubDate)}</time>
+          {d.updatedDate && <span>· 最後更新 {fmt(d.updatedDate)}</span>}
+        </p>
+      </div>
+    </header>
+
+    <div class="wrap-text">
+      <div class="prose"><Content /></div>
+
+      {d.faq.length > 0 && (
+        <section class="faq">
+          <h2>常見問題</h2>
+          <dl>
+            {d.faq.map((f) => (
+              <div class="qa">
+                <dt>{f.q}</dt>
+                <dd>{f.a}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
+
+      {d.tags.length > 0 && (
+        <p class="tags">{d.tags.map((t) => <span class="tag">{t}</span>)}</p>
+      )}
+    </div>
+
+    <div class="wrap-text cta-slot"><CtaBlock kind={d.cta} source={`article:${post.id}`} /></div>
+  </article>
+
+  {related.length > 0 && (
+    <section class="section section-alt">
+      <div class="wrap">
+        <h2 class="rel-title">接著讀</h2>
+        <div class="grid grid-3">
+          {related.map((p) => (
+            <ArticleCard
+              href={`/articles/${p.id}/`}
+              title={p.data.title}
+              description={p.data.description}
+              category={p.data.category}
+              pubDate={p.data.pubDate}
+              dim={p.data.dim}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .head { padding: 44px 0 30px; }
+  .crumbs { font-size: 13px; color: var(--ink-soft); margin-bottom: 20px; }
+  .crumbs a { color: var(--ink-soft); text-decoration: none; }
+  .crumbs a:hover { color: var(--act-deep); text-decoration: underline; }
+  .crumbs span { margin: 0 4px; }
+
+  .head h1 { font-size: clamp(28px, 4.6vw, 40px); }
+  .head .lead { margin-top: 16px; }
+  .meta { margin-top: 20px; font-size: 14px; color: var(--ink-soft); }
+
+  .faq { margin-top: 56px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .faq h2 { font-size: 22px; margin: 24px 0 18px; }
+  .qa + .qa { margin-top: 20px; }
+  .faq dt { font-weight: 700; font-size: 17px; }
+  .faq dd { margin: 6px 0 0; color: var(--ink-soft); line-height: 1.85; }
+
+  .tags { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    font-size: 13px; color: var(--ink-soft); background: var(--bg-alt);
+    border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px;
+  }
+
+  .cta-slot { margin-top: 56px; }
+  .rel-title { font-size: 22px; margin-bottom: 22px; }
+</style>

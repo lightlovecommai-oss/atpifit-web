@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../consts';
+
+const terms = (await getCollection('glossary', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const title = '名詞表';
+const description =
+  '影響力健身房用到的名詞，一個一個講清楚：ATPI、四塊影響力肌肉、影響力健檢、超引力成交學。';
+
+const schema = {
+  '@type': 'DefinedTermSet',
+  '@id': `${SITE.url}/glossary/#set`,
+  name: '影響力健身房名詞表',
+  description,
+  url: `${SITE.url}/glossary`,
+  inLanguage: 'zh-Hant-TW',
+  hasDefinedTerm: terms.map((t) => ({
+    '@type': 'DefinedTerm',
+    name: t.data.term,
+    description: t.data.definition,
+    url: `${SITE.url}/glossary/${t.id}`,
+  })),
+};
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <section class="section">
+    <div class="wrap">
+      <p class="kicker">名詞</p>
+      <h1>我們說的每個詞，<span class="hl">都有定義</span></h1>
+      <p class="lead head-lead">影響力這種東西最怕的就是各說各話。這裡把我們用的每個名詞攤開來寫清楚，你可以拿去對照，也可以拿去反駁。</p>
+
+      <ul class="terms">
+        {terms.map((t) => (
+          <li class="card" data-dim={t.data.dim}>
+            <a href={`/glossary/${t.id}/`}>
+              <b>{t.data.term}</b>
+              <span>{t.data.definition}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head-lead { max-width: 50ch; margin-top: 14px; }
+  .terms { list-style: none; padding: 0; margin-top: 44px; display: grid; gap: 14px; }
+  .terms li { padding: 0; transition: border-color .15s ease; }
+  .terms li:hover { border-color: var(--act); }
+  .terms li[data-dim="A"] { border-left: 4px solid var(--a); }
+  .terms li[data-dim="T"] { border-left: 4px solid var(--t); }
+  .terms li[data-dim="P"] { border-left: 4px solid var(--p); }
+  .terms li[data-dim="I"] { border-left: 4px solid var(--i); }
+  .terms a { display: block; padding: 20px 24px; text-decoration: none; color: var(--ink); }
+  .terms b { font-size: 19px; }
+  .terms span { display: block; margin-top: 6px; font-size: 16px; color: var(--ink-soft); line-height: 1.8; }
+</style>
