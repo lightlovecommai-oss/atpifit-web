@@ -15,7 +15,14 @@ export const LINKS = {
   gym: 'https://app.atpifit.com/',
   lp: 'https://lp.atpifit.com/',
   booking: 'https://time.atpifit.com/',
+  line: 'https://lin.ee/pTzOrU9',
 } as const;
+
+/* 品牌實體識別：告訴 Google／AI 搜尋「這些帳號跟本站是同一個品牌」。
+   一律填**公開個人檔案頁**而不是加好友短網址——短網址是轉址、不是可索引的檔案頁。 */
+export const SAME_AS = [
+  'https://page.line.me/993pajiy',
+] as const;
 
 /* 訂閱走跟影響力健檢同一支 Apps Script：後端一次寫 Google Sheet ＋ 推 LaunChill。
    ⚠️ 換後端網址要同步改 comconverttest/index.html 的 SHEET_API。 */

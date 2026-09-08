@@ -1,5 +1,5 @@
 ---
-import { SITE } from '../consts';
+import { SITE, SAME_AS } from '../consts';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/brand.css';
@@ -32,6 +32,7 @@ const orgSchema = {
   logo: { '@type': 'ImageObject', url: `${SITE.url}/assets/logo-avatar.png` },
   description,
   founder: { '@id': `${SITE.url}/about#person` },
+  sameAs: [...SAME_AS],
   areaServed: { '@type': 'Country', name: '台灣' },
   knowsLanguage: ['zh-Hant'],
 };
