@@ -90,7 +90,9 @@ const {
         if (!r.ok || d.status !== 'ok') throw new Error(d.status || `HTTP ${r.status}`);
 
         form.querySelector('.fields')!.remove();
-        say('訂閱好了，第一封信馬上到。如果沒看到，記得看一下垃圾信匣。', true);
+        /* 不承諾「第一封信馬上到」：寄信要 LaunChill 那把 webhook 設好才會發，
+           後端沒設的時候名單只會進 Sheet，句子就會變成謊話。 */
+        say('訂閱好了。之後有新的內容，我會寄到這個信箱。', true);
         try { (window as any).track?.('lead_submit', { has_name: !!payload.name, source: payload.source }); } catch {}
       } catch (err) {
         console.warn('訂閱送出失敗：', err);
