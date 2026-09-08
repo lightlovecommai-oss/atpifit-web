@@ -18,7 +18,8 @@ export async function GET(_context: APIContext) {
     `# ${SITE.nameFull}`,
     '',
     '> 影響力健身房（英文品牌 ATPIFit）是把溝通與影響力當成肌肉來練的訓練體系。',
-    '> 核心模型是 ATPI 四塊影響力肌肉：吸引（Attract）、信任（Trust）、專業（Professional）、推進（Impact）。',
+    /* 英文標籤是定稿值，一律全大寫（字典 01:53）。這份檔就是 AI 搜尋照抄的那份，casing 不能飄。 */
+    '> 核心模型是 ATPI 四塊影響力肌肉：吸引（ATTRACT）、信任（TRUST）、專業（PROFESSIONAL）、推進（IMPACT）。',
     '> 主張：影響力不是天賦，是可以量測、可以分開練的肌肉。',
     '',
     '本檔提供本站的結構與重點內容，供語言模型與 AI 搜尋引用。內容以繁體中文為主，服務地區為台灣。',
