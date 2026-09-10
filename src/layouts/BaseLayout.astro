@@ -1,5 +1,5 @@
 ---
-import { SITE, SAME_AS } from '../consts';
+import { SITE, SAME_AS, LINKS } from '../consts';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/brand.css';
@@ -81,6 +81,10 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
 
   <link rel="preconnect" href="https://rsms.me/" />
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+  <!-- Noto Sans TC＝quiz／member 同款字體，900 級大標是視覺語言的一部分 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;900&display=swap" />
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
@@ -95,5 +99,54 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
     <slot />
   </main>
   <Footer />
+
+  <!-- 手機 sticky 健檢欄：北極星指標＝Quiz 點擊率（2026-09-10 拍板），長頁讀到一半的人也要搆得到主行動。
+       滑過首屏才升起，跟頁內主鈕不同時出現＝不違反一頁一顆主鈕。 -->
+  <div class="sticky-quiz" id="sticky-quiz" aria-hidden="true">
+    <a class="btn btn-main" href={LINKS.quiz} data-cta="quiz" data-cta-position="sticky">
+      免費影響力健檢｜3 分鐘
+    </a>
+  </div>
+  <script>
+    /* cta_click 的發射器（規範 31 §4E）：track.js 只給函式不綁 click，
+       這裡統一監聽 [data-cta]，否則北極星（Quiz 點擊率）量不到。低摩擦：出事只吞掉，不擋跳轉。 */
+    document.addEventListener('click', (e) => {
+      const el = (e.target as Element).closest?.('[data-cta]') as HTMLElement | null;
+      if (!el) return;
+      try {
+        (window as any).track?.('cta_click', {
+          cta_id: el.dataset.cta,
+          cta_position: el.dataset.ctaPosition || '',
+          cta_text: (el.textContent || '').trim(),
+        });
+      } catch {}
+    });
+
+    const bar = document.getElementById('sticky-quiz')!;
+    let shown = false;
+    const onScroll = () => {
+      const want = window.scrollY > 560;
+      if (want !== shown) {
+        shown = want;
+        bar.classList.toggle('on', want);
+        bar.setAttribute('aria-hidden', String(!want));
+      }
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  </script>
+  <style>
+    .sticky-quiz {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+      display: none; padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(247, 241, 236, .95);
+      backdrop-filter: saturate(140%) blur(10px);
+      border-top: 1px solid var(--line);
+      transform: translateY(110%); transition: transform .25s ease;
+    }
+    .sticky-quiz.on { transform: none; }
+    .sticky-quiz .btn { width: 100%; }
+    @media (max-width: 900px) { .sticky-quiz { display: block; } }
+  </style>
 </body>
 </html>

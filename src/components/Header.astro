@@ -21,7 +21,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
         <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
       ))}
       <a class="btn btn-main nav-cta" href={LINKS.quiz}
-         data-cta-id="header_quiz" data-cta-position="header">免費影響力健檢</a>
+         data-cta="quiz" data-cta-position="header">免費影響力健檢</a>
     </nav>
   </div>
 </header>

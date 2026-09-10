@@ -3,6 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Newsletter from '../components/Newsletter.astro';
 import { LINKS, SITE } from '../consts';
 
+/* 視覺語言來源（2026-09-10 這輪）：quiz／member 的 UI 元素＋v4 圖形語言
+   （productkit 3-教材/演說型公版-v4提案-圖形語言.md，2026-09-09 拍板）。
+   薄片鐵則：一片＝一條小肌群、三片疊＝一塊大肌肉（24 §1.1）；
+   數量即語意、差異即資訊、灰階打底彩色點名；斜切軸鎖畫面中線。 */
+
 const title = '影響力健身房 ATPIFit｜把影響力當肌肉練';
 const description =
   '影響力不是天生的個性，是可以量、可以練、可以驗收的能力。ATPI 把它拆成吸引、信任、專業、推進四塊肌肉，先量一次，再一次練一塊。';
@@ -43,11 +48,38 @@ const muscles = [
   },
 ];
 
-/* 八招 ⑧ 全貌感：全圖露出、現在位置亮、還沒走到的叫「還沒解鎖」，終點落骨層。 */
+/* Hero 右側的體格單示意（統一能力值儀表板標準態，規格＝consult-workshop demo-muscle-card v4.2）：
+   大肌肉列標成數、12 小肌群「名字露、分數模糊」＝偷看鉤子。
+   小肌群名稱原文＝quiz 題庫 label（讓他開口⋯讓他答應），不可自創。 */
+const mockBoard = [
+  { dim: 'A', en: 'ATTRACT', zh: '吸引肌肉', v: 68, minis: ['讓他開口', '讓他追問', '讓他記得'] },
+  { dim: 'T', en: 'TRUST', zh: '信任肌肉', v: 55, minis: ['讓他敢說', '讓他交心', '讓他當真'] },
+  { dim: 'P', en: 'PROFESSIONAL', zh: '專業肌肉', v: 61, minis: ['讓他釐清', '讓他有感', '讓他放心'] },
+  { dim: 'I', en: 'IMPACT', zh: '推進肌肉', v: 47, minis: ['讓他想要', '讓他敢要', '讓他答應'] },
+];
+
+/* 嚐一口＝quiz 題庫 A1 原題原錨點（comconverttest QS[2]），一字不改。
+   quiz 不支援帶答案深連結，所以文案只說「進去把 12 題量完」，不承諾這題會帶過去。 */
+const taste = {
+  label: '吸引肌肉｜讓他開口',
+  text: '在還不熟的場合，你主動開口聊，對方會接著聊下去——不是客套一兩句就結束。',
+  anchors: ['沒做到', '偶爾，而且生硬', '想到才做、時好時壞', '多數情境做得到', '穩定到自動化'],
+};
+
+/* 三張身分卡＝quiz 首頁「這份測驗為誰做？」原文（2026-09-05 老師備註【首-2】定稿），一字不改。 */
+const who = [
+  { dim: 'A', t: '上班族・想說話有份量', s: '同事、家人、老闆——同一句話，你說出來就有人聽。' },
+  { dim: 'P', t: '業務・顧問・接案者', s: '不推銷。對方聊完主動問「那要怎麼跟你合作？」' },
+  { dim: 'I', t: '講師・帶團隊的人', s: '一開口全場想聽，每個人覺得「這說的就是我」。' },
+];
+
+/* 八招 ⑧ 全貌感：全圖露出、現在位置亮。視覺＝quiz 首頁 q-5 地圖同款（四色縱線＋脈動點）。
+   第 4 站＝課程鉤子（2026-09-10 拍板：官網首頁至少露出「這條路的終點」，不賣、只接路）。 */
 const roadmap = [
-  { step: '01', name: '量一次', now: true, body: '12 題影響力健檢，三分鐘知道自己四塊肌肉現在的樣子，以及先練哪一塊最有感。' },
-  { step: '02', name: '一次練一塊', now: false, body: '進影響力健身房，每天一個小動作、記一塊肌肉。練了才知道哪裡真的變了。' },
-  { step: '03', name: '練到會用', now: false, body: '把方法帶進真實的對話現場，談合作、帶團隊、講你正在做的事。' },
+  { n: 1, name: '量一次', here: true, body: '3 分鐘影響力健檢，知道四塊肌肉現在的樣子，先練哪塊最有感。' },
+  { n: 2, name: '一次練一塊', here: false, body: '進影響力健身房，每天一個小動作、記一塊肌肉。' },
+  { n: 3, name: '練到會用', here: false, body: '把方法帶進真實的對話現場——談合作、帶團隊、講你正在做的事。' },
+  { n: 4, name: '想走快一點，帶教練', here: false, body: '超引力成交學是館裡的教練課：從一對一到一對多，有教練看著你練。', link: '/courses', linkText: '認識超引力成交學' },
 ];
 
 const faq = [
@@ -61,7 +93,7 @@ const faq = [
   },
   {
     q: '影響力健檢要花多久？要付費嗎？',
-    a: '影響力健檢是免費的，12 題、大約三分鐘。做完會拿到四塊肌肉的分數，以及先練哪一塊最有感的建議。',
+    a: '影響力健檢是免費的，大約三分鐘。核心是 12 題肌肉自評，加上幾題基本背景。做完會拿到四塊肌肉的分數，以及先練哪一塊最有感的建議。',
   },
   {
     q: '我不是業務，也需要練影響力嗎？',
@@ -97,31 +129,114 @@ const schema = [
 ---
 
 <BaseLayout title={title} description={description} schema={schema}>
-  <!-- ═══ Hero：一頁只有一顆主行動鈕（24 §3.8 Nike 原則）＝下面這顆「做影響力健檢」 ═══ -->
+  <!-- ═══ Hero：一頁只有一顆主行動鈕（24 §3.8 Nike 原則）＝「免費做影響力健檢」。
+       右欄體格單＝「量化」的自我示範：賣量化的品牌，門面第一屏就要有量出來的東西。 ═══ -->
   <section class="hero">
-    <div class="wrap">
-      <p class="kicker">影響力健身房 ATPIFit</p>
-      <h1>影響力是肌肉，<span class="hl">越練越強</span></h1>
-      <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
-      <p class="lead hero-lead">它不是天生的個性，也不是講話技巧的天分。它是一種可以量、可以練、也可以驗收的能力，前提是你知道自己現在練到哪。</p>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="kicker">影響力健身房 ATPIFit</p>
+        <h1>影響力是肌肉，<span class="hl">越練越強</span></h1>
+        <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
+        <p class="lead hero-lead">它不是天生的個性，也不是話術的天分。它是可以量、可以練、可以驗收的能力。</p>
 
-      <div class="btn-row hero-cta">
-        <a class="btn btn-main" href={LINKS.quiz} data-cta="quiz" data-cta-position="home-hero">
-          免費做影響力健檢
-        </a>
-        <a class="btn btn-sub" href="/method">先看看這套方法</a>
+        <div class="btn-row hero-cta">
+          <a class="btn btn-main" href={LINKS.quiz} data-cta="quiz" data-cta-position="home-hero">
+            免費做影響力健檢
+          </a>
+          <a class="btn btn-sub" href="/method">先看看這套方法</a>
+        </div>
+        <!-- meta 三格＝quiz 首頁 dq-hero-meta 同款（3 分鐘承諾是 2026-09-07 拍板值，不寫 60 秒不寫題數） -->
+        <p class="hero-meta"><span>⏱ <b>3 分鐘</b></span><span>📱 不用留資料</span><span>🎁 測完馬上知道先練哪塊</span></p>
       </div>
-      <p class="hero-note">12 題、約三分鐘，做完就知道先練哪一塊最有感。</p>
+
+      <!-- 體格單示意卡（v4.2 標準態）：4 大肌肉列＋12 格名字露、分數模糊的偷看鉤子 -->
+      <aside class="board card" aria-label="影響力體格單示意">
+        <div class="board-head">
+          <span class="board-sec">MUSCLE CHECK · <b>你的影響力體格單</b></span>
+          <span class="board-tag">示意</span>
+        </div>
+        {mockBoard.map((m) => (
+          <div class="bsec" data-dim={m.dim}>
+            <div class="brow">
+              <span class="ben">{m.dim} {m.en}</span>
+              <span class="bzh">{m.zh}</span>
+              <span class="bbar"><i style={`width:${m.v}%`}></i></span>
+              <span class="bv num">{m.v}</span>
+            </div>
+            <div class="brow3">
+              {m.minis.map((mini) => (
+                <span class="mini">
+                  <span class="mini-n">{mini}</span>
+                  <span class="mini-bar peek"><i style={`width:${40 + Math.round(Math.random() * 45)}%`}></i></span>
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+        <!-- 赤字語言禁用：低的那塊不叫弱點，叫「先練最有感」（相乘槓桿） -->
+        <p class="board-note">這份是示意——推進肌肉先練最有感。你的體格單，健檢做完馬上拿到。</p>
+        <div class="board-rule" role="presentation"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ═══ 嚐一口：健檢的第 1 題直接搬上首頁（文章〈讓他嚐一口〉的自我示範）═══ -->
+  <section class="section section-alt">
+    <div class="wrap-text">
+      <p class="kicker">先試一題</p>
+      <h2>健檢長什麼樣？<span class="hl">現在就試一題</span></h2>
+
+      <div class="taste card">
+        <div class="taste-top">
+          <span class="qlabel">{taste.label}</span>
+          <span class="taste-prog num">肌肉題 1／12</span>
+        </div>
+        <!-- 進度＝12 片小肌群薄片（v4：數量即語意）。彩色那片＝這題量的那條，灰片＝還沒量。 -->
+        <div class="qslices" role="presentation">
+          {Array.from({ length: 12 }).map((_, i) => <i class:list={[{ lit: i === 0 }]}></i>)}
+        </div>
+        <p class="qtxt">{taste.text}</p>
+        <div class="opts">
+          {taste.anchors.map((a, i) => (
+            <button class="opt" type="button" data-v={i + 1}>
+              <span class="odot num">{i + 1}</span>
+              <span class="otxt">{a}</span>
+            </button>
+          ))}
+        </div>
+        <div class="taste-after" hidden>
+          <p class="taste-fb">記下了——這是吸引肌肉的第一條小肌群「讓他開口」。剩下的題目，會把信任、專業、推進也一起量出來。</p>
+          <a class="btn btn-main taste-go" href={LINKS.quiz} data-cta="quiz" data-cta-position="home-taste">
+            進去把 12 題量完
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ═══ 問題共鳴 ═══ -->
-  <section class="section section-alt">
+  <section class="section">
     <div class="wrap-text">
       <p class="kicker">為什麼要練</p>
       <h2>你講得很好，可是<span class="hl">對方沒動</span></h2>
       <p class="lead pain-lead">報價寄出去，對方說再看看。會議上你講完了，大家點頭，然後沒有然後。內容明明是對的，只是那句話沒有落到他心裡。</p>
-      <p class="pain-body">多數人遇到這種狀況，會再去找更厲害的話術。但話術像打氣打出來的肌肉，看起來壯，一鬆手就消；真正的力量在你看不見的核心。真正在運作的是底下那四塊肌肉，它們決定了同樣一句話從你嘴裡說出來，有沒有份量。</p>
+      <p class="pain-body">多數人這時會去找更厲害的話術。但話術像打氣打出來的肌肉——看起來壯，一鬆手就消。真正在運作的，是底下那四塊看不見的肌肉。</p>
+    </div>
+  </section>
+
+  <!-- ═══ 三張身分卡（quiz 首-2 原文搬入：人先認出自己）═══ -->
+  <section class="section section-alt">
+    <div class="wrap">
+      <p class="kicker">誰在練</p>
+      <h2>三種人，<span class="hl">練同一套肌肉</span></h2>
+      <div class="grid who">
+        {who.map((w) => (
+          <div class="who-card" data-dim={w.dim}>
+            <p class="who-t">{w.t}</p>
+            <p class="who-s">{w.s}</p>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -132,14 +247,15 @@ const schema = [
       <h2>影響力可以拆開，<span class="hl">一塊一塊練</span></h2>
       <p class="lead sec-lead">溝通不是藝術，而是科學。能拆解，就能練；能練，就能量出進步。</p>
 
+      <!-- 標題只放正式名；結果句另起一行當描述，不拿它當維度標籤（字典 01:87）。 -->
       <div class="grid muscles">
         {muscles.map((m) => (
-          <!-- 標題只放正式名；結果句另起一行當描述，不拿它當維度標籤（字典 01:87）。 -->
           <article class="card muscle" data-dim={m.dim}>
-            <span class="muscle-tag">{m.dim}　{m.en}</span>
+            <span class="m-slices" role="presentation"><i></i><i></i><i></i></span>
+            <span class="m-en">{m.dim} · {m.en}</span>
             <h3>{m.name}</h3>
             <p class="muscle-result">{m.result}</p>
-            <p>{m.body}</p>
+            <p class="m-body">{m.body}</p>
           </article>
         ))}
       </div>
@@ -148,27 +264,41 @@ const schema = [
     </div>
   </section>
 
-  <!-- ═══ 全貌感：進度地圖（八招 ⑧）═══ -->
+  <!-- ═══ 全貌感：影響力之路（八招 ⑧，視覺＝quiz q-5 地圖同款）═══ -->
   <section class="section section-alt">
-    <div class="wrap">
+    <div class="wrap-text">
       <p class="kicker">你會怎麼走</p>
       <h2>全部的路<span class="hl">先給你看</span></h2>
 
-      <ol class="road">
-        {roadmap.map((r) => (
-          <li class="road-item" data-now={r.now ? 'yes' : 'no'}>
-            <span class="road-step num">{r.step}</span>
-            <div class="road-body">
-              <h3>{r.name}</h3>
-              <p>{r.body}</p>
-              <p class="road-state">{r.now ? '你現在在這' : '還沒解鎖'}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
+      <!-- 主圖形＝L5-01 全貌圖同款（24 §3.9 薄片八條）：一條基線、三態薄片不給圖例——
+           實色加高＝你現在這站，虛線描邊＝還沒到。實色只有 1 片（紅線：一張圖最多 2 片）。
+           斜切共軸鎖畫面中線 y=150；字是標籤，貼片下、放群組外保持直立。 -->
+      <div class="map-fig" aria-hidden="true">
+        <svg viewBox="30 24 580 280" xmlns="http://www.w3.org/2000/svg">
+          <line x1="60" y1="230" x2="580" y2="230" stroke="var(--ink)" stroke-width="3" opacity=".25" stroke-linecap="round" />
+          <g transform="translate(0,150) skewX(-12) translate(0,-150)">
+            <rect x="80" y="80" width="90" height="150" rx="10" fill="var(--a)" />
+            <rect x="210" y="120" width="90" height="110" rx="10" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 7" opacity=".28" />
+            <rect x="340" y="120" width="90" height="110" rx="10" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 7" opacity=".28" />
+            <rect x="470" y="120" width="90" height="110" rx="10" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 7" opacity=".28" />
+          </g>
+          <text x="118" y="52" font-size="21" font-weight="700" fill="var(--a-deep)" text-anchor="middle">你在這裡</text>
+          <path d="M118 62 L118 74" stroke="var(--a-deep)" stroke-width="2.5" stroke-linecap="round" />
+          <text x="118" y="266" font-size="19" font-weight="700" fill="var(--ink)" text-anchor="middle">01 量一次</text>
+          <text x="243" y="266" font-size="19" font-weight="400" fill="var(--ink)" opacity=".55" text-anchor="middle">02 練一塊</text>
+          <text x="373" y="266" font-size="19" font-weight="400" fill="var(--ink)" opacity=".55" text-anchor="middle">03 練到會用</text>
+          <text x="503" y="266" font-size="19" font-weight="400" fill="var(--ink)" opacity=".55" text-anchor="middle">04 帶教練</text>
+        </svg>
+      </div>
 
-      <!-- 八招 ③ 四色橫線的第二個崗位：進度。寬度＝實際比例，不當裝飾線。 -->
-      <div class="atpi-rule road-rule" role="presentation"><i></i><i></i><i></i><i></i></div>
+      <div class="map">
+        {roadmap.map((r) => (
+          <div class:list={['stn', `n${r.n}`, { here: r.here }]}>
+            <p class="stn-t">第 {r.n} 站・{r.name}{r.here && <span class="you">你在這</span>}</p>
+            <p class="stn-s">{r.body}{r.link && <> <a href={r.link}>{r.linkText} →</a></>}</p>
+          </div>
+        ))}
+      </div>
 
       <p class="road-end">走到最後，不是你變成一個很會講話的人，而是<b>你說的話開始有人願意照著做，因為他們相信的是你這個人</b>。</p>
     </div>
@@ -186,22 +316,25 @@ const schema = [
     </div>
   </section>
 
-  <!-- ═══ 電子報：首頁已經有主鈕，這裡退成次行動 ═══ -->
-  <section class="section">
-    <div class="wrap"><Newsletter source="home" variant="sub" /></div>
-  </section>
-
-  <!-- ═══ 常見問題：跟上面 FAQPage 結構化資料同一份內容 ═══ -->
+  <!-- ═══ 常見問題：手風琴收合（字牆降噪），內容一字不動＝上面 FAQPage 結構化資料同一份 ═══ -->
   <section class="section section-alt">
     <div class="wrap-text">
       <p class="kicker">常見問題</p>
       <h2>先回答<span class="hl">你可能會問的</span></h2>
-      <dl class="faq">
-        {faq.map((f) => (
-          <div class="qa"><dt>{f.q}</dt><dd>{f.a}</dd></div>
+      <div class="faq">
+        {faq.map((f, i) => (
+          <details class="qa" open={i === 0}>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
         ))}
-      </dl>
+      </div>
     </div>
+  </section>
+
+  <!-- ═══ 第二層網：LINE 主＋Email 輔（首頁已有主鈕，這裡退成次行動）═══ -->
+  <section class="section">
+    <div class="wrap"><Newsletter source="home" variant="sub" /></div>
   </section>
 
   <!-- ═══ 八招 ⑦ 收尾句 ═══ -->
@@ -217,62 +350,189 @@ const schema = [
   </section>
 </BaseLayout>
 
-<style>
-  .hero { padding: clamp(48px, 8vw, 88px) 0 clamp(40px, 6vw, 64px); }
-  .hero-lead { max-width: 46ch; margin-top: 20px; }
-  .hero-cta { margin-top: 32px; }
-  .hero-note { margin-top: 14px; font-size: 14px; color: var(--ink-soft); }
+<script>
+  /* 嚐一口：選了就給回饋＋放行下一步。答案不送後端（quiz 不支援帶答案深連結），只記事件。 */
+  const opts = document.querySelectorAll<HTMLButtonElement>('.taste .opt');
+  const after = document.querySelector<HTMLElement>('.taste-after')!;
+  opts.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      opts.forEach((b) => b.classList.toggle('sel', b === btn));
+      if (after.hidden) {
+        after.hidden = false;
+        after.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      try { (window as any).track?.('cta_click', { cta_id: 'home_taste_answer', value: Number(btn.dataset.v) }); } catch {}
+    });
+  });
+</script>
 
+<style>
+  /* ═══ Hero ═══ */
+  .hero { padding: clamp(40px, 7vw, 80px) 0 clamp(40px, 6vw, 64px); }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(28px, 4vw, 56px); align-items: center; }
+  .hero-lead { max-width: 42ch; margin-top: 18px; }
+  .hero-cta { margin-top: 30px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 16px; font-size: 13px; color: var(--ink-soft); }
+  .hero-meta b { color: var(--ink-3); }
+
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .board { max-width: 480px; }
+  }
+
+  /* ═══ 體格單示意卡（quiz dq-dsec／dq-row3 視覺移植）═══ */
+  .board { padding: 20px 18px 16px; box-shadow: 0 6px 24px rgba(90, 60, 30, .10); }
+  .board-head { display: flex; align-items: center; margin-bottom: 4px; }
+  .board-sec { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--ink-soft); }
+  .board-sec b { color: var(--ink); font-size: 13px; letter-spacing: 1px; }
+  .board-tag { margin-left: auto; font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #fff; background: var(--i); border-radius: 10px; padding: 2px 8px; }
+
+  .bsec { margin-top: 12px; padding-top: 11px; border-top: 1px dashed var(--line); }
+  .bsec:first-of-type { border-top: 0; padding-top: 6px; }
+  .bsec[data-dim="A"] { --dim: var(--a); --dim-deep: var(--a-deep); }
+  .bsec[data-dim="T"] { --dim: var(--t); --dim-deep: var(--t-deep); }
+  .bsec[data-dim="P"] { --dim: var(--p); --dim-deep: var(--p-deep); }
+  .bsec[data-dim="I"] { --dim: var(--i); --dim-deep: var(--i-deep); }
+
+  .brow { display: flex; align-items: center; gap: 8px; }
+  .ben { flex-shrink: 0; font-size: 10.5px; font-weight: 900; letter-spacing: 1.5px; color: var(--dim-deep); }
+  .bzh { flex-shrink: 0; font-size: 13px; font-weight: 700; color: var(--ink); }
+  .bbar { flex: 1; height: 7px; border-radius: 4px; background: #EFE6DB; overflow: hidden; }
+  .bbar i { display: block; height: 100%; border-radius: 4px; background: var(--dim); }
+  .bv { flex-shrink: 0; width: 26px; text-align: right; font-size: 12.5px; font-weight: 700; color: var(--dim-deep); }
+
+  .brow3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 7px; }
+  .mini { background: var(--bg); border: 1px solid #EFE6DB; border-radius: 10px; padding: 7px 8px 6px; min-width: 0; }
+  .mini-n { display: block; font-size: 12px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mini-bar { display: block; height: 4px; border-radius: 3px; background: #E8DDD3; margin-top: 6px; overflow: hidden; }
+  .mini-bar i { display: block; height: 100%; border-radius: 3px; background: var(--dim); }
+  /* 偷看鉤子：名字露、分數模糊——全開要進健檢拿 */
+  .peek { filter: blur(2.5px); }
+
+  .board-note { margin-top: 12px; font-size: 12.5px; color: var(--ink-soft); line-height: 1.7; }
+  .board-rule { height: 2px; border-radius: 2px; margin-top: 12px;
+                background: linear-gradient(90deg, var(--a), var(--t), var(--p), var(--i)); }
+
+  /* ═══ 嚐一口（quiz .opt／.odot／.qlabel 視覺移植）═══ */
+  .taste { margin-top: 28px; padding: 20px 18px; }
+  .taste-top { display: flex; align-items: center; gap: 10px; }
+  .qlabel { font-size: 13px; font-weight: 600; background: #F0E3DB; color: var(--ink-3); border-radius: 8px; padding: 2px 10px; }
+  .taste-prog { margin-left: auto; font-size: 13px; color: var(--ink-soft); }
+  /* 12 片薄片進度（v4 圖形語言）：一片＝一條小肌群、每 3 片一組＝一塊大肌肉。
+     灰片＝ink 疊 .13（服務卡同值），彩片點名；斜切角同 L5 的 -12°。 */
+  .qslices { display: flex; gap: 4px; margin: 14px 0 16px; }
+  .qslices i { flex: 1; height: 9px; border-radius: 2.5px; background: var(--ink); opacity: .13; transform: skewX(-12deg); }
+  .qslices i.lit { background: var(--a); opacity: 1; }
+  .qslices i:nth-child(3n+1):not(:first-child) { margin-left: 8px; }
+  .qtxt { font-size: 17px; font-weight: 500; line-height: 1.7; margin-bottom: 16px; }
+
+  .opts { display: grid; gap: 8px; }
+  .opt {
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    background: #fff; border: 1px solid var(--line); border-radius: 12px;
+    padding: 12px 14px; cursor: pointer; text-align: left; font-family: inherit;
+  }
+  .opt.sel { border: 2px solid var(--act); background: #FDF6EF; padding: 11px 13px; }
+  .odot {
+    width: 28px; height: 28px; border-radius: 50%; background: #F0E3DB;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 600; color: var(--ink-3); flex-shrink: 0;
+  }
+  .opt.sel .odot { background: var(--act-deep); color: #fff; }
+  .otxt { font-size: 16px; color: var(--ink-2); line-height: 1.5; }
+  .opt.sel .otxt { color: var(--ink); }
+
+  .taste-after { margin-top: 16px; }
+  .taste-fb {
+    background: #fff; border-left: 3px solid var(--act); border-radius: 0 12px 12px 0;
+    padding: 14px 16px; font-size: 15px; color: var(--ink-soft); line-height: 1.8;
+  }
+  .taste-go { width: 100%; margin-top: 12px; }
+
+  /* ═══ 問題共鳴 ═══ */
   .pain-lead { margin-top: 16px; }
   .pain-body { margin-top: 18px; color: var(--ink-soft); }
 
+  /* ═══ 身分卡（quiz 首-2 視覺移植：色底＋左色條）═══ */
+  .who { margin-top: 32px; grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 760px) { .who { grid-template-columns: 1fr; } }
+  .who-card { border-radius: 0 14px 14px 0; padding: 16px 18px; border-left: 3px solid var(--dim); background: var(--dim-tint); }
+  .who-card[data-dim="A"] { --dim: var(--a); --dim-deep: var(--a-deep); --dim-tint: #FDF6EF; }
+  .who-card[data-dim="P"] { --dim: var(--p); --dim-deep: var(--p-deep); --dim-tint: var(--p-tint); }
+  .who-card[data-dim="I"] { --dim: var(--i); --dim-deep: var(--i-deep); --dim-tint: var(--i-tint); }
+  .who-t { font-size: 16px; font-weight: 700; color: var(--dim-deep); }
+  .who-s { margin-top: 4px; font-size: 15px; color: var(--ink-2); line-height: 1.7; }
+
+  /* ═══ 四塊肌肉 ═══ */
   .sec-lead { max-width: 44ch; margin-top: 14px; }
   /* 固定 2×2，不用 auto-fit：四塊要排成整齊一組，不能被斷成 3+1（順序 A→T→P→I 是規範） */
   .muscles { margin-top: 36px; grid-template-columns: repeat(2, 1fr); }
   @media (max-width: 640px) { .muscles { grid-template-columns: 1fr; } }
+  /* 三片疊＝一塊大肌肉、一片＝一條小肌群（品牌 DNA 24 §1.1）。
+     實色只 1 片＋2 片淡填 14%（§3.9 紅線：實色最多兩片、I 金不鋪實）——淡片是層次不是分數。 */
+  .m-slices { display: flex; gap: 4px; margin-bottom: 12px; }
+  .m-slices i { width: 26px; height: 12px; border-radius: 3.5px; background: var(--dim); transform: skewX(-12deg); }
+  .m-slices i:nth-child(n+2) { opacity: .14; }
+  .m-en { display: block; font-size: 11px; font-weight: 900; letter-spacing: 2px; color: var(--dim-deep); margin-bottom: 8px; }
   .muscles h3 { font-size: 19px; }
-  .muscles p { margin-top: 10px; font-size: 16px; color: var(--ink-soft); }
-  .muscle-result { margin-top: 4px !important; font-size: 17px !important;
-                   font-weight: 700; color: var(--dim-deep) !important; }
+  .muscle-result { margin-top: 2px; font-size: 18px; font-weight: 700; color: var(--dim-deep); }
+  .m-body { margin-top: 10px; font-size: 15px; color: var(--ink-soft); line-height: 1.8; }
   .muscles-note { margin-top: 24px; font-size: 16px; color: var(--ink-soft); }
   .muscles-note b { color: var(--ink); }
 
-  .road { list-style: none; padding: 0; margin-top: 36px; display: grid; gap: 16px; }
-  .road-item {
-    display: flex; gap: 18px; align-items: flex-start;
-    background: var(--card); border: 1px solid var(--line);
-    border-radius: var(--r-card); padding: 22px 24px;
+  /* ═══ 影響力之路（quiz dq-map 視覺移植：四色縱線＋脈動點）═══ */
+  .map-fig { margin-top: 26px; }
+  .map-fig svg { width: min(460px, 100%); height: auto; }
+  .map { position: relative; margin-top: 24px; padding-left: 26px; }
+  .map::before {
+    content: ""; position: absolute; left: 8px; top: 14px; bottom: 14px; width: 3px; border-radius: 3px;
+    background: linear-gradient(180deg, var(--a), var(--t), var(--p), var(--i));
   }
-  /* 還沒走到的格子刻意降對比＝看得到但還沒亮，不是「缺口」 */
-  .road-item[data-now="no"] { background: transparent; border-style: dashed; }
-  .road-step { font-size: 15px; font-weight: 800; color: var(--act); letter-spacing: .04em; padding-top: 4px; }
-  .road-item[data-now="no"] .road-step { color: var(--ink-soft); }
-  .road-body h3 { font-size: 19px; }
-  .road-body p { margin-top: 8px; font-size: 16px; color: var(--ink-soft); }
-  .road-state {
-    display: inline-block; margin-top: 12px !important;
-    font-size: 12px; font-weight: 700; letter-spacing: .06em;
-    padding: 3px 10px; border-radius: 999px;
-    background: var(--a-tint); color: var(--act-deep) !important;
+  .stn { position: relative; padding: 10px 0 10px 8px; }
+  .stn::before {
+    content: ""; position: absolute; left: -24px; top: 18px; width: 13px; height: 13px;
+    border-radius: 50%; border: 2.5px solid #fff; box-shadow: 0 1px 4px rgba(74, 27, 12, .2);
   }
-  .road-item[data-now="no"] .road-state { background: var(--line); color: var(--ink-soft) !important; }
+  .stn.n1::before { background: var(--a); }
+  .stn.n2::before { background: var(--t); }
+  .stn.n3::before { background: var(--p); }
+  .stn.n4::before { background: var(--i); }
+  .stn.here { background: #FDF6EF; border-radius: 12px; padding: 12px 12px 12px 8px; }
+  .stn.here::before { animation: herepulse 1.8s infinite; }
+  @keyframes herepulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(198, 96, 58, .4); }
+    50% { box-shadow: 0 0 0 7px rgba(198, 96, 58, 0); }
+  }
+  .stn-t { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; }
+  .you { font-size: 11px; font-weight: 700; color: #fff; background: var(--act); border-radius: 10px; padding: 1px 8px; }
+  .stn-s { margin-top: 4px; font-size: 14.5px; color: var(--ink-soft); line-height: 1.75; }
+  .stn-s a { font-weight: 700; }
 
-  .road-rule { margin-top: 26px; }
-  .road-end { margin-top: 20px; font-size: 17px; color: var(--ink-soft); max-width: 56ch; }
+  .road-end { margin-top: 24px; font-size: 17px; color: var(--ink-soft); max-width: 56ch; }
   .road-end b { color: var(--ink); }
 
+  /* ═══ 骨層句 ═══ */
   .bone-body { margin-top: 24px; color: var(--ink-soft); }
 
+  /* ═══ FAQ 手風琴 ═══ */
   .faq { margin-top: 28px; }
-  .qa + .qa { margin-top: 22px; }
-  .faq dt { font-weight: 700; font-size: 17px; }
-  .faq dd { margin: 6px 0 0; color: var(--ink-soft); line-height: 1.85; }
+  .qa { border-bottom: 1px solid var(--line); }
+  .qa summary {
+    cursor: pointer; list-style: none; position: relative;
+    padding: 16px 36px 16px 0; font-weight: 700; font-size: 17px;
+  }
+  .qa summary::-webkit-details-marker { display: none; }
+  .qa summary::after {
+    content: "+"; position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+    font-size: 22px; font-weight: 400; color: var(--act-deep); transition: transform .2s;
+  }
+  .qa[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+  .qa p { padding: 0 0 18px; color: var(--ink-soft); line-height: 1.85; }
 
   .center { text-align: center; }
   .closing-cta { margin-top: 26px; justify-content: center; }
 
   @media (max-width: 520px) {
     .hero-cta .btn, .closing-cta .btn { width: 100%; }
-    .road-item { flex-direction: column; gap: 6px; }
   }
 </style>

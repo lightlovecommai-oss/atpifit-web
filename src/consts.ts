@@ -38,10 +38,12 @@ export const FOUNDER_SAME_AS = [
 export const SHEET_API =
   'https://script.google.com/macros/s/AKfycbwEwlg4cFa7B_e76ULJM26C2B9fgjwjFTXPFb_yRMWt1wZs33iTGnEI1LZ9v8uZHvdz/exec';
 
+/* 關於光頭排第二（2026-09-10 拍板）：官網訪客多是「來查證的人」，
+   對他們第二重要的頁就是「教的人是誰」，不藏在最後。 */
 export const NAV = [
   { href: '/method', label: '方法' },
+  { href: '/about', label: '關於光頭' },
+  { href: '/courses', label: '課程' },
   { href: '/articles', label: '文章' },
   { href: '/glossary', label: '名詞' },
-  { href: '/courses', label: '課程' },
-  { href: '/about', label: '關於光頭' },
 ] as const;

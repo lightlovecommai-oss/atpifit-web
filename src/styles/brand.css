@@ -44,8 +44,10 @@
   --p-tint: #DDE6EE;
   --i-tint: #F1E5CC;
 
-  /* ── 字體（25 §：介面無襯線；Inter 排最前讓拉丁/數字走 Inter，中文自動 fallback）── */
-  --font: "Inter", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei",
+  /* ── 字體（25 §：介面無襯線；Inter 排最前讓拉丁/數字走 Inter）──
+     Noto Sans TC 排在 PingFang 前面＝對齊 quiz／member 的視覺語言：
+     那兩頁的 900 級大標是識別的一部分，PingFang 最重只到 600，重量會做不出來。 */
+  --font: "Inter", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei",
           "Helvetica Neue", Arial, sans-serif;
 
   /* ── 版面 ── */
@@ -107,7 +109,8 @@ a:hover { color: var(--ink); }
 /* ═══ 八招 ②：大標雙色 ═══
    深咖啡為主，一句只點一個重點詞換磚橘。點兩處＝沒有重點。*/
 h1, h2, h3, h4 { line-height: 1.35; font-weight: 700; letter-spacing: -.01em; text-wrap: balance; }
-h1 { font-size: clamp(30px, 5.2vw, 46px); }
+/* h1 用 900＝quiz／member 的 hero 大字重量（dq-hero-t／hero-t 同款） */
+h1 { font-size: clamp(30px, 5.2vw, 46px); font-weight: 900; }
 h2 { font-size: clamp(24px, 3.4vw, 32px); }
 h3 { font-size: clamp(19px, 2.4vw, 22px); }
 h4 { font-size: 18px; }
@@ -141,9 +144,14 @@ h4 { font-size: 18px; }
 }
 .btn:active { transform: scale(.985); }
 
-/* 主行動鈕（每頁唯一）。對比 4.09:1＝AA 大字級通過，故字級不得低於 17px/700 */
-.btn-main { background: var(--act); color: #fff; }
-.btn-main:hover { background: var(--act-deep); color: #fff; }
+/* 主行動鈕（每頁唯一）＝磚橘漸層，對齊 quiz .btnO／member .go4（30-規範 §5「現在就做」）。
+   白字疊漸層靠 text-shadow 補對比（同 quiz 做法），故字級不得低於 17px/700。 */
+.btn-main {
+  background: linear-gradient(135deg, var(--act) 0%, #C99A4E 100%);
+  color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, .18);
+  box-shadow: 0 6px 18px rgba(198, 96, 58, .28);
+}
+.btn-main:hover { background: linear-gradient(135deg, var(--act-deep) 0%, var(--act) 100%); color: #fff; }
 
 /* 次行動：白底＋磚橘描邊＋磚橘字 */
 .btn-sub { background: transparent; color: var(--act-deep); border-color: var(--act-deep); }

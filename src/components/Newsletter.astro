@@ -1,5 +1,9 @@
 ---
-import { SHEET_API } from '../consts';
+import { SHEET_API, LINKS } from '../consts';
+
+/* 第二層網（2026-09-10 拍板）：LINE 為主、Email 為輔。
+   台灣教育培訓的名單主力是 LINE；quiz 做完本來就收 Email，
+   會停在這一格的人是「連 3 分鐘測驗都還沒準備好」的人——對他們加 LINE 的摩擦最小。 */
 
 interface Props {
   title?: string;
@@ -11,8 +15,8 @@ interface Props {
   variant?: 'main' | 'sub';
 }
 const {
-  title = '每週一封，一次練一塊肌肉',
-  lead = '把課堂上講的方法拆成可以馬上用的一個小動作，寄到你信箱。隨時可以退訂。',
+  title = '還沒準備好測？先保持聯絡',
+  lead = '加 LINE 直接聊你的狀況，或訂閱電子報，一週練一塊。',
   source = 'web',
   variant = 'main',
 } = Astro.props;
@@ -20,24 +24,35 @@ const {
 
 <section class="news" aria-labelledby="news-title">
   <div class="inner">
-    <p class="kicker">電子報</p>
+    <p class="kicker">保持聯絡</p>
     <h2 id="news-title">{title}</h2>
     <p class="lead">{lead}</p>
 
-    <form class="form" data-source={source} data-endpoint={SHEET_API} novalidate>
-      <div class="fields">
-        <label class="visually-hidden" for="nl-name">你的稱呼</label>
-        <input id="nl-name" name="name" type="text" autocomplete="given-name" placeholder="你的稱呼（選填）" />
-
-        <label class="visually-hidden" for="nl-email">Email</label>
-        <input id="nl-email" name="email" type="email" autocomplete="email" required
-               placeholder="你的 Email" aria-describedby="nl-msg" />
-
-        <button class={`btn btn-${variant}`} type="submit">訂閱</button>
+    <div class="duo">
+      <div class="lane lane-line">
+        <h3>加 LINE，直接聊</h3>
+        <p class="lane-p">有問題直接問，真人回。健檢、課程、你卡住的那場對話，都可以聊。</p>
+        <a class={`btn btn-${variant}`} href={LINKS.line} data-cta="line" data-cta-position={`newsletter-${source}`}>
+          加 LINE 好友
+        </a>
       </div>
-      <p class="msg" id="nl-msg" role="status" aria-live="polite"></p>
-      <p class="fine">我們不寄廣告，也不會把你的 Email 給任何人。</p>
-    </form>
+
+      <div class="lane">
+        <h3>訂閱電子報</h3>
+        <!-- ⚠️ 「訂閱就先收到」＝承諾了歡迎信。LaunChill 那把歡迎信 webhook 要設好，這句才不是謊話。 -->
+        <p class="lane-p">訂閱就先收到一封：<b>先練 A 還是 T 的判斷法</b>。之後每週一封、一次一個小動作。</p>
+        <form class="form" data-source={source} data-endpoint={SHEET_API} novalidate>
+          <div class="fields">
+            <label class="visually-hidden" for={`nl-email-${source}`}>Email</label>
+            <input id={`nl-email-${source}`} name="email" type="email" autocomplete="email" required
+                   placeholder="你的 Email" aria-describedby={`nl-msg-${source}`} />
+            <button class="btn btn-sub" type="submit">訂閱</button>
+          </div>
+          <p class="msg" id={`nl-msg-${source}`} role="status" aria-live="polite"></p>
+          <p class="fine">我們不寄廣告，也不會把你的 Email 給任何人。隨時可以退訂。</p>
+        </form>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -45,7 +60,6 @@ const {
   /* 低摩擦守則（規範 31）：追蹤或網路出事都不可以卡住使用者，一律只寫 console。 */
   document.querySelectorAll<HTMLFormElement>('.news .form').forEach((form) => {
     const email = form.querySelector<HTMLInputElement>('input[name="email"]')!;
-    const name = form.querySelector<HTMLInputElement>('input[name="name"]')!;
     const btn = form.querySelector<HTMLButtonElement>('button')!;
     const msg = form.querySelector<HTMLParagraphElement>('.msg')!;
     const endpoint = form.dataset.endpoint!;
@@ -72,7 +86,7 @@ const {
       const payload = {
         action: 'subscribe',
         email: value,
-        name: name.value.trim(),
+        name: '',
         source: form.dataset.source || 'web',
         page: location.pathname,
         timestamp: new Date().toISOString(),
@@ -90,10 +104,8 @@ const {
         if (!r.ok || d.status !== 'ok') throw new Error(d.status || `HTTP ${r.status}`);
 
         form.querySelector('.fields')!.remove();
-        /* 不承諾「第一封信馬上到」：寄信要 LaunChill 那把 webhook 設好才會發，
-           後端沒設的時候名單只會進 Sheet，句子就會變成謊話。 */
-        say('訂閱好了。之後有新的內容，我會寄到這個信箱。', true);
-        try { (window as any).track?.('lead_submit', { has_name: !!payload.name, source: payload.source }); } catch {}
+        say('訂閱好了，第一封信在路上。', true);
+        try { (window as any).track?.('lead_submit', { source: payload.source }); } catch {}
       } catch (err) {
         console.warn('訂閱送出失敗：', err);
         say('送出的時候出了點狀況，麻煩再按一次。');
@@ -106,28 +118,38 @@ const {
 
 <style>
   .news { background: var(--a-tint); border-radius: 20px; padding: clamp(32px, 5vw, 52px) 0; }
-  .inner { max-width: 620px; margin-inline: auto; padding-inline: 24px; text-align: center; }
+  .inner { max-width: 780px; margin-inline: auto; padding-inline: 24px; text-align: center; }
   .news .lead { margin-top: 10px; }
 
-  .form { margin-top: 26px; }
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 28px; text-align: left; }
+  @media (max-width: 640px) { .duo { grid-template-columns: 1fr; } }
+
+  .lane { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-card); padding: 22px 20px; }
+  .lane h3 { font-size: 18px; }
+  .lane-p { margin-top: 8px; font-size: 15px; color: var(--ink-soft); line-height: 1.8; }
+  .lane-p b { color: var(--ink); }
+  .lane .btn { margin-top: 16px; width: 100%; }
+  .lane-line .btn { min-height: 56px; }
+
+  .form { margin-top: 16px; }
   .fields { display: flex; gap: 10px; flex-wrap: wrap; }
   .fields input {
-    flex: 1 1 180px; min-height: 56px; padding: 14px 18px;
+    flex: 1 1 150px; min-height: 52px; padding: 12px 16px;
     font-family: inherit; font-size: 16px; color: var(--ink);
     background: #fff; border: 1.5px solid var(--line-soft); border-radius: var(--r-btn);
   }
   .fields input::placeholder { color: var(--ink-soft); opacity: .8; }
   .fields input:focus-visible { border-color: var(--act); }
-  .fields button { flex: 0 0 auto; min-width: 120px; }
-  .fields button[disabled] { opacity: .7; cursor: wait; }
+  .fields .btn { flex: 0 0 auto; min-width: 96px; min-height: 52px; margin-top: 0; width: auto; }
+  .fields .btn[disabled] { opacity: .7; cursor: wait; }
 
-  .msg { margin-top: 12px; font-size: 15px; font-weight: 600; min-height: 1.5em; }
+  .msg { margin-top: 10px; font-size: 15px; font-weight: 600; min-height: 1.5em; }
   .msg[data-state="ok"] { color: var(--t-deep); }
   .msg[data-state="err"] { color: var(--act-deep); }
-  .fine { margin-top: 10px; font-size: 13px; color: var(--ink-soft); }
+  .fine { margin-top: 8px; font-size: 13px; color: var(--ink-soft); }
 
   @media (max-width: 520px) {
     .fields { flex-direction: column; }
-    .fields button { width: 100%; }
+    .fields .btn { width: 100%; }
   }
 </style>
