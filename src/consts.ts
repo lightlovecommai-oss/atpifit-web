@@ -54,8 +54,7 @@ export const CASES: CaseItem[] = [
   {
     name: '王偉翔',
     who: '到府按摩師・負債 100 萬轉行',
-    quote:
-      '如何說話讓自己感覺起來有自信，然後開始注意如何說出有說服力的話，讓顧客更信賴我，然後快速的幫我拓展客源。',
+    quote: '說出有說服力的話，讓顧客更信賴我，然後快速的幫我拓展客源。',
     shot: '/assets/cases/weixiang.png',
     series: '超引力成交學・學員',
     stat: { num: '13.5萬', label: '轉行後單月總收入' },
