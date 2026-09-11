@@ -5,11 +5,11 @@ import { SHEET_API } from '../../consts';
 /* 複訓報名表（只給舊生，不對外招生）。
    ⚠️ noindex：這頁是電話邀請時貼的連結，不進搜尋、不進 sitemap。
    ⚠️ 沒串金流——保證金人工對帳，所以匯款資訊只在送出成功後才露出。
-   ⚠️ 命名對齊字典（2026-09-01）：鍛鍊段 L1–L4／放大段 L5–L8。
-      作廢：一階／二階／三階／Level 1-3／1+1 系統／溝通變現塾。 */
+   ⚠️ 命名對齊字典（2026-09-01）：鍛鍊段 L1–L4／放大段 L5–L8／演說段 L9 起。
+      梯次編號照老師給的班表（D 班＝L9–L12），作廢：一階／二階／三階／Level 1-3／1+1 系統。 */
 
-const title = '超引力顧問課・複訓報名';
-const description = '舊生複訓專用報名表。課程架構已改版，回來上的不是複習。免學費，只收一筆結業當天全額退還的學習態度保證金。';
+const title = '超引力成交學・複訓報名';
+const description = '舊生複訓專用報名表。ATPI 四塊肌肉＋每天練的 App，都是你當初上課時還不存在的東西。複訓免學費，只收一筆結業當天全額退還的學習態度保證金。';
 
 const DEPOSIT = '5,000';
 
@@ -44,38 +44,39 @@ const cohorts = [
     dates: ['11/10・11/12', '11/17・11/19', '11/24・11/26', '12/1・12/3'],
     who: '同上，但 10 月的時段排不進來。',
   },
+  {
+    id: 'L9-L12-1215',
+    range: 'L9–L12',
+    stage: '演說段',
+    dim: 'P',
+    month: '12 月開課',
+    rhythm: '每週二、四　09:00–11:00',
+    dates: ['12/15・12/17', '12/22・12/24', '12/29・12/31', '1/5・1/7'],
+    who: '一對一已經會了，卡在一次只能面對一個人。',
+    note: '最後一週跨到 2027 年 1 月。',
+  },
 ];
 
 /* 給 Sheet 存的梯次字串：光頭對帳時要一眼看得出是哪一梯，所以帶上開課日 */
 const cohortLabel = (c: typeof cohorts[number]) =>
   `${c.range} ${c.stage}｜${c.month}｜${c.rhythm.replace(/　/g, ' ')}`;
 
-const upgrades = [
-  {
-    k: '架構重寫',
-    t: '「階」沒有了，改成「段」',
-    b: '以前是一階、二階分開賣。現在是一條路分兩段：鍛鍊段 L1–L4 練單塊肌肉，放大段 L5–L8 把它們串成一場走得通的對話。你當初學的東西還在，但位置全部重排過。',
-  },
-  {
-    k: '解析度變高',
-    t: '四塊肌肉，拆成十二塊',
-    b: '吸引、信任、專業、推進各自再拆三塊小肌群。以前只能說「你信任感不夠」，現在指得出是哪一塊、該練哪個動作。體測也跟著換成十二格。',
-  },
-  {
-    k: '順序改了',
-    t: '推進提前到 L4',
-    b: '推進以前排在後段，等於前面練完還不知道怎麼收。現在四塊在鍛鍊段就到齊——一開始你就有完整的一套，不是半套。',
-  },
-  {
-    k: '上法改了',
-    t: '乾貨錄播先看，直播只做對練',
-    b: '課堂時間不再拿來聽講。乾貨你自己先看完，進教室就直接進對練、Hot Seat、顧問校正。同樣兩小時，動手的比例完全不一樣。',
-  },
+/* ⚠️ 維度名對齊字典：吸引／信任／專業／推進「肌肉」，「〇〇力」作廢。
+   P 的結果句是「讓他認定你就是那個人」（2026-09-01 定案，不可換成「讓他知道你有解答」）。 */
+const atpi = [
+  { dim: 'A', code: 'A', name: '吸引肌肉', r: '讓他想靠近你',
+    b: '開口的前三十秒就決定了他要不要繼續聽。這塊練的是怎麼讓人自己靠過來，而不是你追過去。' },
+  { dim: 'T', code: 'T', name: '信任肌肉', r: '讓他願意講真話',
+    b: '他講的第一個問題通常不是真的問題。這塊練的是怎麼讓他把真正卡住的地方拿出來。' },
+  { dim: 'P', code: 'P', name: '專業肌肉', r: '讓他認定你就是那個人',
+    b: '不是講得多深，是講得讓他看見自己的處境。這塊練的是把你會的東西，換成他聽得懂的樣子。' },
+  { dim: 'I', code: 'I', name: '推進肌肉', r: '讓他現在就動',
+    b: '聊得很好卻沒有下一步，問題都出在這塊。這塊練的是怎麼把一場好對話收成一個決定。' },
 ];
 
 const rules = [
-  '八堂課，缺席 <b>2 堂（含）以內</b>，保證金<span class="nb">結業當天全額退還</span>。',
-  '缺席 <b>3 堂（含）以上</b>，保證金不退。這條先講清楚，不等到最後再解釋。',
+  '每一梯八堂。你報的每一梯，缺席都在 <b>2 堂（含）以內</b>，保證金<span class="nb">全額退還</span>。',
+  '任何一梯缺席 <b>3 堂（含）以上</b>，保證金不退。<span class="nb">這條先講清楚</span>，不等到最後再解釋。',
   '要請假請事先說，不要當天消失——課中是分組對練，你沒到，你那組就少一個人。',
   '課堂內容與同學講的案例都不外流。',
 ];
@@ -85,43 +86,60 @@ const rules = [
   <section class="section">
     <div class="wrap-text">
       <p class="kicker">複訓梯・只給舊生</p>
-      <h1>你學過的那套課，<br />已經<span class="hl">重寫過一遍</span></h1>
-      <p class="lead head-lead">所以這不是回來複習。架構改了、順序改了、四塊肌肉拆成十二塊，連上課的方式都換掉了。複訓<span class="nb">免學費</span>，只收一筆<span class="nb">結業當天退還</span>的保證金。</p>
+      <h1>你上課的那時候，<br />這套系統<span class="hl">還不存在</span></h1>
+      <p class="lead head-lead">現在溝通被拆成四塊肌肉、十二個小肌群，而且有一支 App 讓你每天練得到。所以這不是回來複習——是來拿一套你當初沒有的東西。複訓<span class="nb">免學費</span>，只收一筆<span class="nb">結業當天退還</span>的保證金。</p>
       <div class="atpi-rule sig"><i></i><i></i><i></i><i></i></div>
     </div>
   </section>
 
   <section class="section section-alt">
     <div class="wrap-text">
-      <h2>改了什麼</h2>
-      <p class="lead">四件事，每一件都會改變你在課堂上聽到的內容。</p>
-      <ol class="ups">
-        {upgrades.map((u) => (
-          <li class="card">
-            <span class="up-k">{u.k}</span>
-            <h3>{u.t}</h3>
-            <p>{u.b}</p>
+      <h2>ATPI：把溝通拆成四塊肌肉</h2>
+      <p class="lead">你當初學的是一招一招的作法。現在它們被歸位了——每一招都屬於某一塊肌肉，練哪一塊、為什麼練，都指得出來。</p>
+
+      <ol class="atpi">
+        {atpi.map((m) => (
+          <li class="card muscle" data-dim={m.dim}>
+            <span class="mcode" aria-hidden="true">{m.code}</span>
+            <h3>{m.name}</h3>
+            <p class="mres">{m.r}</p>
+            <p class="mbody">{m.b}</p>
           </li>
         ))}
       </ol>
+
+      <p class="mnote">四塊底下再各拆三塊小肌群，一共十二塊。所以不再是「你信任感不夠」這種講不出下一步的話，而是指得出<b>先練哪一塊最有感</b>、<span class="nb">今天該做哪個動作</span>。入學前後各量一次，十二格的變化看得到。</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-text">
+      <div class="app">
+        <p class="kicker">最大的差別</p>
+        <h2>肌肉不是在教室長出來的</h2>
+        <p class="app-p">課一週兩堂，但中間那五天才是真的在練。以前上完課，你回去只能靠筆記跟感覺——練了沒有、哪一塊在動，誰都說不準。</p>
+        <p class="app-p">現在有影響力健身房 App。每天給你一個動作，你把「對誰講了什麼、對方什麼反應」記下來，一次一分鐘。累積起來就是一張你自己的體格表：哪一塊練得多、哪一塊還沒動過，攤在那裡。</p>
+        <p class="app-p app-last"><b>課負責教你怎麼練，App 負責讓你真的天天練。</b>這一組東西，你當初上課的時候完全不存在。</p>
+      </div>
     </div>
   </section>
 
   <section class="section" id="pick-top">
     <div class="wrap-text">
-      <h2>三梯，挑一個時段</h2>
-      <p class="lead">每一梯都是八堂、四週。內容照上面那套新版走。</p>
+      <h2>四梯，想上幾梯都可以</h2>
+      <p class="lead">每一梯都是八堂、四週。可以複選——全部報也沒問題，<span class="nb">保證金還是那一筆</span>。</p>
 
       <div class="picks">
-        {cohorts.map((c, i) => (
+        {cohorts.map((c) => (
           <label class="pick card muscle" data-dim={c.dim}>
-            <input type="radio" name="cohort" value={cohortLabel(c)} checked={i === 0} />
+            <input type="checkbox" name="cohort" value={cohortLabel(c)} />
             <span class="pick-body">
               <span class="muscle-tag">{c.range}　{c.stage}</span>
               <span class="pick-h">{c.month}</span>
               <span class="pick-r">{c.rhythm}</span>
               <span class="pick-d">{c.dates.map((d) => <span class="wk">{d}</span>)}</span>
               <span class="pick-w">{c.who}</span>
+              {c.note && <span class="pick-n">{c.note}</span>}
             </span>
             <span class="tick" aria-hidden="true"></span>
           </label>
@@ -135,9 +153,9 @@ const rules = [
       <h2>費用與課程守則</h2>
 
       <div class="money">
-        <p class="money-big">複訓不收學費。</p>
-        <p>報名時繳 <b>{DEPOSIT} 元</b>學習態度保證金，<br /><b>結業當天全額退還</b>。</p>
-        <p class="money-why">保證金不是營收，是為了讓這八堂課真的有人坐在裡面。課中是分組對練，少一個人，剩下的人就少一個對練的對象。</p>
+        <p class="money-big">複訓不收學費。四梯都一樣。</p>
+        <p>報名時繳 <b>{DEPOSIT} 元</b>學習態度保證金。<br />不管你報幾梯，<span class="nb">就是這一筆</span>，<span class="nb">最後一梯結業當天全額退還</span>。</p>
+        <p class="money-why">保證金不是營收，是為了讓每一堂課真的有人坐在裡面。課中是分組對練，少一個人，剩下的人就少一個對練的對象。</p>
       </div>
 
       <ul class="rules">
@@ -183,13 +201,13 @@ const rules = [
 
         <div class="f f-pick">
           <span class="lab">你選的梯次</span>
-          <p class="chosen" id="su-chosen"></p>
-          <a class="relink" href="#pick-top">要換一梯？回上面重選</a>
+          <ul class="chosen" id="su-chosen"></ul>
+          <a class="relink" href="#pick-top">要改？回上面重選</a>
         </div>
 
         <label class="agree">
           <input type="checkbox" id="su-agree" name="agree" required />
-          <span>我是舊生，我看過上面的課程守則，願意遵守——包含缺席 3 堂以上保證金不退。</span>
+          <span>我是舊生，我看過上面的課程守則，願意遵守——包含任何一梯缺席 3 堂以上，保證金不退。</span>
         </label>
 
         <button class="btn btn-main" type="submit">送出報名</button>
@@ -221,11 +239,27 @@ const rules = [
   const chosen = document.getElementById('su-chosen') as HTMLElement;
   const msg = document.getElementById('su-msg') as HTMLElement;
   const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-  const radios = Array.from(document.querySelectorAll<HTMLInputElement>('input[name="cohort"]'));
+  const boxes = Array.from(document.querySelectorAll<HTMLInputElement>('input[name="cohort"]'));
 
-  const pickedValue = () => radios.find((r) => r.checked)?.value || '';
-  const syncChosen = () => { chosen.textContent = pickedValue(); };
-  radios.forEach((r) => r.addEventListener('change', syncChosen));
+  /* 多選：一個人可以同時報好幾梯。Sheet 存成一格，用 ／ 串起來。 */
+  const picked = () => boxes.filter((r) => r.checked).map((r) => r.value);
+  const syncChosen = () => {
+    const list = picked();
+    chosen.innerHTML = '';
+    if (!list.length) {
+      const li = document.createElement('li');
+      li.className = 'none';
+      li.textContent = '還沒選。回上面點你要上的梯次，可以複選。';
+      chosen.append(li);
+      return;
+    }
+    list.forEach((v) => {
+      const li = document.createElement('li');
+      li.textContent = v;
+      chosen.append(li);
+    });
+  };
+  boxes.forEach((r) => r.addEventListener('change', syncChosen));
   syncChosen();
 
   const say = (text: string, ok = false) => {
@@ -246,6 +280,7 @@ const rules = [
     if (!name) return say('姓名還沒填，我們點名會叫這個。');
     if (!lineId) return say('LINE ID 還沒填，沒有它沒辦法把你加進群組。');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say('這個 Email 看起來不太對，再確認一下？');
+    if (!picked().length) return say('還沒選梯次。回上面點你要上的，可以複選。');
     if (!agree) return say('守則那一格還沒勾。');
 
     btn.disabled = true;
@@ -257,7 +292,7 @@ const rules = [
       action: 'signup',
       name, lineIdText: lineId, email,
       phone: val('su-phone'),
-      cohort: pickedValue(),
+      cohort: picked().join('　／　'),
       agree: true,
       timestamp: new Date().toISOString(),
       track: (window as any).trackPayload?.() ?? {},
@@ -310,13 +345,26 @@ const rules = [
   .head-lead { max-width: 46ch; margin-top: 16px; }
   .sig { margin-top: 28px; max-width: 160px; }
 
-  .ups { list-style: none; padding: 0; margin-top: 28px; display: grid; gap: 14px; }
-  .up-k {
-    display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .1em;
-    color: var(--act-deep); background: var(--a-tint); border-radius: 999px; padding: 3px 11px;
+  /* ── ATPI 四塊。順序鎖 A→T→P→I，靠左色條＋角落字母 ── */
+  .atpi { list-style: none; padding: 0; margin-top: 28px; display: grid; gap: 14px; }
+  .atpi li { position: relative; padding-right: 56px; }
+  .mcode {
+    position: absolute; top: 18px; right: 20px;
+    font-size: 30px; font-weight: 900; line-height: 1;
+    color: var(--dim); opacity: .34; letter-spacing: -.02em;
   }
-  .ups h3 { margin-top: 11px; font-size: 20px; }
-  .ups p { margin-top: 8px; color: var(--ink-soft); line-height: 1.9; }
+  .atpi h3 { font-size: 20px; }
+  .mres { margin-top: 6px; font-size: 17px; font-weight: 700; color: var(--dim-deep); }
+  .mbody { margin-top: 10px; font-size: 15.5px; color: var(--ink-soft); line-height: 1.9; }
+  .mnote { margin-top: 22px; font-size: 15.5px; color: var(--ink-soft); line-height: 1.95; }
+  .mnote b { color: var(--ink); }
+
+  /* ── App＝最大賣點，給它一整塊暖底 ── */
+  .app { background: var(--a-tint); border-radius: 20px; padding: clamp(26px, 5vw, 42px); }
+  .app h2 { font-size: clamp(22px, 3.2vw, 29px); }
+  .app-p { margin-top: 14px; font-size: 16px; line-height: 1.95; color: var(--ink-2); }
+  .app-last { margin-top: 18px; color: var(--ink); }
+  .app-last b { display: block; margin-bottom: 4px; }
 
   /* ── 梯次選擇：整張卡就是 radio，手機上不用去點那顆小圓圈 ── */
   .picks { margin-top: 28px; display: grid; gap: 14px; }
@@ -334,10 +382,12 @@ const rules = [
     border-radius: 8px; padding: 3px 9px;
   }
   .pick-w { display: block; margin-top: 12px; font-size: 15px; color: var(--ink-soft); }
+  .pick-n { display: block; margin-top: 6px; font-size: 13.5px; color: var(--ink-soft); }
 
+  /* 方框＝可複選的視覺提示（圓框會被讀成「只能選一個」） */
   .tick {
     position: absolute; top: 22px; right: 20px; width: 24px; height: 24px;
-    border: 2px solid var(--line); border-radius: 50%; background: #fff;
+    border: 2px solid var(--line); border-radius: 7px; background: #fff;
   }
   .pick:has(input:checked) { border-color: var(--dim); box-shadow: 0 0 0 2px var(--dim-tint); }
   .pick:has(input:checked) .tick { border-color: var(--dim); background: var(--dim); }
@@ -371,8 +421,15 @@ const rules = [
   .f input:focus-visible { border-color: var(--act); outline-offset: 1px; }
 
   .f-pick { background: var(--bg-alt); border-radius: var(--r-card); padding: 16px 18px; }
-  .chosen { font-size: 16px; font-weight: 700; color: var(--act-deep); line-height: 1.7; }
-  .relink { display: inline-block; margin-top: 6px; font-size: 14px; }
+  .chosen { list-style: none; padding: 0; margin: 0; }
+  .chosen li {
+    font-size: 15.5px; font-weight: 700; color: var(--act-deep); line-height: 1.7;
+    padding-left: 18px; position: relative; margin-top: 4px;
+  }
+  .chosen li::before { content: '✓'; position: absolute; left: 0; }
+  .chosen li.none { font-weight: 400; color: var(--ink-soft); padding-left: 0; }
+  .chosen li.none::before { content: none; }
+  .relink { display: inline-block; margin-top: 8px; font-size: 14px; }
 
   .agree { display: flex; gap: 11px; align-items: flex-start; font-size: 15px; line-height: 1.8; }
   .agree input { flex: 0 0 auto; width: 22px; height: 22px; margin-top: 5px; accent-color: var(--act); }
