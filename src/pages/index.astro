@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Newsletter from '../components/Newsletter.astro';
-import { LINKS, SITE } from '../consts';
+import CaseCard from '../components/CaseCard.astro';
+import { LINKS, SITE, FOUNDER_PHOTO, CASES } from '../consts';
 
 /* 視覺語言來源（2026-09-10 這輪）：quiz／member 的 UI 元素＋v4 圖形語言
    （productkit 3-教材/演說型公版-v4提案-圖形語言.md，2026-09-09 拍板）。
@@ -160,7 +161,12 @@ const schema = [
             <div class="brow">
               <span class="ben">{m.dim} {m.en}</span>
               <span class="bzh">{m.zh}</span>
-              <span class="bbar"><i style={`width:${m.v}%`}></i></span>
+              <span class="bbar">
+                {[0, 1, 2].map((s) => {
+                  const fill = Math.max(0, Math.min(100, 3 * m.v - 100 * s));
+                  return <i style={`background:linear-gradient(90deg,var(--dim) ${fill}%,#EFE6DB ${fill}%)`}></i>;
+                })}
+              </span>
               <span class="bv num">{m.v}</span>
             </div>
             <div class="brow3">
@@ -304,8 +310,47 @@ const schema = [
     </div>
   </section>
 
-  <!-- ═══ 骨層句 ═══ -->
+  <!-- ═══ 教的人是誰（2026-09-11 老師點名：官網看不到「人」違反 ATPI 信任原則——
+       方法看完，緊接著就要看到教的人。數字與頭銜＝about 頁同一份，不可自行增補。
+       照片位由 FOUNDER_PHOTO 開關：沒填就純文字版，照片到了 consts.ts 填路徑即亮。 ═══ -->
   <section class="section">
+    <div class:list={['wrap', 'coach', { 'has-photo': !!FOUNDER_PHOTO }]}>
+      {FOUNDER_PHOTO && (
+        <figure class="coach-photo">
+          <img src={FOUNDER_PHOTO} alt="平凡人光頭（徐哲彥）——影響力健身房創辦人" width="380" height="450" loading="lazy" />
+          <div class="coach-rule" role="presentation"></div>
+        </figure>
+      )}
+      <div class="coach-copy">
+        <p class="kicker">教的人是誰</p>
+        <h2>平凡人光頭，<span class="hl">不是天生會講的人</span></h2>
+        <p class="lead coach-lead">本名徐哲彥。影響力健身房創辦人、ATPI 溝通 4 大肌肉框架創始人。名字裡留著「平凡人」三個字，因為這套方法的前提就是：影響力不是天賦，是練出來的肌肉。</p>
+        <ul class="coach-nums">
+          <li><b class="bignum">200+</b><span>場演講</span></li>
+          <li><b class="bignum">2000+</b><span>位學員</span></li>
+          <li><b class="bignum">10 年</b><span>反覆驗證這套公式</span></li>
+        </ul>
+        <a class="coach-more" href="/about/">認識光頭的故事 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 學員案例（信任肌肉：看得到「人」）。CASES 空陣列＝整段不渲染；
+       素材到位補進 consts.ts 的 CASES 就自動亮，引言逐字照截圖、絕不代擬。 ═══ -->
+  {CASES.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">學員案例</p>
+        <h2>練過的人，<span class="hl">後來怎麼了</span></h2>
+        <div class="grid grid-3 cases">
+          {CASES.map((c) => <CaseCard c={c} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ═══ 骨層句 ═══ -->
+  <section class="section section-alt">
     <div class="wrap-text">
       <!-- 骨層句見光（金句庫部署鐵則①）。值＝productkit 14 §5，署名不可省。 -->
       <blockquote class="quote">
@@ -317,7 +362,7 @@ const schema = [
   </section>
 
   <!-- ═══ 常見問題：手風琴收合（字牆降噪），內容一字不動＝上面 FAQPage 結構化資料同一份 ═══ -->
-  <section class="section section-alt">
+  <section class="section">
     <div class="wrap-text">
       <p class="kicker">常見問題</p>
       <h2>先回答<span class="hl">你可能會問的</span></h2>
@@ -397,14 +442,15 @@ const schema = [
   .brow { display: flex; align-items: center; gap: 8px; }
   .ben { flex-shrink: 0; font-size: 10.5px; font-weight: 900; letter-spacing: 1.5px; color: var(--dim-deep); }
   .bzh { flex-shrink: 0; font-size: 13px; font-weight: 700; color: var(--ink); }
-  .bbar { flex: 1; height: 7px; border-radius: 4px; background: #EFE6DB; overflow: hidden; }
-  .bbar i { display: block; height: 100%; border-radius: 4px; background: var(--dim); }
+  /* 大肌肉條＝3 片薄片（一片＝一條小肌群，24 §1.1），填色寬度＝分數 */
+  .bbar { flex: 1; display: flex; gap: 3px; height: 8px; }
+  .bbar i { flex: 1; height: 100%; border-radius: 2.5px; transform: skewX(-12deg); }
   .bv { flex-shrink: 0; width: 26px; text-align: right; font-size: 12.5px; font-weight: 700; color: var(--dim-deep); }
 
   .brow3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 7px; }
   .mini { background: var(--bg); border: 1px solid #EFE6DB; border-radius: 10px; padding: 7px 8px 6px; min-width: 0; }
   .mini-n { display: block; font-size: 12px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .mini-bar { display: block; height: 4px; border-radius: 3px; background: #E8DDD3; margin-top: 6px; overflow: hidden; }
+  .mini-bar { display: block; height: 4px; border-radius: 3px; background: #E8DDD3; margin-top: 6px; overflow: hidden; transform: skewX(-12deg); }
   .mini-bar i { display: block; height: 100%; border-radius: 3px; background: var(--dim); }
   /* 偷看鉤子：名字露、分數模糊——全開要進健檢拿 */
   .peek { filter: blur(2.5px); }
@@ -510,6 +556,22 @@ const schema = [
 
   .road-end { margin-top: 24px; font-size: 17px; color: var(--ink-soft); max-width: 56ch; }
   .road-end b { color: var(--ink); }
+
+  /* ═══ 教的人是誰 ═══ */
+  .coach.has-photo { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(28px, 4vw, 56px); align-items: center; }
+  @media (max-width: 860px) { .coach.has-photo { grid-template-columns: 1fr; } }
+  .coach-photo { margin: 0; max-width: 380px; }
+  .coach-photo img { display: block; width: 100%; height: auto; border-radius: 18px; box-shadow: 0 8px 30px rgba(90, 60, 30, .14); }
+  .coach-rule { height: 3px; border-radius: 3px; margin-top: 12px;
+                background: linear-gradient(90deg, var(--a), var(--t), var(--p), var(--i)); }
+  .coach-lead { margin-top: 14px; max-width: 52ch; }
+  .coach-nums { list-style: none; padding: 0; margin: 26px 0 0; display: flex; flex-wrap: wrap; gap: 16px 48px; }
+  .coach-nums li { display: flex; flex-direction: column; }
+  .coach-nums span { margin-top: 2px; font-size: 14px; color: var(--ink-soft); }
+  .coach-more { display: inline-block; margin-top: 24px; font-weight: 700; }
+
+  /* ═══ 學員案例 ═══ */
+  .cases { margin-top: 32px; }
 
   /* ═══ 骨層句 ═══ */
   .bone-body { margin-top: 24px; color: var(--ink-soft); }

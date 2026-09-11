@@ -1,0 +1,38 @@
+---
+/* 學員案例卡（24 §3.8 招6 見證規格）：引言泡＋原始截圖（微傾）＋名字＋身分＋系列落款。
+   ⚠️ 引言絕不代擬——quote 必須逐字等於 shot 截圖裡的原文。 */
+import type { CaseItem } from '../consts';
+
+interface Props { c: CaseItem }
+const { c } = Astro.props;
+---
+
+<article class="case">
+  <blockquote class="case-quote">
+    <p>{c.quote}</p>
+  </blockquote>
+  <figure class="case-shot photo">
+    <img src={c.shot} alt={`${c.name}的原始訊息截圖`} loading="lazy" />
+    <figcaption>📷 原始截圖</figcaption>
+  </figure>
+  <footer class="case-meta">
+    <b>{c.name}</b>
+    <span>{c.who}</span>
+    <span class="case-series">{c.series}</span>
+  </footer>
+</article>
+
+<style>
+  .case { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-card); padding: 22px; }
+
+  /* 引言泡：客戶原話規格（底色框，不用品牌大金引號——那個只給光頭金句） */
+  .case-quote { margin: 0; background: var(--bg-alt); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+  .case-quote p { font-size: 16px; line-height: 1.85; color: var(--ink); }
+
+  .case-shot { margin: 16px 0 0; transform: rotate(-1.2deg); }
+  .case-shot img { width: 100%; height: auto; }
+
+  .case-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; margin-top: 16px; font-size: 14px; color: var(--ink-soft); }
+  .case-meta b { font-size: 15px; color: var(--ink); }
+  .case-series { margin-left: auto; font-size: 12.5px; font-weight: 700; letter-spacing: .06em; color: var(--act-deep); }
+</style>

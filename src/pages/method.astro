@@ -91,6 +91,42 @@ const schema = [
       <h1>影響力可以拆開，<span class="hl">所以可以練</span></h1>
       <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
       <p class="lead head-lead">整團的「影響力」沒辦法練，因為你不知道要練什麼。拆成四塊、再拆成十二個看得到的行為之後，每一個都有具體的動作可以做，也有對方的反應可以檢查。</p>
+
+      <!-- 12 小肌群薄片地圖（24 §3.9 八條）：一條基線、斜切共軸鎖畫面中線 y=175、
+           全部淡底＋深版描邊（紅線：實色最多兩片——這張 0 片；I 金一律淡底＋深版描邊與字）。
+           片高遞增＝三條小肌群是一階一階往上練的梯；字是標籤貼片下、放斜切群組外保持直立。
+           標籤 x 補 skew 位移：底邊在 y=250，往左位移 tan12°×75≈16px。 -->
+      <div class="mmap-scroll">
+        <svg class="mmap" viewBox="0 88 940 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <line x1="26" y1="250" x2="914" y2="250" stroke="var(--ink)" stroke-width="3" opacity=".25" stroke-linecap="round" />
+          <g transform="translate(0,175) skewX(-12) translate(0,-175)">
+            {muscles.map((m, g) =>
+              m.subs.map((_, s) => (
+                <rect
+                  x={40 + g * 224 + s * 66}
+                  y={250 - (96 + s * 28)}
+                  width="56"
+                  height={96 + s * 28}
+                  rx="8"
+                  fill={`var(--${m.dim.toLowerCase()}-tint)`}
+                  stroke={`var(--${m.dim.toLowerCase()}-deep)`}
+                  stroke-width="2"
+                />
+              ))
+            )}
+          </g>
+          {muscles.map((m, g) => (
+            <>
+              {m.subs.map((sub, s) => (
+                <text x={40 + g * 224 + s * 66 + 12} y="278" font-size="15" font-weight="600" fill="var(--ink)" text-anchor="middle">{sub}</text>
+              ))}
+              <text x={40 + g * 224 + 78} y="312" font-size="18" font-weight="800" fill={`var(--${m.dim.toLowerCase()}-deep)`} text-anchor="middle">{m.name}</text>
+              <text x={40 + g * 224 + 78} y="334" font-size="13.5" fill="var(--ink-soft)" text-anchor="middle">{m.ask}</text>
+            </>
+          ))}
+        </svg>
+      </div>
+      <p class="mmap-note">一片＝一條小肌群，三片一組＝一塊大肌肉。十二個名字的主詞全在對方身上——練到哪，看他的反應就知道。</p>
     </div>
   </section>
 
@@ -172,6 +208,11 @@ const schema = [
 
 <style>
   .head-lead { max-width: 50ch; margin-top: 14px; }
+
+  /* 薄片地圖：桌機滿版縮放；窄螢幕保住字級、改橫向滑動 */
+  .mmap-scroll { margin-top: 40px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .mmap { width: 100%; min-width: 720px; height: auto; }
+  .mmap-note { margin-top: 12px; font-size: 14.5px; color: var(--ink-soft); max-width: 62ch; }
 
   /* 固定 2×2，不用 auto-fit：四塊要排成整齊一組，不能被斷成 3+1（順序 A→T→P→I 是規範） */
   .muscles { margin-top: 36px; grid-template-columns: repeat(2, 1fr); }

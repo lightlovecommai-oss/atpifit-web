@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Newsletter from '../components/Newsletter.astro';
-import { SITE, LINKS, FOUNDER_SAME_AS } from '../consts';
+import { SITE, LINKS, FOUNDER_SAME_AS, FOUNDER_PHOTO } from '../consts';
 
 const title = '關於平凡人光頭｜ATPI 溝通 4 大肌肉框架創始人';
 const description =
@@ -53,6 +53,8 @@ const personSchema = {
   worksFor: { '@id': `${SITE.url}/#organization` },
   sameAs: [...FOUNDER_SAME_AS],
   knowsAbout: ['影響力溝通', 'ATPI', '影響力肌肉', '公眾演說', '顧問式銷售'],
+  /* 照片一到位（FOUNDER_PHOTO 填值）image 就自動掛上——Google 的 Person 實體有照片可信度差很多 */
+  ...(FOUNDER_PHOTO ? { image: `${SITE.url}${FOUNDER_PHOTO}` } : {}),
 };
 
 const schema = [
@@ -81,20 +83,32 @@ const schema = [
 
 <BaseLayout title={title} description={description} schema={schema}>
   <section class="section">
-    <div class="wrap">
-      <p class="kicker">關於</p>
-      <h1>我不是天生會講的人，<span class="hl">我是練出來的</span></h1>
-      <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
-      <p class="lead head-lead">徐哲彥，藝名平凡人光頭。影響力健身房創辦人，ATPI 溝通 4 大肌肉框架創始人。</p>
+    <div class:list={['wrap', 'about-hero', { 'has-photo': !!FOUNDER_PHOTO }]}>
+      <div class="about-hero-copy">
+        <p class="kicker">關於</p>
+        <h1>我不是天生會講的人，<span class="hl">我是練出來的</span></h1>
+        <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
+        <p class="lead head-lead">徐哲彥，藝名平凡人光頭。影響力健身房創辦人，ATPI 溝通 4 大肌肉框架創始人。</p>
 
-      <ul class="numbers">
-        {numbers.map((x) => (
-          <li>
-            <b class="bignum">{x.n}</b>
-            <span>{x.label}</span>
-          </li>
-        ))}
-      </ul>
+        <ul class="numbers">
+          {numbers.map((x) => (
+            <li>
+              <b class="bignum">{x.n}</b>
+              <span>{x.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- 照片位（信任肌肉的自我示範：這頁必須看得到「人」）。
+           FOUNDER_PHOTO 沒填就整塊不渲染——版位先備好，照片到了 consts.ts 填路徑即上線。 -->
+      {FOUNDER_PHOTO && (
+        <figure class="portrait">
+          <img src={FOUNDER_PHOTO} alt="平凡人光頭（徐哲彥）——影響力健身房創辦人" width="440" height="520" loading="eager" />
+          <div class="portrait-rule" role="presentation"></div>
+          <figcaption>平凡人光頭・徐哲彥</figcaption>
+        </figure>
+      )}
     </div>
   </section>
 
@@ -178,6 +192,15 @@ const schema = [
 
 <style>
   .head-lead { max-width: 50ch; margin-top: 14px; }
+
+  /* 照片位：有照片時 hero 變兩欄；photo 圓角框＋四色 rule 收底（品牌 60/30/10 的 10%） */
+  .about-hero.has-photo { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(28px, 4vw, 56px); align-items: center; }
+  @media (max-width: 860px) { .about-hero.has-photo { grid-template-columns: 1fr; } }
+  .portrait { margin: 0; max-width: 440px; }
+  .portrait img { display: block; width: 100%; height: auto; border-radius: 18px; box-shadow: 0 8px 30px rgba(90, 60, 30, .14); }
+  .portrait-rule { height: 3px; border-radius: 3px; margin-top: 12px;
+                   background: linear-gradient(90deg, var(--a), var(--t), var(--p), var(--i)); }
+  .portrait figcaption { margin-top: 8px; font-size: 13px; color: var(--ink-soft); }
 
   .numbers {
     list-style: none; padding: 0; margin: 44px 0 0;
