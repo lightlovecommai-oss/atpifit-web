@@ -8,6 +8,12 @@ const { c } = Astro.props;
 ---
 
 <article class="case">
+  {c.stat && (
+    <p class="case-stat">
+      <b>{c.stat.num}</b>
+      <span>{c.stat.label}</span>
+    </p>
+  )}
   <blockquote class="case-quote">
     <p>{c.quote}</p>
   </blockquote>
@@ -24,6 +30,11 @@ const { c } = Astro.props;
 
 <style>
   .case { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-card); padding: 22px; }
+
+  /* 大數字（§3.8 招4）：數字以截圖為準 */
+  .case-stat { display: flex; align-items: baseline; gap: 10px; margin: 0 0 14px; flex-wrap: wrap; }
+  .case-stat b { font-size: 30px; font-weight: 800; color: var(--act-deep); letter-spacing: .01em; }
+  .case-stat span { font-size: 13.5px; color: var(--ink-soft); }
 
   /* 引言泡：客戶原話規格（底色框，不用品牌大金引號——那個只給光頭金句） */
   .case-quote { margin: 0; background: var(--bg-alt); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }

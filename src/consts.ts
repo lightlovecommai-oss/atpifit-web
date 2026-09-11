@@ -33,11 +33,10 @@ export const FOUNDER_SAME_AS = [
   'https://www.facebook.com/profile.php?id=1498193088',
 ] as const;
 
-/* 創辦人照片（信任肌肉的自我示範：官網要有「人」——2026-09-11 老師點名的缺）。
-   照片還沒給：拿到後把檔案放 public/assets/founder.jpg、這裡改成 '/assets/founder.jpg'，
-   about 頁 hero 照片位＋首頁「教的人是誰」照片位會自動亮起來，Person schema 也會帶 image。
+/* 創辦人照片（信任肌肉的自我示範：官網要有「人」）。
+   about 頁 hero 照片位＋首頁「教的人是誰」照片位吃這裡，Person schema 也會帶 image。
    空字串＝照片位整塊不渲染，不會出現破圖或「照片準備中」。 */
-export const FOUNDER_PHOTO = '';
+export const FOUNDER_PHOTO = '/assets/founder.jpg';
 
 /* 學員案例（信任肌肉：官網要看得到「人」——2026-09-11 老師點名的另一塊缺）。
    ⚠️ 引言絕不代擬：quote 一律逐字照抄原始截圖，shot 放 public/assets/cases/ 的截圖檔。
@@ -49,8 +48,36 @@ export type CaseItem = {
   quote: string;  // 逐字引言＝截圖原文，不可改寫、不可湊句
   shot: string;   // 原始截圖路徑，例 '/assets/cases/xxx.jpg'（見證規格：截圖為證）
   series: string; // 系列落款，例「超引力成交學・學員」
+  stat?: { num: string; label: string }; // 大數字（§3.8 招4）：數字以截圖為準
 };
-export const CASES: CaseItem[] = [];
+export const CASES: CaseItem[] = [
+  {
+    name: '王偉翔',
+    who: '到府按摩師・負債 100 萬轉行',
+    quote:
+      '如何說話讓自己感覺起來有自信，然後開始注意如何說出有說服力的話，讓顧客更信賴我，然後快速的幫我拓展客源。',
+    shot: '/assets/cases/weixiang.png',
+    series: '超引力成交學・學員',
+    stat: { num: '13.5萬', label: '轉行後單月總收入' },
+  },
+  {
+    name: '林珈鉉',
+    who: '企管顧問＋身心靈工作者',
+    quote:
+      '很感謝光頭教練的課程與協助，讓我在上完課後的第一次實體銷講，就有了很大的突破！',
+    shot: '/assets/cases/linjiaxuan.png',
+    series: '超引力成交學・學員',
+    stat: { num: '15→9→8→3', label: '到場→有效聽眾→申請 1v1→全數成交' },
+  },
+  {
+    name: '劉沐洋（艾斯）',
+    who: '家族辦公室主理人・FB 公開發文',
+    quote:
+      '我一直記得光頭教練說過的一句話：「技巧是工具，真實才是地基。」',
+    shot: '/assets/cases/liumuyang.png',
+    series: '超引力成交學・學員',
+  },
+];
 
 /* 訂閱走跟影響力健檢同一支 Apps Script：後端一次寫 Google Sheet ＋ 推 LaunChill。
    ⚠️ 換後端網址要同步改 comconverttest/index.html 的 SHEET_API。 */
