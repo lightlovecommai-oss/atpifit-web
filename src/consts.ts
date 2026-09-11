@@ -36,7 +36,7 @@ export const FOUNDER_SAME_AS = [
 /* 訂閱走跟影響力健檢同一支 Apps Script：後端一次寫 Google Sheet ＋ 推 LaunChill。
    ⚠️ 換後端網址要同步改 comconverttest/index.html 的 SHEET_API。 */
 export const SHEET_API =
-  'https://script.google.com/macros/s/AKfycbwEwlg4cFa7B_e76ULJM26C2B9fgjwjFTXPFb_yRMWt1wZs33iTGnEI1LZ9v8uZHvdz/exec';
+  'https://script.google.com/macros/s/AKfycbz7VxeV8ZmjSiGNO-G3ZwRLPg-H1H2NjXHy6brCU5yVaVoYOXB-LItU750j81Q3eno/exec';
 
 /* 關於光頭排第二（2026-09-10 拍板）：官網訪客多是「來查證的人」，
    對他們第二重要的頁就是「教的人是誰」，不藏在最後。 */
