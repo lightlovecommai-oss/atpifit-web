@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { SHEET_API } from '../../consts';
+import { SHEET_API, LINKS } from '../../consts';
 
 /* 複訓報名表（只給舊生，不對外招生）。
    ⚠️ noindex：這頁是電話邀請時貼的連結，不進搜尋、不進 sitemap。
@@ -120,6 +120,16 @@ const rules = [
         <p class="app-p">課一週兩堂，但中間那五天才是真的在練。以前上完課，你回去只能靠筆記跟感覺——練了沒有、哪一塊在動，誰都說不準。</p>
         <p class="app-p">現在有影響力健身房 App。每天給你一個動作，你把「對誰講了什麼、對方什麼反應」記下來，一次一分鐘。累積起來就是一張你自己的體格表：哪一塊練得多、哪一塊還沒動過，攤在那裡。</p>
         <p class="app-p app-last"><b>課負責教你怎麼練，App 負責讓你真的天天練。</b>這一組東西，你當初上課的時候完全不存在。</p>
+
+        <p class="app-try">不用等開課，現在就看得到：</p>
+        <div class="app-btns">
+          <a class="btn btn-sub" href={`${LINKS.gym}member.html?demo=1`} target="_blank" rel="noopener">
+            打開 App 看一眼<span class="btn-note">示範帳號，不用登入</span>
+          </a>
+          <a class="btn btn-sub" href={LINKS.quiz} target="_blank" rel="noopener">
+            先量一次影響力健檢<span class="btn-note">十二格的起點，開課前先留著</span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -167,7 +177,7 @@ const rules = [
   <section class="section">
     <div class="wrap-text">
       <div class="quote">
-        <p>力量練起來，是為了給出去，<br />不是為了贏誰。</p>
+        <p>影響力練起來，是為了給出去，<br />不是為了贏誰。</p>
         <cite>— 光頭</cite>
       </div>
     </div>
@@ -365,6 +375,10 @@ const rules = [
   .app-p { margin-top: 14px; font-size: 16px; line-height: 1.95; color: var(--ink-2); }
   .app-last { margin-top: 18px; color: var(--ink); }
   .app-last b { display: block; margin-bottom: 4px; }
+  /* 這頁的錢鈕只有一顆（送出報名），所以這兩顆走參觀層的框線鈕 */
+  .app-try { margin-top: 22px; font-size: 15px; font-weight: 700; color: var(--act-deep); }
+  .app-btns { display: grid; gap: 10px; margin-top: 12px; }
+  .app-btns .btn { background: #fff; text-align: center; }
 
   /* ── 梯次選擇：整張卡就是 radio，手機上不用去點那顆小圓圈 ── */
   .picks { margin-top: 28px; display: grid; gap: 14px; }
