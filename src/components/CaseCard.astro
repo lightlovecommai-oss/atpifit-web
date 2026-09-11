@@ -18,7 +18,12 @@ const { c } = Astro.props;
     <p>{c.quote}</p>
   </blockquote>
   <figure class="case-shot photo">
-    <img src={c.shot} alt={`${c.name}的原始訊息截圖`} loading="lazy" />
+    <img
+      src={c.shot}
+      alt={`${c.name}的原始訊息截圖`}
+      loading="lazy"
+      style={`object-position:${c.shotPos ?? '50% 0%'}`}
+    />
     <figcaption>📷 原始截圖</figcaption>
   </figure>
   <footer class="case-meta">
@@ -40,8 +45,10 @@ const { c } = Astro.props;
   .case-quote { margin: 0; background: var(--bg-alt); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
   .case-quote p { font-size: 16px; line-height: 1.85; color: var(--ink); }
 
+  /* 固定視窗：原始截圖常是整頁長擷取（900×4000+），攤開會變一條白帶——
+     只露關鍵段，露哪段由 shotPos 控制 */
   .case-shot { margin: 16px 0 0; transform: rotate(-1.2deg); }
-  .case-shot img { width: 100%; height: auto; }
+  .case-shot img { width: 100%; height: 300px; object-fit: cover; display: block; }
 
   .case-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; margin-top: 16px; font-size: 14px; color: var(--ink-soft); }
   .case-meta b { font-size: 15px; color: var(--ink); }

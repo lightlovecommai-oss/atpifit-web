@@ -47,6 +47,7 @@ export type CaseItem = {
   who: string;    // 身分一句：他是做什麼的
   quote: string;  // 逐字引言＝截圖原文，不可改寫、不可湊句
   shot: string;   // 原始截圖路徑，例 '/assets/cases/xxx.jpg'（見證規格：截圖為證）
+  shotPos?: string; // 截圖視窗露出位置（object-position），長圖用來對準關鍵段，預設露頂部
   series: string; // 系列落款，例「超引力成交學・學員」
   stat?: { num: string; label: string }; // 大數字（§3.8 招4）：數字以截圖為準
 };
@@ -56,6 +57,7 @@ export const CASES: CaseItem[] = [
     who: '到府按摩師・負債 100 萬轉行',
     quote: '說出有說服力的話，讓顧客更信賴我，然後快速的幫我拓展客源。',
     shot: '/assets/cases/weixiang.png',
+    shotPos: '50% 62%',
     series: '超引力成交學・學員',
     stat: { num: '13.5萬', label: '轉行後單月總收入' },
   },
@@ -65,6 +67,7 @@ export const CASES: CaseItem[] = [
     quote:
       '很感謝光頭教練的課程與協助，讓我在上完課後的第一次實體銷講，就有了很大的突破！',
     shot: '/assets/cases/linjiaxuan.png',
+    shotPos: '50% 4%',
     series: '超引力成交學・學員',
     stat: { num: '15→9→8→3', label: '到場→有效聽眾→申請 1v1→全數成交' },
   },
@@ -74,6 +77,7 @@ export const CASES: CaseItem[] = [
     quote:
       '我一直記得光頭教練說過的一句話：「技巧是工具，真實才是地基。」',
     shot: '/assets/cases/liumuyang.png',
+    shotPos: '50% 2%',
     series: '超引力成交學・學員',
   },
 ];
