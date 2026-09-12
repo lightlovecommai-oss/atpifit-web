@@ -1,9 +1,6 @@
 User-agent: *
 Allow: /
 
-# 廣告落地頁不進索引，避免跟正式內容頁互相稀釋
-Disallow: /lp/
-
 # AI 搜尋爬蟲：明確開放。被引用是我們要的，不是要防的。
 User-agent: GPTBot
 Allow: /
