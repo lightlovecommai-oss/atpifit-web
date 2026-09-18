@@ -99,7 +99,7 @@ const schema = [
       <div class="mmap-scroll">
         <svg class="mmap" viewBox="0 88 940 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <line x1="26" y1="250" x2="914" y2="250" stroke="var(--ink)" stroke-width="3" opacity=".25" stroke-linecap="round" />
-          <g transform="translate(0,175) skewX(-12) translate(0,-175)">
+          <g class="skew-axis" style="--axis: 175px">
             {muscles.map((m, g) =>
               m.subs.map((_, s) => (
                 <rect

@@ -1,4 +1,4 @@
-/* 站台常數。網址真相＝記憶 atpifit-domain-status（apex 官網／app／quiz／lp 各自子網域）。 */
+/* 站台常數。網址真相＝記憶 atpifit-domain-status（apex 官網／app／quiz 各自子網域）。 */
 
 export const SITE = {
   url: 'https://atpifit.com',
@@ -13,7 +13,6 @@ export const SITE = {
 export const LINKS = {
   quiz: 'https://quiz.atpifit.com/',
   gym: 'https://app.atpifit.com/',
-  lp: 'https://lp.atpifit.com/',
   booking: 'https://time.atpifit.com/',
   line: 'https://lin.ee/pTzOrU9',
 } as const;

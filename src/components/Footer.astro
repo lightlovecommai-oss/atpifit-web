@@ -7,7 +7,8 @@ const year = new Date().getFullYear();
   <div class="wrap-wide">
     <div class="cols">
       <div class="col-brand">
-        <img src="/assets/logo-lockup.svg" alt={SITE.nameFull} width="160" height="40" />
+        <img class="lockup-light" src="/assets/logo-lockup.svg" alt={SITE.nameFull} width="160" height="40" />
+        <img class="lockup-dark" src="/assets/logo-lockup-dark.svg" alt="" width="160" height="40" />
         <!-- 中文主標語仍在標語庫輪播測試中（字典 01:484），這裡放已定錨的使命句，不假裝它是 slogan。 -->
         <p class="tag">讓每個人用自己最真實的聲音，創造影響力。</p>
       </div>
@@ -41,7 +42,11 @@ const year = new Date().getFullYear();
   .site-footer { margin-top: 80px; padding: 56px 0 40px; border-top: 1px solid var(--line); background: var(--bg-alt); }
   .cols { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 36px; margin-bottom: 32px; }
   .col-brand img { height: 40px; width: auto; }
-  .tag { margin-top: 14px; font-size: 15px; color: var(--ink-soft); max-width: 30ch; }
+  .lockup-dark { display: none; }
+  :global(body.theme-dark) .lockup-light { display: none; }
+  :global(body.theme-dark) .lockup-dark { display: block; }
+  /* 34ch：30ch 會讓使命句斷在「創造影響／力。」，中文孤字 */
+  .tag { margin-top: 14px; font-size: 15px; color: var(--ink-soft); max-width: 34ch; }
   .col h2 { font-size: 13px; font-weight: 700; letter-spacing: .12em; color: var(--ink-soft); margin-bottom: 12px; }
   .col a { display: block; padding: 5px 0; font-size: 15px; color: var(--ink); text-decoration: none; }
   .col a:hover { color: var(--act-deep); text-decoration: underline; }

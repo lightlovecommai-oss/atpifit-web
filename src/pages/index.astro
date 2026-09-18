@@ -282,11 +282,11 @@ const schema = [
       <div class="map-fig" aria-hidden="true">
         <svg viewBox="30 24 580 280" xmlns="http://www.w3.org/2000/svg">
           <line x1="60" y1="230" x2="580" y2="230" stroke="var(--ink)" stroke-width="3" opacity=".25" stroke-linecap="round" />
-          <g transform="translate(0,150) skewX(-12) translate(0,-150)">
+          <g class="skew-axis" style="--axis: 150px">
             <rect x="80" y="80" width="90" height="150" rx="10" fill="var(--a)" />
-            <rect x="210" y="120" width="90" height="110" rx="10" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 7" opacity=".28" />
-            <rect x="340" y="120" width="90" height="110" rx="10" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 7" opacity=".28" />
-            <rect x="470" y="120" width="90" height="110" rx="10" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 7" opacity=".28" />
+            <rect class="s-todo" x="210" y="120" width="90" height="110" rx="10" fill="none" stroke="var(--ink)" />
+            <rect class="s-todo" x="340" y="120" width="90" height="110" rx="10" fill="none" stroke="var(--ink)" />
+            <rect class="s-todo" x="470" y="120" width="90" height="110" rx="10" fill="none" stroke="var(--ink)" />
           </g>
           <text x="118" y="52" font-size="21" font-weight="700" fill="var(--a-deep)" text-anchor="middle">你在這裡</text>
           <path d="M118 62 L118 74" stroke="var(--a-deep)" stroke-width="2.5" stroke-linecap="round" />
@@ -444,13 +444,13 @@ const schema = [
   .bzh { flex-shrink: 0; font-size: 13px; font-weight: 700; color: var(--ink); }
   /* 大肌肉條＝3 片薄片（一片＝一條小肌群，24 §1.1），填色寬度＝分數 */
   .bbar { flex: 1; display: flex; gap: 3px; height: 8px; }
-  .bbar i { flex: 1; height: 100%; border-radius: 2.5px; transform: skewX(-12deg); }
+  .bbar i { flex: 1; height: 100%; border-radius: 2.5px; transform: skewX(var(--skew)); }
   .bv { flex-shrink: 0; width: 26px; text-align: right; font-size: 12.5px; font-weight: 700; color: var(--dim-deep); }
 
   .brow3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 7px; }
   .mini { background: var(--bg); border: 1px solid #EFE6DB; border-radius: 10px; padding: 7px 8px 6px; min-width: 0; }
   .mini-n { display: block; font-size: 12px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .mini-bar { display: block; height: 4px; border-radius: 3px; background: #E8DDD3; margin-top: 6px; overflow: hidden; transform: skewX(-12deg); }
+  .mini-bar { display: block; height: 4px; border-radius: 3px; background: #E8DDD3; margin-top: 6px; overflow: hidden; transform: skewX(var(--skew)); }
   .mini-bar i { display: block; height: 100%; border-radius: 3px; background: var(--dim); }
   /* 偷看鉤子：名字露、分數模糊——全開要進健檢拿 */
   .peek { filter: blur(2.5px); }
@@ -467,7 +467,7 @@ const schema = [
   /* 12 片薄片進度（v4 圖形語言）：一片＝一條小肌群、每 3 片一組＝一塊大肌肉。
      灰片＝ink 疊 .13（服務卡同值），彩片點名；斜切角同 L5 的 -12°。 */
   .qslices { display: flex; gap: 4px; margin: 14px 0 16px; }
-  .qslices i { flex: 1; height: 9px; border-radius: 2.5px; background: var(--ink); opacity: .13; transform: skewX(-12deg); }
+  .qslices i { flex: 1; height: 9px; border-radius: 2.5px; background: var(--ink); opacity: var(--slice-base); transform: skewX(var(--skew)); }
   .qslices i.lit { background: var(--a); opacity: 1; }
   .qslices i:nth-child(3n+1):not(:first-child) { margin-left: 8px; }
   .qtxt { font-size: 17px; font-weight: 500; line-height: 1.7; margin-bottom: 16px; }
@@ -517,8 +517,8 @@ const schema = [
   /* 三片疊＝一塊大肌肉、一片＝一條小肌群（品牌 DNA 24 §1.1）。
      實色只 1 片＋2 片淡填 14%（§3.9 紅線：實色最多兩片、I 金不鋪實）——淡片是層次不是分數。 */
   .m-slices { display: flex; gap: 4px; margin-bottom: 12px; }
-  .m-slices i { width: 26px; height: 12px; border-radius: 3.5px; background: var(--dim); transform: skewX(-12deg); }
-  .m-slices i:nth-child(n+2) { opacity: .14; }
+  .m-slices i { width: 26px; height: 12px; border-radius: 3.5px; background: var(--dim); transform: skewX(var(--skew)); }
+  .m-slices i:nth-child(n+2) { opacity: var(--slice-base); }
   .m-en { display: block; font-size: 11px; font-weight: 900; letter-spacing: 2px; color: var(--dim-deep); margin-bottom: 8px; }
   .muscles h3 { font-size: 19px; }
   .muscle-result { margin-top: 2px; font-size: 18px; font-weight: 700; color: var(--dim-deep); }

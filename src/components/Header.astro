@@ -7,7 +7,9 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
 <header class="site-header">
   <div class="wrap-wide bar">
     <a href="/" class="brand" aria-label={`${SITE.nameFull} 首頁`}>
-      <img src="/assets/logo-lockup.svg" alt="" width="127" height="44" />
+      {/* 兩版同形狀只差顏色：深底頁用亮米版，否則墨色 lockup 會整個沉進背景看不見 */}
+      <img class="lockup-light" src="/assets/logo-lockup.svg" alt="" width="127" height="44" />
+      <img class="lockup-dark" src="/assets/logo-lockup-dark.svg" alt="" width="127" height="44" />
       <span class="visually-hidden">{SITE.nameFull}</span>
     </a>
 
@@ -29,7 +31,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
 <style>
   .site-header {
     position: sticky; top: 0; z-index: 50;
-    background: rgba(247, 241, 236, .92);
+    background: var(--bg-blur);
     backdrop-filter: saturate(140%) blur(10px);
     border-bottom: 1px solid var(--line);
   }
@@ -37,6 +39,9 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
   .brand { display: flex; align-items: center; flex-shrink: 0; }
   /* lockup 的 viewBox 含保護空間（圖標高 ½），所以框要比看起來需要的再大一點 */
   .brand img { height: 44px; width: auto; }
+  .lockup-dark { display: none; }
+  :global(body.theme-dark) .lockup-light { display: none; }
+  :global(body.theme-dark) .lockup-dark { display: block; }
 
   .nav { display: flex; align-items: center; gap: 4px; margin-left: auto; }
   .nav > a {
@@ -53,6 +58,13 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
     background: var(--act-deep);
   }
   .nav-cta:hover { background: var(--ink-2); color: #fff; }
+  /* 深底頁 --act-deep 是亮金，白字壓上去讀不到；改成幽靈框，實色也留給頁內那顆唯一主鈕 */
+  :global(body.theme-dark) .nav-cta {
+    background: rgba(232, 200, 154, .14);
+    border: 1px solid rgba(232, 200, 154, .45);
+    color: var(--act-deep);
+  }
+  :global(body.theme-dark) .nav-cta:hover { background: rgba(232, 200, 154, .26); color: var(--ink); }
 
   .burger { display: none; }
 

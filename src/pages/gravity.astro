@@ -1,0 +1,873 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CaseCard from '../components/CaseCard.astro';
+import { SITE, LINKS, FOUNDER_PHOTO, CASES } from '../consts';
+
+/* 「超引力成交學」方法論長頁（LP），取代舊的 lp.atpifit.com 系列。
+   分工：這頁負責說服（公開、給陌生人看），/courses/retrain 負責收單（noindex、舊生專用）。
+
+   ⚠️ 視覺＝科技版深色底（bodyClass="theme-dark"），這不是門面破例，是產品線區隔：
+   影響力健身房＝館，暖版；超引力成交學＝實戰私教，科技版。色值真相＝
+   consult-workshop/pro.html，變數層在 brand.css 的 body.theme-dark。
+
+   ⚠️ 圖比字重要（全貌感規則）：能用圖講的就不要用段落講。這頁六張圖＝
+   引力場／四個斷點流程／12 小肌群牆／L1–L13 全貌／一週迴路／入場到結業旅程。
+
+   ⚠️ 作廢詞：一階／二階／三階／Level 1-3／引力式系列／8週·12週／1+1 系統／「〇〇力」／收割。
+   ⚠️ 價值堆疊與定價話術是諮詢現場用的，不上 LP（03-產品體系總覽 §C）。
+   ⚠️ L5–L13 沒有對外定案的模組名稱，不可自己編——全貌圖那幾格只露編號。 */
+
+const title = '超引力成交學｜把成交練成四塊肌肉的教練課';
+const description =
+  '超引力成交學是影響力健身房的實戰私教課。它把成交拆成 ATPI 四塊影響力肌肉——吸引、信任、專業、推進，一課一塊，練到在真實對話裡走得通。對外兩個課：超引力顧問課 L1–L8、超引力公眾演說課 L1–L13。';
+
+/* ═══ CTA 單一開關 ═══
+   'retrain'：10/12 B 班開課前的舊生回訓期，hero 下方多一條舊生專屬橫幅（帶倒數）。
+   'consult'：開課後改成這個值，橫幅整條消失，全頁只剩「預約 1v1 諮詢」。
+   主行動鈕在兩種模式下都是諮詢——這頁寫給陌生人，不能把陌生人丟進舊生專用頁。 */
+const CTA_MODE: 'retrain' | 'consult' = 'retrain';
+const RETRAIN_OPEN = CTA_MODE === 'retrain';
+const RETRAIN_DEADLINE = '2026-10-12'; // B 班（舊生回訓班）L5–L8 開課日
+
+/* 四個斷點流程圖：一場對話會斷在哪四個地方。結果句鎖字典 01:58–61。 */
+const chain = [
+  { dim: 'A', en: 'ATTRACT', muscle: '吸引肌肉', from: '你開口', to: '他想聽', broke: '他沒有一個非聽不可的理由' },
+  { dim: 'T', en: 'TRUST', muscle: '信任肌肉', from: '他想聽', to: '他說真話', broke: '他給你客套，你只能自己猜' },
+  { dim: 'P', en: 'PROFESSIONAL', muscle: '專業肌肉', from: '他說真話', to: '他認定你', broke: '他聽懂了，但去找了別人' },
+  { dim: 'I', en: 'IMPACT', muscle: '推進肌肉', from: '他認定你', to: '他真的做', broke: '氣氛很熱，散場之後什麼都沒發生' },
+];
+
+/* 12 小肌群：名稱原文＝quiz 題庫 label，不可自創。
+   示意高度照「肌肉牆預設 T>A>P>I」：信任最高、推進最矮（裝飾用預設態）。 */
+const wall = [
+  { dim: 'A', en: 'ATTRACT', name: '吸引肌肉', result: '讓他想靠近', lesson: 'L1',
+    minis: [{ n: '讓他開口', v: 70 }, { n: '讓他追問', v: 62 }, { n: '讓他記得', v: 74 }],
+    body: '在對方還沒有義務聽你說話的時候，讓他願意多聽一句。練的不是開場白，是你有沒有站在他要的東西那一邊。' },
+  { dim: 'T', en: 'TRUST', name: '信任肌肉', result: '讓他願意說', lesson: 'L2',
+    minis: [{ n: '讓他敢說', v: 82 }, { n: '讓他交心', v: 76 }, { n: '讓他當真', v: 88 }],
+    body: '把對方心裡那句沒講出來的話問出來。你拿到真話才有東西可以解，拿到客套，你解的是空氣。' },
+  { dim: 'P', en: 'PROFESSIONAL', name: '專業肌肉', result: '讓他要找你', lesson: 'L3',
+    minis: [{ n: '讓他釐清', v: 58 }, { n: '讓他有感', v: 66 }, { n: '讓他放心', v: 54 }],
+    body: '專業不是你懂多少，是他聽完之後認定你就是那個人。練的是怎麼把你會的東西，變成他聽得懂的一條路。' },
+  { dim: 'I', en: 'IMPACT', name: '推進肌肉', result: '讓他願意動', lesson: 'L4',
+    minis: [{ n: '讓他想要', v: 44 }, { n: '讓他敢要', v: 50 }, { n: '讓他答應', v: 40 }],
+    body: '把好感變成今天就會發生的下一步。不是逼單，是把那個他本來就想做的決定，變得容易做出來。' },
+];
+
+/* L1–L13 全貌。⚠️ 只有 L1–L4 有對外定案的名稱（＝四塊肌肉，courses.astro 同一份真相）；
+   L5 之後沒有公開模組名，格子只露編號，不編故事。 */
+const road = [
+  {
+    code: 'L1–L4', name: '鍛鍊段', dim: 'A', open: true,
+    body: '一課一塊肌肉，四堂涵蓋十二條小肌群。這一段練單點零件，目的是先讓每一塊都動得起來。',
+    mods: [
+      { id: 'L1', name: '吸引肌肉' }, { id: 'L2', name: '信任肌肉' },
+      { id: 'L3', name: '專業肌肉' }, { id: 'L4', name: '推進肌肉' },
+    ],
+  },
+  {
+    code: 'L5–L8', name: '放大段', dim: 'T', open: false,
+    body: '把四塊肌肉串成你自己的一對一路徑。同樣是那四塊，這裡練的是怎麼在一場真實的對話裡把它們接起來。',
+    mods: [{ id: 'L5' }, { id: 'L6' }, { id: 'L7' }, { id: 'L8' }],
+  },
+  {
+    code: 'L9–L13', name: '演說段', dim: 'I', open: false,
+    body: '把同一條路搬上舞台。從一對一換到一對多，肌肉沒變，動作變了。',
+    mods: [{ id: 'L9' }, { id: 'L10' }, { id: 'L11' }, { id: 'L12' }, { id: 'L13' }],
+  },
+];
+
+const courses = [
+  { name: '超引力顧問課', range: 'L1–L8', span: 8, price: '3.28 萬', dim: 'T',
+    stages: '鍛鍊段＋放大段', who: '一對一還沒跑順，講完之後對方沒有下一步。' },
+  { name: '超引力公眾演說課', range: 'L1–L13', span: 13, price: '10.8 萬', dim: 'I',
+    stages: '鍛鍊段＋放大段＋演說段', who: '一對一已經會了，卡在一次只能面對一個人。' },
+];
+
+/* 一週迴路（流程圖）：乾貨自己看、時間全部拿去練。 */
+const loop = [
+  { dim: 'A', n: '①', t: '看錄播乾貨', s: '這週那塊肌肉的結構，自己安排時間看完。' },
+  { dim: 'T', n: '②', t: '進健身房打卡', s: '一天一個小動作，一週練 2 到 3 天，記下今天動到哪塊。' },
+  { dim: 'P', n: '③', t: '討論課對練', s: '4 到 5 人小組 Hot Seat 輪流，顧問當場校正。' },
+  { dim: 'I', n: '④', t: '帶回真實現場', s: '拿去用在這週真的要談的那一場，結果再帶回下一堂。' },
+];
+
+/* 入場到結業（旅程圖）。體測不佔模組編號＝courses.astro 同一份真相。 */
+const journey = [
+  { n: 1, name: '免費影響力健檢', here: true, body: '12 題，大約三分鐘。量出四塊肌肉現在的樣子，先練哪塊最有感。' },
+  { n: 2, name: '1v1 諮詢', here: false, body: '線上 60 分鐘。先聽你的現況，不適合會直接說——我們不預設賣哪一個課。' },
+  { n: 3, name: '入學體測', here: false, body: '開課前量一次當起點數據。體測不佔模組編號。' },
+  { n: 4, name: '一週一個模組', here: false, body: '錄播、打卡、討論課對練，一週一迴路。班級 20 人以內。' },
+  { n: 5, name: '結業複測', here: false, body: '再量一次做前後對照。進步不靠感覺，看得到數字。' },
+  { n: 6, name: '回放與討論會籍一年', here: false, body: '一年內都可以回來重看、回來參加討論課。' },
+];
+
+const designs = [
+  { t: '乾貨錄播，直播只拿來對練',
+    s: '知識自己看就會，能力要有人看著你做。所以直播時間全部留給對練與當場校正，不拿來重講一次投影片。' },
+  { t: '班級 20 人以內，課中拆成 4 到 5 人小組',
+    s: 'Hot Seat 輪流上場。人少不是為了精緻，是為了每個人都真的輪得到。' },
+  { t: '課與課之間有地方練',
+    s: '影響力健身房是每天打卡的地方：一天一個小動作、記一塊肌肉。課不是一週一次的事件，是一條連續的線。' },
+  { t: '前後各量一次',
+    s: '開課前做入學體測，結業後複測做前後對照。進步不靠感覺，看得到數字。' },
+];
+
+/* 原文＝03-產品體系總覽 §A 誰不是我們的人（諮詢過濾用），語氣不改。 */
+const notFor = [
+  '想找「速成話術腳本」背了就用的人——我們教結構，不教背稿。',
+  '產品或服務本身有問題、想靠說話掩蓋的人。',
+  '不願意在生活中實際練習的人——課程設計就是每週學一個核心、馬上練。',
+];
+
+const forWhom = [
+  { dim: 'A', t: '顧問・教練・專業服務者', s: '你的專業沒問題，卡在怎麼讓對方在第一次談完就知道要找你。' },
+  { dim: 'P', t: '業務・接案者・一人公司', s: '你不想推銷，但你需要案子穩定進來。' },
+  { dim: 'I', t: '講師・帶團隊的人', s: '你一次要面對一群人，而且需要他們聽完真的去做。' },
+];
+
+const faq = [
+  { q: '超引力成交學跟影響力健身房是什麼關係？',
+    a: '影響力健身房是館名，也是母品牌；超引力成交學是這間館裡的教練課系列。就像健身房本身跟教練課的關係。日後還會有別的教練課掛在同一個館名下。' },
+  { q: '超引力成交學有幾種課？',
+    a: '對外只有兩個：超引力顧問課，內容是 L1 到 L8，包含鍛鍊段與放大段；超引力公眾演說課，內容是 L1 到 L13，也就是前面全部再加上演說段。中間的段落不單獨販售。' },
+  { q: '為什麼不能只買演說的部分？',
+    a: '因為你在台上做的每一件事，都是一對一的放大版。一對一走不通的路，人一多只會斷得更快。演說段建立在前面八個模組的基礎上，抽掉地基單獨學，學到的會是形式而不是能力。' },
+  { q: '我要怎麼知道自己適合哪一個？',
+    a: '這個選擇不會由你自己在網頁上決定。它會在諮詢現場，把你的狀況攤開來看過之後才決定，我們不預設賣哪一個。開始的方式是先做一次免費的影響力健檢。' },
+  { q: '我不是業務，這套課對我有用嗎？',
+    a: '有用。ATPI 四塊肌肉練的是讓別人理解你、願意跟你一起做，這件事在提案、面試、帶團隊、家庭對話裡都在發生。成交在這裡的意思是讓人願意行動，不限於買賣。' },
+  { q: '「成交」這個詞會不會太業務導向？',
+    a: '成交在這裡的意思是讓人願意行動，不是話術與施壓。這套課從頭到尾的立場是：先有真實與信任，行動才會發生。技巧是工具，真實才是地基。' },
+  { q: '上課要花多少時間？',
+    a: '一個模組等於一週。乾貨錄播自己安排時間看，直播討論課固定時段，課間在影響力健身房打卡練 2 到 3 天。回放一年，討論會籍一年，一年內都可以回來參加討論課。' },
+  { q: '報名之後可以退嗎？', a: '報名後 7 天內可退款。' },
+];
+
+const url = `${SITE.url}/gravity/`;
+const schema = [
+  {
+    '@type': 'WebPage', '@id': `${url}#webpage`, url, name: title, description,
+    inLanguage: 'zh-Hant-TW',
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    about: { '@id': `${SITE.url}/#organization` },
+  },
+  ...courses.map((c) => ({
+    '@type': 'Course',
+    '@id': `${url}#${c.range.toLowerCase().replace(/[^a-z0-9]/g, '')}`,
+    name: c.name,
+    description: `${c.stages}，內容涵蓋 ${c.range}。適合的情況：${c.who}`,
+    inLanguage: 'zh-Hant-TW',
+    provider: { '@id': `${SITE.url}/#organization` },
+    url,
+  })),
+  {
+    '@type': 'FAQPage', '@id': `${url}#faq`,
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question', name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  schema={schema}
+  bodyClass="theme-dark"
+  themeColor="#0c131e"
+>
+  <!-- ═══ 01 Hero ═══ -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="prokick"><span>SUPER ATTRACTION · 實戰私教</span></p>
+        <h1>你講的是對的，<br /><span class="hl">只是對方沒有動</span></h1>
+        <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
+        <p class="lead hero-lead">問題通常不在內容，在那四塊看不見的肌肉。超引力成交學把成交拆成吸引、信任、專業、推進四塊，一課練一塊，練到在真實的對話裡走得通。</p>
+
+        <div class="btn-row hero-cta">
+          <a class="btn btn-main" href={LINKS.booking} data-cta="booking" data-cta-position="lp-hero">
+            預約 1v1 諮詢
+          </a>
+          <a class="btn btn-sub" href={LINKS.quiz} data-cta="quiz" data-cta-position="lp-hero">
+            先做免費影響力健檢
+          </a>
+        </div>
+        <p class="hero-meta"><span>🎯 <b>ATPI</b> 四塊影響力肌肉</span><span>👥 班級 20 人以內</span><span>📈 課前課後各量一次</span></p>
+      </div>
+
+      <!-- 圖①引力場：中心是你，四塊肌肉夠強，場才成形（pro 頁 GRAVITY FIELD 同款語言） -->
+      <aside class="field card" aria-label="引力場示意">
+        <p class="sec">GRAVITY FIELD · <b>引力場</b></p>
+        <div class="field-fig" aria-hidden="true">
+          <svg viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="150" r="120" fill="none" stroke="var(--line-soft)" stroke-width="1.5" stroke-dasharray="4 6" />
+            <circle cx="160" cy="150" r="86" fill="none" stroke="var(--line-soft)" stroke-width="1.5" stroke-dasharray="4 6" />
+            <circle cx="160" cy="150" r="52" fill="none" stroke="var(--line-soft)" stroke-width="1.5" stroke-dasharray="4 6" />
+            <line x1="160" y1="150" x2="160" y2="42" stroke="var(--a)" stroke-width="2" opacity=".5" />
+            <line x1="160" y1="150" x2="268" y2="150" stroke="var(--t)" stroke-width="2" opacity=".5" />
+            <line x1="160" y1="150" x2="160" y2="258" stroke="var(--p)" stroke-width="2" opacity=".5" />
+            <line x1="160" y1="150" x2="52" y2="150" stroke="var(--i)" stroke-width="2" opacity=".5" />
+            <circle cx="160" cy="42" r="19" fill="var(--a)" />
+            <circle cx="268" cy="150" r="19" fill="var(--t)" />
+            <circle cx="160" cy="258" r="19" fill="var(--p)" />
+            <circle cx="52" cy="150" r="19" fill="var(--i)" />
+            <text x="160" y="48" font-size="16" font-weight="900" fill="#0c131e" text-anchor="middle">A</text>
+            <text x="268" y="156" font-size="16" font-weight="900" fill="#0c131e" text-anchor="middle">T</text>
+            <text x="160" y="264" font-size="16" font-weight="900" fill="#0c131e" text-anchor="middle">P</text>
+            <text x="52" y="156" font-size="16" font-weight="900" fill="#0c131e" text-anchor="middle">I</text>
+            <circle cx="160" cy="150" r="30" fill="var(--card-warm)" stroke="var(--i)" stroke-width="2" />
+            <text x="160" y="146" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="middle">你</text>
+            <text x="160" y="163" font-size="9" font-weight="700" fill="var(--i-deep)" text-anchor="middle">YOU</text>
+          </svg>
+        </div>
+        <p class="field-note">引力是結果，不是方法。四塊肌肉夠強，場自然成形，對的人會自己走過來，你不用追著跑。</p>
+        <div class="rule4" role="presentation"></div>
+      </aside>
+    </div>
+  </section>
+
+  {RETRAIN_OPEN && (
+    <!-- ═══ 舊生專屬橫幅（CTA_MODE 開關）：只給已上過課的人，倒數是事實不是話術 ═══ -->
+    <section class="section alum-wrap">
+      <div class="wrap">
+        <aside class="alum" data-deadline={RETRAIN_DEADLINE}>
+          <div>
+            <p class="alum-k">已經上過光頭的課？</p>
+            <p class="alum-t">你已經會做了。這一梯是把它變成<b>可以帶人</b>。</p>
+            <p class="alum-s">12 月起這套課會系統化：乾貨全部錄播，每週只留 1.5 小時演練課。光頭從頭帶到尾的完整直播梯次，剩下最後兩梯。</p>
+          </div>
+          <div class="alum-act">
+            <p class="alum-count num" data-countdown>10/12 開課</p>
+            <a class="btn btn-sub" href="/courses/retrain" data-cta="retrain" data-cta-position="lp-alumni">
+              看梯次與報名
+            </a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  )}
+
+  <!-- ═══ 02 圖②：一場對話會斷在哪四個地方（流程圖）═══ -->
+  <section class="section section-alt">
+    <div class="wrap">
+      <p class="kicker">先看結構</p>
+      <h2>一場對話，<span class="hl">會斷在四個地方</span></h2>
+      <p class="lead sec-lead">而且每一次斷掉的地方都不一樣。所以你把同一套方法再練一次，結果還是不穩。</p>
+
+      <!-- 橫向鏈：五個狀態、四段推力。每段推力＝一塊肌肉，斷掉會怎樣寫在下面。 -->
+      <div class="chain" role="img" aria-label="對話從你開口到他真的做，中間由吸引、信任、專業、推進四塊肌肉推動">
+        {chain.map((c, i) => (
+          <div class="ch" data-dim={c.dim}>
+            <span class="ch-from">{c.from}</span>
+            {/* 終點籤：桌機絕對定位到最右，手機退成靜態，所以要緊跟在起點籤後面才讀得出 from→to */}
+            {i === chain.length - 1 && <span class="ch-to">{c.to}</span>}
+            <span class="ch-arrow" aria-hidden="true">
+              <i class="ch-slice"></i>
+              <b class="ch-m">{c.dim} · {c.muscle}</b>
+            </span>
+            <span class="ch-broke">斷在這裡：{c.broke}</span>
+          </div>
+        ))}
+      </div>
+
+      <p class="chain-note">四塊不是加起來，是<b>相乘</b>。任何一塊趨近於零，另外三塊再高，整條鏈都會停在那裡。</p>
+    </div>
+  </section>
+
+  <!-- ═══ 03 為什麼話術沒用（骨層） ═══ -->
+  <section class="section">
+    <div class="wrap-text">
+      <p class="kicker">先講一件事</p>
+      <h2>話術像打氣打出來的肌肉，<span class="hl">一鬆手就消</span></h2>
+      <p class="lead">卡住的時候，多數人會去找更厲害的一句話。學回來當下有用，過兩週又打回原形，因為換掉的是話，沒有換掉底下的能力。</p>
+      <p class="body-p">影響力不是天生的個性，也不是話術的天分。它是可以量、可以練、可以驗收的能力。能拆解，就能練；能練，就能量出進步。</p>
+      <p class="body-p">這也是為什麼我們不給你腳本。腳本是別人的身體，穿不上你的。</p>
+    </div>
+  </section>
+
+  <!-- ═══ 04 圖③：12 小肌群牆（拆到可以量的顆粒）═══ -->
+  <section class="section section-alt">
+    <div class="wrap">
+      <p class="kicker">ATPI 四塊影響力肌肉</p>
+      <h2>拆到<span class="hl">量得出來</span>為止</h2>
+      <p class="lead sec-lead">四塊大肌肉，底下各三條小肌群，一共十二條。鍛鍊段的四堂課，就是這四塊。</p>
+
+      <div class="wall" role="img" aria-label="四塊影響力肌肉各有三條小肌群，共十二條">
+        {wall.map((m) => (
+          <div class="wg" data-dim={m.dim}>
+            <div class="wg-bars">
+              {m.minis.map((mi) => (
+                <span class="wg-bar"><i style={`height:${mi.v}%`}></i></span>
+              ))}
+            </div>
+            <div class="wg-names">
+              {m.minis.map((mi) => <span>{mi.n}</span>)}
+            </div>
+            <p class="wg-t"><b>{m.dim}</b> {m.name}</p>
+            <p class="wg-r">{m.result}</p>
+          </div>
+        ))}
+      </div>
+      <p class="wall-note">上面是示意。你自己那面牆，健檢三分鐘就量得出來。</p>
+
+      <div class="grid muscles">
+        {wall.map((m) => (
+          <article class="card muscle" data-dim={m.dim}>
+            <span class="m-slices" role="presentation"><i></i><i></i><i></i></span>
+            <span class="m-en">{m.dim} · {m.en}<b class="m-les">{m.lesson}</b></span>
+            <h3>{m.name}</h3>
+            <p class="muscle-result">{m.result}</p>
+            <p class="m-body">{m.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 05 圖④：L1–L13 全貌（全圖露出、現在位置亮、未解鎖描虛線）═══ -->
+  <section class="section">
+    <div class="wrap-wide">
+      <p class="kicker">這條路長什麼樣</p>
+      <h2>十三個模組，<span class="hl">全部先給你看</span></h2>
+      <p class="lead sec-lead">一個模組等於一週。包括你現在還沒走到的地方，先看全圖再決定要走多遠。</p>
+
+      <div class="road">
+        {road.map((seg) => (
+          <div class:list={['seg', { open: seg.open }]} data-dim={seg.dim}>
+            <p class="seg-h"><span class="seg-code">{seg.code}</span><b>{seg.name}</b></p>
+            <div class="mods">
+              {seg.mods.map((m) => (
+                <span class:list={['mod', { locked: !seg.open }]}>
+                  <b class="mod-id num">{m.id}</b>
+                  {m.name ? <i class="mod-n">{m.name}</i> : <i class="mod-n mod-lock">還沒解鎖</i>}
+                </span>
+              ))}
+            </div>
+            <p class="seg-s">{seg.body}</p>
+            {seg.open && <span class="seg-here">你從這裡開始</span>}
+          </div>
+        ))}
+      </div>
+
+      <!-- 兩個 SKU 各自涵蓋到哪：長度＝實際涵蓋範圍，對齊上面 4+4+5 的格子 -->
+      <div class="sku">
+        <p class="sku-k">兩個課各自涵蓋到哪</p>
+        {courses.map((c) => (
+          <div class="sku-row">
+            <span class="sku-bar" data-dim={c.dim} style={`grid-column:1/span ${c.span}`}>
+              <b>{c.name}</b><i>{c.range}・{c.price}</i>
+            </span>
+          </div>
+        ))}
+        <p class="sku-note">中間的段落不單獨販售。走到最後，不是你變成一個很會講話的人，而是<b>你說的話，開始有人願意照著做</b>。他們相信的是你這個人。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 06 圖⑤：一週迴路（流程圖）═══ -->
+  <section class="section section-alt">
+    <div class="wrap">
+      <p class="kicker">課是怎麼上的</p>
+      <h2>一週一個迴路，<span class="hl">時間全部留給練</span></h2>
+
+      <div class="loop" role="img" aria-label="一週迴路：看錄播、進健身房打卡、討論課對練、帶回真實現場，然後回到下一週">
+        <div class="loop-row">
+          {loop.map((s) => (
+            <div class="lp" data-dim={s.dim}>
+              <span class="lp-n num">{s.n}</span>
+              <p class="lp-t">{s.t}</p>
+              <p class="lp-s">{s.s}</p>
+            </div>
+          ))}
+        </div>
+        <p class="loop-back" aria-hidden="true">↻ 回到 ①，下一塊肌肉</p>
+      </div>
+
+      <div class="grid grid-2 designs">
+        {designs.map((d, i) => (
+          <div class="design card">
+            <span class="dnum num">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{d.t}</h3>
+            <p>{d.s}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 07 圖⑥：入場到結業（旅程圖）═══ -->
+  <section class="section">
+    <div class="wrap-text">
+      <p class="kicker">你會怎麼進來</p>
+      <h2>從量一次開始，<span class="hl">到量第二次結束</span></h2>
+
+      <div class="map">
+        {journey.map((j) => (
+          <div class:list={['stn', `n${j.n}`, { here: j.here }]}>
+            <p class="stn-t">第 {j.n} 站・{j.name}{j.here && <span class="you">你在這</span>}</p>
+            <p class="stn-s">{j.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 08 兩個課 ═══ -->
+  <section class="section section-alt">
+    <div class="wrap">
+      <p class="kicker">對外只有兩個課</p>
+      <h2>怎麼選，<span class="hl">諮詢現場才決定</span></h2>
+      <div class="grid grid-2 courses">
+        {courses.map((c) => (
+          <article class="card muscle" data-dim={c.dim}>
+            <span class="muscle-tag">{c.range}</span>
+            <h3>{c.name}</h3>
+            <p class="price num">{c.price}</p>
+            <p class="stages-line">{c.stages}</p>
+            <p class="who"><b>適合的情況</b><br />{c.who}</p>
+          </article>
+        ))}
+      </div>
+      <p class="note">這個選擇不會由你自己在網頁上決定。它會在諮詢現場，把你的狀況攤開來看過<span class="nb">之後才決定</span>。<span class="nb">我們不預設賣哪一個。</span></p>
+    </div>
+  </section>
+
+  <!-- ═══ 09 適合誰／不適合誰 ═══ -->
+  <section class="section">
+    <div class="wrap">
+      <p class="kicker">誰適合來</p>
+      <h2>這套課是<span class="hl">為誰做的</span></h2>
+      <div class="grid who">
+        {forWhom.map((w) => (
+          <div class="who-card" data-dim={w.dim}>
+            <p class="who-t">{w.t}</p>
+            <p class="who-s">{w.s}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="notfor">
+        <h3>有三種人我們會直接說不適合</h3>
+        <ul>
+          {notFor.map((n) => <li>{n}</li>)}
+        </ul>
+        <p class="notfor-s">先說清楚比較公平。諮詢的時候如果我們覺得你不適合，會直接講，不會硬把課賣給你。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 10 教的人是誰 ═══ -->
+  <section class="section section-alt">
+    <div class:list={['wrap', 'coach', { 'has-photo': !!FOUNDER_PHOTO }]}>
+      {FOUNDER_PHOTO && (
+        <figure class="coach-photo">
+          <img src={FOUNDER_PHOTO} alt="平凡人光頭（徐哲彥）——影響力健身房創辦人" width="380" height="450" loading="lazy" />
+          <div class="rule4" role="presentation"></div>
+        </figure>
+      )}
+      <div>
+        <p class="kicker">教的人是誰</p>
+        <h2>平凡人光頭，<span class="hl">不是天生會講的人</span></h2>
+        <p class="lead coach-lead">本名徐哲彥。影響力健身房創辦人、ATPI 溝通 4 大肌肉框架創始人。名字裡留著「平凡人」三個字，因為這套方法的前提就是：影響力不是天賦，是練出來的肌肉。</p>
+        <ul class="coach-nums">
+          <li><b class="bignum">200+</b><span>場演講</span></li>
+          <li><b class="bignum">2000+</b><span>位學員</span></li>
+          <li><b class="bignum">10 年</b><span>反覆驗證這套公式</span></li>
+        </ul>
+        <a class="coach-more" href="/about/">認識光頭的故事 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 11 學員案例（引言逐字照截圖，絕不代擬） ═══ -->
+  {CASES.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">練過的人</p>
+        <h2>他們後來，<span class="hl">怎麼了</span></h2>
+        <div class="grid grid-3 cases">
+          {CASES.map((c) => <CaseCard c={c} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ═══ 12 骨層句 ═══ -->
+  <section class="section section-alt">
+    <div class="wrap-text">
+      <blockquote class="quote">
+        <p>影響力的盡頭不是成交，是有人因為你變好。</p>
+        <cite>平凡人光頭</cite>
+      </blockquote>
+      <p class="body-p">影響力這種東西，用來拿下別人也可以，用來讓別人變好也可以，我們選後面那條。練得強不是為了壓過誰，是為了有能力把你想給的東西，真的給出去。</p>
+    </div>
+  </section>
+
+  <!-- ═══ 13 主 CTA ═══ -->
+  <section class="section">
+    <div class="wrap-text">
+      <aside class="cta">
+        <p class="kicker">怎麼開始</p>
+        <h2>先把你的狀況攤開來看一次</h2>
+        <p class="lead">1v1 諮詢是線上 60 分鐘，我們會先聽你的現況，再把卡住的地方指出來。不適合會直接說，不會硬推。</p>
+        <a class="btn btn-main" href={LINKS.booking} data-cta="booking" data-cta-position="lp-bottom">
+          預約 1v1 諮詢
+        </a>
+        <p class="cta-sub">還沒準備好聊？<a href={LINKS.quiz} data-cta="quiz" data-cta-position="lp-bottom-sub">先做 3 分鐘免費影響力健檢</a>，量出四塊肌肉現在的樣子。</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ═══ 14 FAQ ═══ -->
+  <section class="section section-alt">
+    <div class="wrap-text">
+      <p class="kicker">常見問題</p>
+      <h2>先回答<span class="hl">你可能會問的</span></h2>
+      <div class="faq">
+        {faq.map((f, i) => (
+          <details class="qa" open={i === 0}>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 15 收尾 ═══ -->
+  <section class="section">
+    <div class="wrap-text center">
+      <p class="closing">你不用變成另一個人，<br />只要讓真實的你呈現出來。</p>
+      <div class="btn-row closing-cta">
+        <a class="btn btn-sub" href={LINKS.booking} data-cta="booking" data-cta-position="lp-closing">
+          預約 1v1 諮詢
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  /* 倒數在瀏覽器算：站是靜態建置的，build 時間算的天數一部署就過期。 */
+  const box = document.querySelector<HTMLElement>('.alum[data-deadline]');
+  const out = box?.querySelector<HTMLElement>('[data-countdown]');
+  if (box && out) {
+    const target = new Date(`${box.dataset.deadline}T00:00:00+08:00`).getTime();
+    const days = Math.ceil((target - Date.now()) / 86400000);
+    if (days > 1) out.textContent = `距開課還有 ${days} 天`;
+    else if (days === 1) out.textContent = '明天開課';
+    else if (days === 0) out.textContent = '今天開課';
+    else box.hidden = true;
+  }
+</script>
+
+<style>
+  /* 四色簽名線（pro .rule4 同款：科技底要帶一點發光才立得起來） */
+  .rule4 {
+    height: 2px; border-radius: 2px; margin-top: 16px;
+    background: linear-gradient(90deg, var(--a), var(--t), var(--p), var(--i));
+    box-shadow: 0 0 8px rgba(232, 115, 74, .35);
+  }
+  .sec { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--ink-soft); margin-bottom: 10px; }
+  .sec b { color: var(--ink); font-size: 13px; letter-spacing: 1px; }
+  .sec-lead { max-width: 50ch; margin-top: 14px; }
+  .body-p { margin-top: 18px; color: var(--ink-soft); }
+
+  /* 維度變數：非 .muscle 的元素自己帶一份 */
+  [data-dim="A"] { --dim: var(--a); --dim-deep: var(--a-deep); --dim-tint: var(--a-tint); }
+  [data-dim="T"] { --dim: var(--t); --dim-deep: var(--t-deep); --dim-tint: var(--t-tint); }
+  [data-dim="P"] { --dim: var(--p); --dim-deep: var(--p-deep); --dim-tint: var(--p-tint); }
+  [data-dim="I"] { --dim: var(--i); --dim-deep: var(--i-deep); --dim-tint: var(--i-tint); }
+
+  /* ═══ Hero ═══ */
+  .hero { padding: clamp(36px, 6vw, 72px) 0 clamp(28px, 4vw, 48px); }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(28px, 4vw, 56px); align-items: center; }
+  .hero-lead { max-width: 44ch; margin-top: 18px; }
+  .hero-cta { margin-top: 30px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 16px; font-size: 13px; color: var(--ink-soft); }
+  .hero-meta b { color: var(--i-deep); }
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .field { max-width: 460px; }
+  }
+
+  /* 私教席眉標＝咖啡金橫條＋掃描線（pro .tb 的縮小版，這頁的身分識別） */
+  .prokick {
+    display: inline-block; position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #4A1B0C, #6B3018);
+    border-radius: 999px; padding: 5px 16px; margin-bottom: 16px;
+  }
+  .prokick span { font-size: 11.5px; font-weight: 700; letter-spacing: .2em; color: #E8C89A; }
+  .prokick::after {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1.5px;
+    background: linear-gradient(90deg, transparent, #E8C89A, transparent);
+    animation: scan 3.2s ease-in-out infinite;
+  }
+  @keyframes scan {
+    0% { top: 0; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { top: 100%; opacity: 0; }
+  }
+
+  /* ═══ 圖①引力場 ═══ */
+  .field { padding: 18px 18px 16px; }
+  .field-fig { margin: 4px 0; }
+  .field-fig svg { width: 100%; height: auto; }
+  .field-note { font-size: 12.5px; color: var(--ink-soft); line-height: 1.75; }
+
+  /* ═══ 舊生專屬橫幅 ═══ */
+  .alum-wrap { padding-top: 0; padding-bottom: clamp(16px, 2vw, 24px); }
+  .alum {
+    display: grid; grid-template-columns: 1fr auto; gap: clamp(18px, 3vw, 40px); align-items: center;
+    background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--i);
+    border-radius: 0 16px 16px 0; padding: clamp(20px, 3vw, 28px);
+  }
+  @media (max-width: 720px) { .alum { grid-template-columns: 1fr; } }
+  .alum-k { font-size: 12px; font-weight: 700; letter-spacing: .08em; color: var(--i-deep); }
+  .alum-t { margin-top: 8px; font-size: clamp(18px, 2.4vw, 22px); font-weight: 700; line-height: 1.6; }
+  .alum-t b { color: var(--i); }
+  .alum-s { margin-top: 10px; font-size: 14.5px; color: var(--ink-soft); line-height: 1.85; max-width: 60ch; }
+  .alum-act { text-align: center; }
+  .alum-count {
+    font-size: 14px; font-weight: 700; color: var(--i-deep);
+    background: var(--i-tint); border: 1px solid rgba(232, 200, 154, .45);
+    border-radius: 999px; padding: 5px 14px; display: inline-block; margin-bottom: 12px;
+  }
+  .alum-act .btn { display: block; }
+
+  /* ═══ 圖②四個斷點：橫向鏈 ═══ */
+  .chain { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 34px; }
+  @media (max-width: 860px) { .chain { grid-template-columns: 1fr; gap: 18px; } }
+  .ch { position: relative; padding-right: 10px; }
+  .ch-from, .ch-to {
+    display: inline-block; font-size: 14px; font-weight: 700; color: var(--ink);
+    background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px;
+  }
+  .ch-to { position: absolute; right: 0; top: 0; }
+  @media (max-width: 860px) { .ch-to { position: static; margin-left: 10px; } }
+  /* 推力＝一片斜切薄片＋箭頭，顏色就是那塊肌肉 */
+  .ch-arrow { display: block; margin: 14px 0 10px; }
+  .ch-slice {
+    display: block; height: 10px; border-radius: 3px; background: var(--dim);
+    transform: skewX(var(--skew)); box-shadow: 0 0 10px var(--dim-tint);
+    margin-right: 14px; position: relative; opacity: var(--slice-done);
+  }
+  /* 箭頭要跟片同一個斜切群組（§3.9 第 7 條），所以反向 skew 回來對齊片尾 */
+  .ch-slice::after {
+    content: ""; position: absolute; right: -14px; top: 50%;
+    transform: translateY(-50%) skewX(calc(var(--skew) * -1));
+    border-left: 10px solid var(--dim); border-top: 7px solid transparent; border-bottom: 7px solid transparent;
+  }
+  .ch-m { display: block; margin-top: 9px; font-size: 13px; font-weight: 800; letter-spacing: .04em; color: var(--dim-deep); }
+  .ch-broke { display: block; margin-top: 6px; font-size: 13.5px; color: var(--ink-soft); line-height: 1.75; padding-right: 14px; }
+  .chain-note { margin-top: 28px; font-size: 16px; color: var(--ink-soft); max-width: 62ch; }
+  .chain-note b { color: var(--ink); }
+
+  /* ═══ 圖③ 12 小肌群牆 ═══ */
+  .wall {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+    margin-top: 34px; padding: 24px 20px 20px;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-card);
+  }
+  @media (max-width: 760px) { .wall { grid-template-columns: repeat(2, 1fr); gap: 26px 16px; } }
+  .wg-bars { display: flex; align-items: flex-end; gap: 7px; height: 110px; border-bottom: 2px solid var(--line-soft); }
+  .wg-bar { flex: 1; height: 100%; display: flex; align-items: flex-end; }
+  /* 十二片都是 done 態（既有的，不是「現在這站」），所以一片實色都沒有——
+     §3.9 紅線：一張圖實色最多兩片，且 I 金不鋪實。四塊同一種填法，I 才不會看起來像沒解鎖。 */
+  .wg-bar i {
+    display: block; width: 100%; border-radius: 5px 5px 0 0; transform: skewX(var(--skew));
+    background: var(--dim); opacity: var(--slice-done); box-shadow: 0 0 12px var(--dim-tint);
+  }
+  .wg-names { display: flex; gap: 7px; margin-top: 8px; }
+  .wg-names span { flex: 1; text-align: center; font-size: 11.5px; font-weight: 600; color: var(--ink-3); line-height: 1.4; }
+  .wg-t { margin-top: 12px; font-size: 14.5px; font-weight: 700; color: var(--ink); }
+  .wg-t b { color: var(--dim-deep); letter-spacing: .08em; }
+  .wg-r { font-size: 13px; color: var(--dim-deep); font-weight: 700; margin-top: 2px; }
+  .wall-note { margin-top: 14px; font-size: 14px; color: var(--ink-soft); }
+
+  .muscles { margin-top: 28px; grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 640px) { .muscles { grid-template-columns: 1fr; } }
+  .m-slices { display: flex; gap: 4px; margin-bottom: 12px; }
+  .m-slices i {
+    width: 26px; height: 12px; border-radius: 3.5px; background: var(--dim);
+    transform: skewX(var(--skew)); opacity: var(--slice-done);
+  }
+  .m-slices i:nth-child(n+2) { opacity: var(--slice-base); }
+  .m-en { display: block; font-size: 11px; font-weight: 900; letter-spacing: 2px; color: var(--dim-deep); margin-bottom: 8px; }
+  .m-les {
+    margin-left: 8px; font-size: 10.5px; letter-spacing: 1px; color: var(--bg);
+    background: var(--dim); border-radius: 999px; padding: 2px 7px;
+  }
+  .muscles h3 { font-size: 19px; }
+  .muscle-result { margin-top: 2px; font-size: 18px; font-weight: 700; color: var(--dim-deep); }
+  .m-body { margin-top: 10px; font-size: 15px; color: var(--ink-soft); line-height: 1.8; }
+
+  /* ═══ 圖④ L1–L13 全貌 ═══ */
+  .road { display: grid; grid-template-columns: 4fr 4fr 5fr; gap: 16px; margin-top: 34px; }
+  @media (max-width: 900px) { .road { grid-template-columns: 1fr; } }
+  .seg {
+    position: relative; background: var(--card); border: 1px solid var(--line);
+    border-top: 3px solid var(--dim); border-radius: var(--r-card); padding: 18px 16px 16px;
+  }
+  .seg.open { box-shadow: 0 0 0 1px var(--dim), 0 8px 28px rgba(0, 0, 0, .35); }
+  .seg-h { display: flex; align-items: center; gap: 10px; }
+  .seg-code {
+    font-size: 12px; font-weight: 800; letter-spacing: .06em; color: var(--dim-deep);
+    background: var(--dim-tint); border-radius: 999px; padding: 3px 10px;
+  }
+  .seg-h b { font-size: 18px; }
+  .mods { display: flex; gap: 6px; margin-top: 14px; }
+  .mod {
+    flex: 1; min-width: 0; text-align: center; padding: 10px 4px 9px;
+    border-radius: 8px; background: var(--dim-tint); border: 1px solid transparent;
+  }
+  .mod.locked { background: transparent; border: 1.5px dashed var(--line-soft); }
+  .mod-id { display: block; font-size: 14px; font-weight: 800; color: var(--dim-deep); letter-spacing: .04em; }
+  .mod.locked .mod-id { color: var(--ink-soft); }
+  .mod-n { display: block; margin-top: 3px; font-size: 11px; font-style: normal; font-weight: 600; color: var(--ink-3); line-height: 1.35; }
+  .mod-lock { color: var(--ink-soft); font-weight: 400; }
+  .seg-s { margin-top: 14px; font-size: 14px; color: var(--ink-soft); line-height: 1.8; }
+  .seg-here {
+    display: inline-block; margin-top: 12px; font-size: 11.5px; font-weight: 800;
+    color: var(--bg); background: var(--dim); border-radius: 999px; padding: 3px 11px;
+  }
+
+  .sku { margin-top: 26px; }
+  .sku-k { font-size: 12px; font-weight: 700; letter-spacing: .18em; color: var(--ink-soft); margin-bottom: 10px; }
+  .sku-row { display: grid; grid-template-columns: repeat(13, 1fr); margin-top: 8px; }
+  .sku-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    min-width: 0; padding: 10px 14px; border-radius: 8px;
+    background: var(--dim-tint); border: 1px solid var(--dim);
+  }
+  .sku-bar b { font-size: 14.5px; color: var(--ink); white-space: nowrap; }
+  .sku-bar i { font-style: normal; font-size: 13px; font-weight: 700; color: var(--dim-deep); white-space: nowrap; }
+  @media (max-width: 700px) {
+    .sku-row { grid-template-columns: 1fr; }
+    .sku-bar { grid-column: 1 / -1 !important; }
+  }
+  .sku-note { margin-top: 18px; font-size: 15px; color: var(--ink-soft); line-height: 1.9; max-width: 62ch; }
+  .sku-note b { color: var(--ink); }
+
+  /* ═══ 圖⑤ 一週迴路 ═══ */
+  .loop {
+    margin-top: 28px; padding: 22px 20px 16px;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-card);
+  }
+  .loop-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  @media (max-width: 860px) { .loop-row { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .loop-row { grid-template-columns: 1fr; } }
+  .lp { position: relative; padding-right: 16px; border-top: 2px solid var(--dim); padding-top: 12px; }
+  /* 步驟之間的箭頭：最後一步不畫 */
+  .lp:not(:last-child)::after {
+    content: "→"; position: absolute; right: -2px; top: 6px;
+    font-size: 15px; font-weight: 700; color: var(--ink-soft);
+  }
+  @media (max-width: 860px) { .lp:nth-child(2)::after { content: none; } }
+  @media (max-width: 480px) { .lp::after { content: none !important; } }
+  .lp-n { font-size: 15px; font-weight: 800; color: var(--dim-deep); }
+  .lp-t { margin-top: 2px; font-size: 15.5px; font-weight: 700; }
+  .lp-s { margin-top: 5px; font-size: 13.5px; color: var(--ink-soft); line-height: 1.75; }
+  .loop-back {
+    margin-top: 16px; padding-top: 12px; border-top: 1.5px dashed var(--line-soft);
+    font-size: 13.5px; font-weight: 700; color: var(--i-deep); text-align: center;
+  }
+
+  .designs { margin-top: 24px; grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 640px) { .designs { grid-template-columns: 1fr; } }
+  .dnum { display: block; font-size: 13px; font-weight: 800; letter-spacing: .08em; color: var(--i-deep); }
+  .design h3 { margin-top: 8px; font-size: 18px; }
+  .design p { margin-top: 8px; font-size: 15px; color: var(--ink-soft); line-height: 1.8; }
+
+  /* ═══ 圖⑥ 旅程（四色縱線＋現在位置脈動）═══ */
+  .map { position: relative; margin-top: 30px; padding-left: 26px; }
+  .map::before {
+    content: ""; position: absolute; left: 8px; top: 14px; bottom: 14px; width: 3px; border-radius: 3px;
+    background: linear-gradient(180deg, var(--a), var(--t), var(--p), var(--i));
+  }
+  .stn { position: relative; padding: 10px 0 10px 8px; }
+  .stn::before {
+    content: ""; position: absolute; left: -24px; top: 18px; width: 13px; height: 13px;
+    border-radius: 50%; border: 2.5px solid var(--bg);
+  }
+  .stn.n1::before { background: var(--a); }
+  .stn.n2::before { background: var(--a); }
+  .stn.n3::before { background: var(--t); }
+  .stn.n4::before { background: var(--p); }
+  .stn.n5::before { background: var(--i); }
+  .stn.n6::before { background: var(--i); }
+  .stn.here { background: var(--card); border-radius: 12px; padding: 12px 12px 12px 8px; }
+  .stn.here::before { animation: herepulse 1.8s infinite; }
+  @keyframes herepulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(232, 115, 74, .45); }
+    50% { box-shadow: 0 0 0 7px rgba(232, 115, 74, 0); }
+  }
+  .stn-t { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; }
+  .you { font-size: 11px; font-weight: 700; color: var(--bg); background: var(--a); border-radius: 10px; padding: 1px 8px; }
+  .stn-s { margin-top: 4px; font-size: 14.5px; color: var(--ink-soft); line-height: 1.75; }
+
+  /* ═══ 兩個課 ═══ */
+  .courses { margin-top: 32px; grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 640px) { .courses { grid-template-columns: 1fr; } }
+  .price { margin-top: 8px !important; font-size: 30px; font-weight: 800; letter-spacing: -.01em; color: var(--dim-deep) !important; }
+  .stages-line { margin-top: 2px !important; font-size: 15px; color: var(--ink-soft) !important; }
+  .who { margin-top: 18px !important; font-size: 16px; }
+  .who b { font-size: 13px; letter-spacing: .04em; color: var(--ink-soft); }
+  .note { margin-top: 28px; font-size: 15px; color: var(--ink-soft); line-height: 1.9; max-width: 62ch; }
+  /* 中文短句禁拆：斷在詞中間（「才決／定」）比多留一點白更難讀 */
+  .nb { white-space: nowrap; }
+
+  /* ═══ 適合誰 ═══ */
+  .grid.who { margin-top: 32px; grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 760px) { .grid.who { grid-template-columns: 1fr; } }
+  .who-card { border-radius: 0 14px 14px 0; padding: 16px 18px; border-left: 3px solid var(--dim); background: var(--dim-tint); }
+  .who-t { font-size: 16px; font-weight: 700; color: var(--dim-deep); }
+  .who-s { margin-top: 4px; font-size: 15px; color: var(--ink-3); line-height: 1.7; }
+
+  .notfor { margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); max-width: 62ch; }
+  .notfor h3 { font-size: 18px; }
+  .notfor ul { margin-top: 12px; padding-left: 20px; }
+  .notfor li { margin-top: 10px; color: var(--ink-soft); line-height: 1.85; }
+  .notfor-s { margin-top: 16px; font-size: 15px; color: var(--ink-soft); line-height: 1.85; }
+
+  /* ═══ 教的人是誰 ═══ */
+  .coach.has-photo { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(28px, 4vw, 56px); align-items: center; }
+  @media (max-width: 860px) { .coach.has-photo { grid-template-columns: 1fr; } }
+  .coach-photo { margin: 0; max-width: 380px; }
+  .coach-photo img { display: block; width: 100%; height: auto; border-radius: 18px; }
+  .coach-lead { margin-top: 14px; max-width: 52ch; }
+  .coach-nums { list-style: none; padding: 0; margin: 26px 0 0; display: flex; flex-wrap: wrap; gap: 16px 48px; }
+  .coach-nums li { display: flex; flex-direction: column; }
+  .coach-nums .bignum { color: var(--i); text-shadow: 0 0 14px rgba(230, 169, 58, .4); }
+  .coach-nums span { margin-top: 2px; font-size: 14px; color: var(--ink-soft); }
+  .coach-more { display: inline-block; margin-top: 24px; font-weight: 700; }
+
+  .cases { margin-top: 32px; }
+
+  /* ═══ 主 CTA ═══ */
+  .cta {
+    background: linear-gradient(160deg, var(--card) 0%, var(--card-warm) 100%);
+    border: 1px solid rgba(232, 200, 154, .3);
+    border-radius: 20px; padding: clamp(28px, 5vw, 44px); text-align: center;
+  }
+  .cta h2 { font-size: clamp(21px, 3vw, 26px); }
+  .cta .lead { margin: 10px auto 24px; max-width: 46ch; }
+  .cta-sub { margin-top: 18px; font-size: 14.5px; color: var(--ink-soft); }
+
+  /* ═══ FAQ ═══ */
+  .faq { margin-top: 28px; }
+  .qa { border-bottom: 1px solid var(--line); }
+  .qa summary { cursor: pointer; list-style: none; position: relative; padding: 16px 36px 16px 0; font-weight: 700; font-size: 17px; }
+  .qa summary::-webkit-details-marker { display: none; }
+  .qa summary::after {
+    content: "+"; position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+    font-size: 22px; font-weight: 400; color: var(--i-deep); transition: transform .2s;
+  }
+  .qa[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+  .qa p { padding: 0 0 18px; color: var(--ink-soft); line-height: 1.85; }
+
+  .center { text-align: center; }
+  .closing-cta { margin-top: 26px; justify-content: center; }
+  @media (max-width: 520px) { .hero-cta .btn, .closing-cta .btn { width: 100%; } }
+</style>

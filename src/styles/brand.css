@@ -7,36 +7,85 @@
    ⚠️ 改色先改 21 那份，再回來同步這裡。別在這裡自創色票。
    ═══════════════════════════════════════════════════════════ */
 
+/* ⟦視覺tokens⟧ 由 productkit/_tools/gen_視覺tokens_css.py 產生，請勿手改——改值去 3-教材/_圖產生器/視覺tokens.json */
+:root {
+  --skew: -12deg;          /* 樞紐釘基線 50% 100%，一張圖裡所有片同角同軸 */
+  --slice-r: 9px;
+  /* 三態沒有任何一態是實色——紅線：I 原版金不鋪大面積、一張圖實色最多兩片 */
+  --slice-now: .2;        /* 現在這站，另加深版描邊 */
+  --slice-now-w: 3.5px;
+  --slice-now-lift: 1.16;
+  --slice-done: .5;       /* 走過了 */
+  --slice-todo-w: 2.5px;    /* 還沒到＝虛線 */
+  --slice-todo-a: .35;
+  --slice-todo-dash: 8px 8px;
+  --slice-base: .13;       /* 退場＝灰階打底，不准改虛線（虛線已經是「還沒到」）*/
+  --vt-bg: #F7F1EC;
+  --vt-card: #ffffff;
+  --vt-line: #E6DAD1;
+  --vt-ink: #4A1B0C;
+  --vt-muted: #6E4A3C;
+  --vt-a: #C6603A;
+  --vt-t: #6E8B77;
+  --vt-p: #6E8CA8;
+  --vt-i: #C99A4E;
+  --vt-ad: #AF5433;
+  --vt-td: #5C7464;
+  --vt-pd: #54718D;
+  --vt-id: #8E682B;
+}
+body.theme-dark {
+  --vt-bg: #0c131e;
+  --vt-card: #111c28;
+  --vt-line: #1e2c3a;
+  --vt-ink: #eaf1fa;
+  --vt-muted: #8ea1b6;
+  --vt-a: #e8734a;
+  --vt-t: #33c495;
+  --vt-p: #4b9bf0;
+  --vt-i: #e6a93a;
+  --vt-ad: #e8734a;
+  --vt-td: #33c495;
+  --vt-pd: #4b9bf0;
+  --vt-id: #e6a93a;
+}
+/* ⟦/視覺tokens⟧ */
+
 :root {
   /* ── 60/30/10 版面配色（21 §品牌主色與配色比例）── */
-  --bg: #F7F1EC;          /* 60% 底 */
-  --ink: #4A1B0C;         /* 30% 字與線，品牌最深錨 */
+  --bg: var(--vt-bg);     /* 60% 底 */
+  --ink: var(--vt-ink);   /* 30% 字與線，品牌最深錨 */
   --act: #C6603A;         /* 10% 行動色＝A 吸引，CTA/強調/連結 */
   --act-deep: #AF5433;    /* 行動色深版：小字、連結、次要鈕描邊 */
 
   /* ── 深字次級（21 §中性與底色）── */
   --ink-2: #712B13;
   --ink-3: #993C1D;
-  --ink-soft: #6E4A3C;    /* 可讀的輔助字。⚠️ 不要用 #8A7266，實測 4.01:1 不合格 */
+  --ink-soft: var(--vt-muted);  /* 可讀的輔助字。⚠️ 不要用 #8A7266，實測 4.01:1 不合格 */
 
   /* ── 底與線 ── */
   --bg-alt: #FBF3EE;      /* 交錯區塊底 */
-  --card: #FFFFFF;
+  --card: var(--vt-card);
   --card-warm: #F3D9CD;   /* 強調卡片暖底 */
-  --line: #E6DAD1;        /* 描邊淺線 */
+  --line: var(--vt-line); /* 描邊淺線 */
   --line-soft: #EAD9CD;
+  --bg-blur: rgba(247, 241, 236, .92);  /* 浮層底（Header／sticky bar），要跟著主題換 */
+  /* 深色小籤（照片說明籤、skip）：兩套底都要是深底亮字，所以自己一組不跟 --ink 走 */
+  --chip: #4A1B0C;
+  --on-chip: #fff;
 
-  /* ── ATPI 四色・暖版原版：填色、大字、圖形（21 §ATPI 四色）── */
-  --a: #C6603A;
-  --t: #6E8B77;
-  --p: #6E8CA8;
-  --i: #C99A4E;
+  /* ── ATPI 四色・暖版原版：填色、大字、圖形（21 §ATPI 四色）──
+     接 ⟦視覺tokens⟧ 而不是再抄一次 hex：兩套底各一組，抄的那份一定有一天會漂。 */
+  --a: var(--vt-a);
+  --t: var(--vt-t);
+  --p: var(--vt-p);
+  --i: var(--vt-i);
 
   /* ── ATPI 四色・暖版深版：小字、小元件、內文連結 ── */
-  --a-deep: #AF5433;
-  --t-deep: #5C7464;
-  --p-deep: #54718D;
-  --i-deep: #8E682B;      /* ⚠️ I 原版 2.28:1，任何文字一律用深版 */
+  --a-deep: var(--vt-ad);
+  --t-deep: var(--vt-td);
+  --p-deep: var(--vt-pd);
+  --i-deep: var(--vt-id);  /* ⚠️ I 原版 2.28:1，任何文字一律用深版 */
 
   /* ── ATPI 淡底色：區塊底、標籤底 ── */
   --a-tint: #F3D9CD;
@@ -56,7 +105,65 @@
   --w-wide: 1200px;
   --r-btn: 16px;          /* 24 §3.8 按鈕圓角 */
   --r-card: 14px;
+
+  /* 薄片（24 §3.9）的 --skew／--slice-* 在檔頭的 ⟦視覺tokens⟧ 區塊，由產生器寫入。 */
 }
+
+/* ═══════════════════════════════════════════════════════════
+   科技版底（body.theme-dark）
+   ⚠️ 這不是「門面做深色版」的例外，是產品線區隔：
+   影響力健身房＝館，暖版門面；超引力成交學＝實戰私教，科技版。
+   兩套底本來就都在 VI 裡，這裡只是把科技版接進官網。
+   色值真相＝productkit `3-教材/_圖產生器/視覺tokens.json` 的「色/科技版」，不自創。
+   ⚠️ 深底上 ATPI 換霓虹版；--act-deep 在這裡是亮金而不是深磚橘——
+   深磚橘 #AF5433 疊 #0c131e 只有 2.6:1，連結與小字會讀不到。
+   ═══════════════════════════════════════════════════════════ */
+body.theme-dark {
+  --bg: var(--vt-bg);
+  --bg-alt: #101b28;
+  --card: var(--vt-card);
+  --card-warm: #152233;
+  --line: var(--vt-line);
+  --line-soft: #243549;
+  --bg-blur: rgba(15, 25, 38, .94);
+  --chip: #060b12;
+  --on-chip: #F7F1EC;
+
+  /* 字：--ink 在這裡是最亮的字（原本是最深的墨），由亮到暗 ink → ink-3 → ink-soft */
+  --ink: #F7F1EC;
+  --ink-2: #eaf1fa;
+  --ink-3: #cfdcea;
+  --ink-soft: var(--vt-muted);
+
+  /* 行動色維持磚橘（只給「要按的」）；act-deep＝深底上的亮金，給連結與小字 */
+  --act: #C6603A;
+  --act-deep: #E8C89A;
+
+  /* ATPI 霓虹版。⟦視覺tokens⟧ 已經把 --vt-* 換成科技版了，這裡要「再接一次」——
+     :root 的 --a: var(--vt-a) 是在 html 上算完才往下繼承的，不會因為 body 換了 --vt-a 就跟著變。
+     （深版刻意等於原版：科技底上再提亮，四支會糊成同一種奶油色。） */
+  --a: var(--vt-a);
+  --t: var(--vt-t);
+  --p: var(--vt-p);
+  --i: var(--vt-i);
+  --a-deep: var(--vt-ad);
+  --t-deep: var(--vt-td);
+  --p-deep: var(--vt-pd);
+  --i-deep: var(--vt-id);
+  --a-tint: rgba(232, 115, 74, .14);
+  --t-tint: rgba(51, 196, 149, .14);
+  --p-tint: rgba(75, 155, 240, .14);
+  --i-tint: rgba(230, 169, 58, .14);
+}
+
+/* 深底上大標的重點詞＝金字＋微發光（pro .big-t em 同款），磚橘在深底只有 3.4:1 撐不住 */
+body.theme-dark .hl { color: var(--i); text-shadow: 0 0 12px rgba(230, 169, 58, .45); }
+body.theme-dark a:hover { color: var(--i); }
+body.theme-dark .card { box-shadow: 0 6px 20px rgba(0, 0, 0, .28); }
+/* 次行動鈕：深底上純描邊太輕，補金色淡底（pro .softbtn 同款） */
+body.theme-dark .btn-sub { background: rgba(232, 200, 154, .12); }
+body.theme-dark .btn-sub:hover { background: rgba(232, 200, 154, .22); color: var(--ink); }
+body.theme-dark .btn-done { color: var(--t); }
 
 /* ═══ reset ═══ */
 *, *::before, *::after { box-sizing: border-box; }
@@ -128,6 +235,20 @@ h4 { font-size: 18px; }
 .atpi-rule > i:nth-child(3) { background: var(--p); }
 .atpi-rule > i:nth-child(4) { background: var(--i); }
 
+/* ═══ 薄片原語（24 §3.9）═══
+   SVG 的 transform 屬性吃不到 var()，所以斜切改走 CSS。--axis＝那張圖的畫面中線 y，
+   斜切共軸鎖在它身上，否則上下元素會各往一邊漂。
+   ⚠️ transform-origin 一定要釘 0 0：CSS 在 SVG 元素上預設 50% 50%，不釘就跟原本的
+   transform 屬性不等價，整張圖會位移。 */
+.skew-axis {
+  transform: translate(0, var(--axis)) skewX(var(--skew)) translate(0, calc(var(--axis) * -1));
+  transform-origin: 0 0;
+}
+/* 三態只給描邊／透明度，填色各圖自己決定（顏色＝身分，不歸原語管） */
+.s-todo { stroke-width: var(--slice-todo-w); stroke-dasharray: var(--slice-todo-dash); opacity: var(--slice-todo-a); }
+.s-done { opacity: var(--slice-done); }
+.s-base { opacity: var(--slice-base); }
+
 /* ═══ 八招 ④：大數字 bignum ═══ */
 .bignum { font-size: clamp(38px, 6vw, 54px); font-weight: 800; line-height: 1.1;
           color: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
@@ -167,7 +288,7 @@ h4 { font-size: 18px; }
 .photo { position: relative; border-radius: var(--r-card); overflow: hidden; background: var(--card-warm); }
 .photo figcaption {
   position: absolute; left: 12px; bottom: 12px;
-  background: var(--ink); color: #fff; font-size: 12px; font-weight: 600;
+  background: var(--chip); color: var(--on-chip); font-size: 12px; font-weight: 600;
   padding: 5px 10px; border-radius: 8px;
 }
 
@@ -217,7 +338,7 @@ h4 { font-size: 18px; }
 /* ═══ 無障礙：跳到主內容 ═══ */
 .skip {
   position: absolute; left: -9999px; top: 0; z-index: 100;
-  background: var(--ink); color: #fff; padding: 12px 18px; border-radius: 0 0 8px 0;
+  background: var(--chip); color: var(--on-chip); padding: 12px 18px; border-radius: 0 0 8px 0;
 }
 .skip:focus { left: 0; }
 :focus-visible { outline: 3px solid var(--act); outline-offset: 2px; border-radius: 4px; }

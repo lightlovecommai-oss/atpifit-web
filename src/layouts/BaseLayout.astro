@@ -12,11 +12,16 @@ interface Props {
   /* 頁面專屬的 JSON-LD。Organization/WebSite 已在本層全站掛好，這裡只加頁面型別。*/
   schema?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
-  /* 文章頁用寬度較窄的正文欄 */
+  /* 文章頁用寬度較窄的正文欄；超引力成交學用 theme-dark 切科技版底 */
   bodyClass?: string;
+  /* 手機瀏覽器網址列底色，要跟頁面主題一致，否則深色頁上面會頂一條暖色 */
+  themeColor?: string;
 }
 
-const { title, description, image = '/assets/og-default.png', schema, noindex = false, bodyClass = '' } = Astro.props;
+const {
+  title, description, image = '/assets/og-default.png', schema,
+  noindex = false, bodyClass = '', themeColor = '#F7F1EC',
+} = Astro.props;
 
 const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', SITE.url).href;
 const ogImage = new URL(image, SITE.url).href;
@@ -60,7 +65,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
   <link rel="canonical" href={canonical} />
   {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-  <meta name="theme-color" content="#F7F1EC" />
+  <meta name="theme-color" content={themeColor} />
   <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" />
   <link rel="apple-touch-icon" href="/assets/favicon-180.png" />
 
@@ -139,7 +144,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
     .sticky-quiz {
       position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
       display: none; padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
-      background: rgba(247, 241, 236, .95);
+      background: var(--bg-blur);
       backdrop-filter: saturate(140%) blur(10px);
       border-top: 1px solid var(--line);
       transform: translateY(110%); transition: transform .25s ease;
