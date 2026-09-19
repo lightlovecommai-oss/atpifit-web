@@ -18,40 +18,36 @@ const cohorts = [
     id: 'L1-L4-1109',
     range: 'L1–L4',
     stage: '鍛鍊段',
-    dim: 'A',
     month: '9 月開課',
     rhythm: '每週二、四　09:00–11:00',
-    dates: ['9/29・10/1', '10/6・10/8', '10/13・10/15', '10/20・10/22'],
+    span: '9/29 – 10/22',
     who: '想把四塊肌肉一塊一塊重新拆開練。',
   },
   {
     id: 'L5-L8-1012',
     range: 'L5–L8',
     stage: '放大段',
-    dim: 'T',
     month: '10 月開課',
     rhythm: '每週一、五　09:30–11:30',
-    dates: ['10/12・10/16', '10/19・10/23', '10/26・10/30', '11/2・11/6'],
+    span: '10/12 – 11/6',
     who: '單塊都練得動了，卡在一整場對話串不起來。',
   },
   {
     id: 'L5-L8-1110',
     range: 'L5–L8',
     stage: '放大段',
-    dim: 'I',
     month: '11 月開課',
     rhythm: '每週二、四　09:00–11:00',
-    dates: ['11/10・11/12', '11/17・11/19', '11/24・11/26', '12/1・12/3'],
+    span: '11/10 – 12/3',
     who: '同上，但 10 月的時段排不進來。',
   },
   {
     id: 'L9-L12-1215',
     range: 'L9–L12',
     stage: '演說段',
-    dim: 'P',
     month: '12 月開課',
     rhythm: '每週二、四　09:00–11:00',
-    dates: ['12/15・12/17', '12/22・12/24', '12/29・12/31', '1/5・1/7'],
+    span: '12/15 – 1/7',
     who: '一對一已經會了，卡在一次只能面對一個人。',
     note: '最後一週跨到 2027 年 1 月。',
   },
@@ -95,20 +91,28 @@ const rules = [
   <section class="section section-alt">
     <div class="wrap-text">
       <h2>ATPI：把溝通拆成四塊肌肉</h2>
-      <p class="lead">你當初學的是一招一招的作法。現在它們被歸位了——每一招都屬於某一塊肌肉，練哪一塊、為什麼練，都指得出來。</p>
+      <p class="lead">你當初學的是一招一招的作法。現在它們被歸位了——<b>吸引・信任・專業・推進</b>，每一招都屬於其中一塊。<span class="nb">先練哪一塊最有感、今天該做哪個動作</span>，都指得出來。</p>
 
-      <ol class="atpi">
-        {atpi.map((m) => (
-          <li class="card muscle" data-dim={m.dim}>
-            <span class="mcode" aria-hidden="true">{m.code}</span>
-            <h3>{m.name}</h3>
-            <p class="mres">{m.r}</p>
-            <p class="mbody">{m.b}</p>
-          </li>
-        ))}
-      </ol>
+      <details class="atpi-details">
+        <summary>
+          <span class="atpi-more atpi-more-closed">看四塊肌肉分別是什麼</span>
+          <span class="atpi-more atpi-more-open">收起</span>
+          <span class="atpi-fold" aria-hidden="true"></span>
+        </summary>
 
-      <p class="mnote">四塊底下再各拆三塊小肌群，一共十二塊。所以不再是「你信任感不夠」這種講不出下一步的話，而是指得出<b>先練哪一塊最有感</b>、<span class="nb">今天該做哪個動作</span>。入學前後各量一次，十二格的變化看得到。</p>
+        <ol class="atpi">
+          {atpi.map((m) => (
+            <li class="card muscle" data-dim={m.dim}>
+              <span class="mcode" aria-hidden="true">{m.code}</span>
+              <h3>{m.name}</h3>
+              <p class="mres">{m.r}</p>
+              <p class="mbody">{m.b}</p>
+            </li>
+          ))}
+        </ol>
+
+        <p class="mnote">四塊底下再各拆三塊小肌群，一共十二塊。入學前後各量一次，十二格的變化看得到。</p>
+      </details>
     </div>
   </section>
 
@@ -117,11 +121,9 @@ const rules = [
       <div class="app">
         <p class="kicker">最大的差別</p>
         <h2>肌肉不是在教室長出來的</h2>
-        <p class="app-p">課一週兩堂，但中間那五天才是真的在練。以前上完課，你回去只能靠筆記跟感覺——練了沒有、哪一塊在動，誰都說不準。</p>
-        <p class="app-p">現在有影響力健身房 App。每天給你一個動作，你把「對誰講了什麼、對方什麼反應」記下來，一次一分鐘。累積起來就是一張你自己的體格表：哪一塊練得多、哪一塊還沒動過，攤在那裡。</p>
+        <p class="app-p">課一週兩堂，中間那五天才是真的在練。以前上完課，你回去只能靠筆記跟感覺；現在有影響力健身房 App，每天一分鐘，把「對誰講了什麼、對方什麼反應」記下來——累積起來就是你自己的體格表。</p>
         <p class="app-p app-last"><b>課負責教你怎麼練，App 負責讓你真的天天練。</b>這一組東西，你當初上課的時候完全不存在。</p>
 
-        <p class="app-try">不用等開課，現在就看得到：</p>
         <div class="app-btns">
           <a class="btn btn-sub" href={`${LINKS.gym}member.html?demo=1`} target="_blank" rel="noopener">
             打開 App 看一眼<span class="btn-note">示範帳號，不用登入</span>
@@ -137,21 +139,23 @@ const rules = [
   <section class="section" id="pick-top">
     <div class="wrap-text">
       <h2>四梯，想上幾梯都可以</h2>
-      <p class="lead">每一梯都是八堂、四週。可以複選——全部報也沒問題，<span class="nb">保證金還是那一筆</span>。</p>
+      <p class="lead">每一梯都是八堂、四週。可以複選，全部報也可以——<span class="nb">保證金還是那一筆</span>。</p>
 
       <div class="picks">
         {cohorts.map((c) => (
-          <label class="pick card muscle" data-dim={c.dim}>
+          <label class="pick card">
             <input type="checkbox" name="cohort" value={cohortLabel(c)} />
+            <span class="tick" aria-hidden="true"></span>
             <span class="pick-body">
-              <span class="muscle-tag">{c.range}　{c.stage}</span>
-              <span class="pick-h">{c.month}</span>
-              <span class="pick-r">{c.rhythm}</span>
-              <span class="pick-d">{c.dates.map((d) => <span class="wk">{d}</span>)}</span>
+              <span class="pick-h">
+                <b class="pick-range">{c.range}　{c.stage}</b>
+                <span class="pick-month">{c.month}</span>
+              </span>
+              <span class="pick-when">{c.rhythm}<span class="pick-when-sep">・</span>共 8 堂</span>
+              <span class="pick-span">{c.span}</span>
               <span class="pick-w">{c.who}</span>
               {c.note && <span class="pick-n">{c.note}</span>}
             </span>
-            <span class="tick" aria-hidden="true"></span>
           </label>
         ))}
       </div>
@@ -356,7 +360,27 @@ const rules = [
   .sig { margin-top: 28px; max-width: 160px; }
 
   /* ── ATPI 四塊。順序鎖 A→T→P→I，靠左色條＋角落字母 ── */
-  .atpi { list-style: none; padding: 0; margin-top: 28px; display: grid; gap: 14px; }
+  .atpi-details { margin-top: 22px; }
+  .atpi-details > summary {
+    list-style: none; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px; border-radius: var(--r-btn);
+    background: #fff; border: 1.5px solid var(--line);
+    color: var(--act-deep); font-weight: 700; font-size: 15.5px;
+  }
+  .atpi-details > summary::-webkit-details-marker { display: none; }
+  .atpi-details > summary::marker { content: ''; }
+  .atpi-fold {
+    width: 10px; height: 10px; border: solid var(--act-deep);
+    border-width: 0 2px 2px 0; transform: rotate(45deg);
+    transition: transform .2s; margin-top: -3px;
+  }
+  .atpi-details[open] > summary { background: var(--a-tint); border-color: var(--act-deep); }
+  .atpi-details[open] .atpi-fold { transform: rotate(-135deg); margin-top: 3px; }
+  .atpi-more-open { display: none; }
+  .atpi-details[open] .atpi-more-closed { display: none; }
+  .atpi-details[open] .atpi-more-open { display: inline; }
+  .atpi { list-style: none; padding: 0; margin-top: 20px; display: grid; gap: 14px; }
   .atpi li { position: relative; padding-right: 56px; }
   .mcode {
     position: absolute; top: 18px; right: 20px;
@@ -376,40 +400,70 @@ const rules = [
   .app-last { margin-top: 18px; color: var(--ink); }
   .app-last b { display: block; margin-bottom: 4px; }
   /* 這頁的錢鈕只有一顆（送出報名），所以這兩顆走參觀層的框線鈕 */
-  .app-try { margin-top: 22px; font-size: 15px; font-weight: 700; color: var(--act-deep); }
-  .app-btns { display: grid; gap: 10px; margin-top: 12px; }
+  .app-btns { display: grid; gap: 10px; margin-top: 24px; }
   .app-btns .btn { background: #fff; text-align: center; }
 
-  /* ── 梯次選擇：整張卡就是 radio，手機上不用去點那顆小圓圈 ── */
-  .picks { margin-top: 28px; display: grid; gap: 14px; }
-  .pick { position: relative; display: block; cursor: pointer; padding-right: 54px; }
-  .pick input { position: absolute; opacity: 0; pointer-events: none; }
-  .pick-body { display: block; }
-  .pick-h { display: block; margin-top: 4px; font-size: 21px; font-weight: 700; }
-  .pick-r { display: block; margin-top: 4px; font-size: 16px; color: var(--ink); }
-  /* 一週一格，整格 nowrap——日期對本身被瀏覽器拆行（10/26・／10/30）比換行醜得多 */
-  .pick-d { display: flex; flex-wrap: wrap; gap: 6px 8px; margin-top: 10px; }
-  .wk {
-    white-space: nowrap; font-size: 14px; color: var(--ink-soft);
-    font-variant-numeric: tabular-nums;
-    background: var(--bg-alt); border: 1px solid var(--line);
-    border-radius: 8px; padding: 3px 9px;
+  /* ── 梯次選擇：整張卡就是可勾選的方框，勾選記號在左邊，勾了整卡切色 ── */
+  .picks { margin-top: 24px; display: grid; gap: 12px; }
+  .pick {
+    position: relative; display: grid;
+    grid-template-columns: 32px 1fr; gap: 16px;
+    align-items: start; cursor: pointer;
+    padding: 20px 22px;
+    transition: background .15s, border-color .15s, box-shadow .15s;
   }
-  .pick-w { display: block; margin-top: 12px; font-size: 15px; color: var(--ink-soft); }
+  .pick input { position: absolute; opacity: 0; pointer-events: none; }
+
+  /* 左側大方框——手機上一眼看得見「這是可勾的」 */
+  .tick {
+    grid-column: 1;
+    width: 30px; height: 30px; margin-top: 2px;
+    border: 2px solid var(--line); border-radius: 8px;
+    background: #fff; flex-shrink: 0;
+    position: relative;
+    transition: border-color .15s, background .15s;
+  }
+
+  .pick-body { grid-column: 2; display: block; }
+  .pick-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+  .pick-range { font-size: 15px; font-weight: 700; color: var(--act-deep); letter-spacing: .01em; }
+  .pick-month { font-size: 22px; font-weight: 800; color: var(--ink); line-height: 1.25; }
+  .pick-when { display: block; margin-top: 8px; font-size: 15.5px; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .pick-when-sep { color: var(--ink-soft); margin: 0 4px; }
+  .pick-span {
+    display: inline-block; margin-top: 6px;
+    font-size: 14px; color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    background: var(--bg-alt); border-radius: 6px;
+    padding: 2px 8px;
+  }
+  .pick-w { display: block; margin-top: 10px; font-size: 15px; color: var(--ink-soft); line-height: 1.75; }
   .pick-n { display: block; margin-top: 6px; font-size: 13.5px; color: var(--ink-soft); }
 
-  /* 方框＝可複選的視覺提示（圓框會被讀成「只能選一個」） */
-  .tick {
-    position: absolute; top: 22px; right: 20px; width: 24px; height: 24px;
-    border: 2px solid var(--line); border-radius: 7px; background: #fff;
+  /* 勾選態：整卡背景切成暖色 tint，邊框加粗，勾選記號變填色 */
+  .pick:has(input:checked) {
+    background: var(--a-tint);
+    border-color: var(--act);
+    box-shadow: 0 0 0 2px var(--act) inset;
   }
-  .pick:has(input:checked) { border-color: var(--dim); box-shadow: 0 0 0 2px var(--dim-tint); }
-  .pick:has(input:checked) .tick { border-color: var(--dim); background: var(--dim); }
+  .pick:has(input:checked) .pick-span {
+    background: rgba(255, 255, 255, .55);
+  }
+  .pick:has(input:checked) .tick {
+    background: var(--act);
+    border-color: var(--act);
+  }
   .pick:has(input:checked) .tick::after {
-    content: ''; position: absolute; left: 6px; top: 2px; width: 6px; height: 12px;
-    border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(42deg);
+    content: '';
+    position: absolute; left: 8px; top: 3px;
+    width: 8px; height: 15px;
+    border: solid #fff; border-width: 0 3px 3px 0;
+    transform: rotate(42deg);
   }
   .pick:has(input:focus-visible) { outline: 3px solid var(--act); outline-offset: 2px; }
+  @media (hover: hover) {
+    .pick:hover { border-color: var(--act-deep); }
+  }
 
   /* ── 費用 ── */
   .money { margin-top: 24px; background: var(--t-tint); border-radius: var(--r-card); padding: 24px; }
