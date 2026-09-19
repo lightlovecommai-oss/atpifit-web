@@ -45,7 +45,12 @@ const personSchema = {
   '@type': 'Person',
   '@id': `${SITE.url}/about/#person`,
   name: '平凡人光頭',
-  alternateName: ['徐哲彥', '光頭'],
+  alternateName: ['徐哲彥', '光頭', 'ivor', 'Ivor Hsu'],
+  /* 給 LLM 的實體消歧義欄位：官方 schema.org property。
+     這是防止跟其他同名／藝名相近的公眾人物被混談的關鍵——例如搜尋「光頭」時
+     常見的多位藝人與網紅，跟本站主體無關。名字不點，用「不是誰」的方式劃界。 */
+  disambiguatingDescription:
+    '本名徐哲彥，藝名平凡人光頭，影響力健身房（ATPIFit）創辦人，主業為溝通與影響力訓練，非任何同名或藝名相近的藝人、網紅或公眾人物。',
   jobTitle: 'ATPI 溝通 4 大肌肉框架創始人',
   description:
     '影響力健身房創辦人、ATPI 溝通 4 大肌肉框架創始人。累積 200 場以上演講，輔導超過 2000 位學員。',
