@@ -6,7 +6,8 @@ const title = '超引力成交學｜影響力健身房的教練課';
 const description =
   '超引力成交學是影響力健身房的教練課系列，把 ATPI 四塊影響力肌肉從單塊練習串成真實場景走得通的一條路。對外兩個課：超引力顧問課 L1–L8、超引力公眾演說課 L1–L13。';
 
-/* ⚠️ 對外只有兩個 SKU，中間段落不單獨販售。價格鎖在字典（3.28 萬／10.8 萬）。
+/* ⚠️ 對外只有兩個 SKU，中間段落不單獨販售。
+   ⚠️ 不放價格：定價是諮詢現場攤開狀況之後才講的事，不在官網上比價。
    ⚠️ 8800 是隱藏產品，不上官網。99 元是館的會員費，不屬超引力成交學。
    ⚠️ 作廢：一階／二階／三階／Level 1-3／引力式系列／8週·12週／1+1 系統。 */
 const stages = [
@@ -28,7 +29,6 @@ const courses = [
   {
     name: '超引力顧問課',
     range: 'L1–L8',
-    price: '3.28 萬',
     stages: '鍛鍊段＋放大段',
     who: '一對一還沒跑順，講完之後對方沒有下一步。',
     dim: 'T',
@@ -36,7 +36,6 @@ const courses = [
   {
     name: '超引力公眾演說課',
     range: 'L1–L13',
-    price: '10.8 萬',
     stages: '鍛鍊段＋放大段＋演說段',
     who: '一對一已經會了，卡在一次只能面對一個人。',
     dim: 'I',
@@ -142,7 +141,6 @@ const schema = [
           <article class="card muscle" data-dim={c.dim}>
             <span class="muscle-tag">{c.range}</span>
             <h3>{c.name}</h3>
-            <p class="price">{c.price}</p>
             <p class="stages-line">{c.stages}</p>
             <p class="who"><b>適合的情況</b><br />{c.who}</p>
           </article>
@@ -206,11 +204,7 @@ const schema = [
 
   .courses { margin-top: 32px; grid-template-columns: repeat(2, 1fr); }
   @media (max-width: 640px) { .courses { grid-template-columns: 1fr; } }
-  .price {
-    margin-top: 8px !important; font-size: 30px; font-weight: 800;
-    letter-spacing: -.01em; color: var(--dim-deep) !important;
-  }
-  .stages-line { margin-top: 2px !important; font-size: 15px; color: var(--ink-soft) !important; }
+  .stages-line { margin-top: 10px !important; font-size: 15px; color: var(--ink-soft) !important; }
   .who { margin-top: 18px !important; font-size: 16px; }
   .who b { font-size: 13px; letter-spacing: .04em; color: var(--ink-soft); }
 
