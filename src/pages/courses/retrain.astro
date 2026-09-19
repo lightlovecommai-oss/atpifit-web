@@ -13,49 +13,78 @@ const description = '舊生複訓專用報名表。ATPI 四塊肌肉＋每天練
 
 const DEPOSIT = '5,000';
 
+/* ⚠️ 課程編碼對應白話課名（2026-09-19 老師裁定）：
+     L1–L4 鍛鍊段 = 影響力技巧心法
+     L5–L8 放大段 = 1v1 顧問腳本
+     L9–L12 演說段 = 1vN 公眾演說
+   梯次卡要「編碼 + 白話課名」一起露，只給編碼舊生看不懂。 */
 const cohorts = [
   {
     id: 'L1-L4-1109',
     range: 'L1–L4',
     stage: '鍛鍊段',
+    title: '影響力技巧心法',
     month: '9 月開課',
     rhythm: '每週二、四　09:00–11:00',
-    span: '9/29 – 10/22',
+    weeks: [
+      ['9/29（二）', '10/1（四）'],
+      ['10/6（二）', '10/8（四）'],
+      ['10/13（二）', '10/15（四）'],
+      ['10/20（二）', '10/22（四）'],
+    ],
     who: '想把四塊肌肉一塊一塊重新拆開練。',
   },
   {
     id: 'L5-L8-1012',
     range: 'L5–L8',
     stage: '放大段',
+    title: '1v1 顧問腳本',
     month: '10 月開課',
     rhythm: '每週一、五　09:30–11:30',
-    span: '10/12 – 11/6',
+    weeks: [
+      ['10/12（一）', '10/16（五）'],
+      ['10/19（一）', '10/23（五）'],
+      ['10/26（一）', '10/30（五）'],
+      ['11/2（一）', '11/6（五）'],
+    ],
     who: '單塊都練得動了，卡在一整場對話串不起來。',
   },
   {
     id: 'L5-L8-1110',
     range: 'L5–L8',
     stage: '放大段',
+    title: '1v1 顧問腳本',
     month: '11 月開課',
     rhythm: '每週二、四　09:00–11:00',
-    span: '11/10 – 12/3',
+    weeks: [
+      ['11/10（二）', '11/12（四）'],
+      ['11/17（二）', '11/19（四）'],
+      ['11/24（二）', '11/26（四）'],
+      ['12/1（二）', '12/3（四）'],
+    ],
     who: '同上，但 10 月的時段排不進來。',
   },
   {
     id: 'L9-L12-1215',
     range: 'L9–L12',
     stage: '演說段',
+    title: '1vN 公眾演說',
     month: '12 月開課',
     rhythm: '每週二、四　09:00–11:00',
-    span: '12/15 – 1/7',
+    weeks: [
+      ['12/15（二）', '12/17（四）'],
+      ['12/22（二）', '12/24（四）'],
+      ['12/29（二）', '12/31（四）'],
+      ['1/5（二）', '1/7（四）'],
+    ],
     who: '一對一已經會了，卡在一次只能面對一個人。',
     note: '最後一週跨到 2027 年 1 月。',
   },
 ];
 
-/* 給 Sheet 存的梯次字串：光頭對帳時要一眼看得出是哪一梯，所以帶上開課日 */
+/* 給 Sheet 存的梯次字串：光頭對帳時要一眼看得出是哪一梯，所以帶上白話課名＋開課日 */
 const cohortLabel = (c: typeof cohorts[number]) =>
-  `${c.range} ${c.stage}｜${c.month}｜${c.rhythm.replace(/　/g, ' ')}`;
+  `${c.range} ${c.stage}・${c.title}｜${c.month}｜${c.rhythm.replace(/　/g, ' ')}`;
 
 /* ⚠️ 維度名對齊字典：吸引／信任／專業／推進「肌肉」，「〇〇力」作廢。
    P 的結果句是「讓他認定你就是那個人」（2026-09-01 定案，不可換成「讓他知道你有解答」）。 */
@@ -125,7 +154,7 @@ const rules = [
         <p class="app-p app-last"><b>課負責教你怎麼練，App 負責讓你真的天天練。</b>這一組東西，你當初上課的時候完全不存在。</p>
 
         <div class="app-btns">
-          <a class="btn btn-sub" href={`${LINKS.gym}member.html?demo=1`} target="_blank" rel="noopener">
+          <a class="btn btn-sub" href={`${LINKS.gym}pro.html?demo=1`} target="_blank" rel="noopener">
             打開 App 看一眼<span class="btn-note">示範帳號，不用登入</span>
           </a>
           <a class="btn btn-sub" href={LINKS.quiz} target="_blank" rel="noopener">
@@ -147,12 +176,19 @@ const rules = [
             <input type="checkbox" name="cohort" value={cohortLabel(c)} />
             <span class="tick" aria-hidden="true"></span>
             <span class="pick-body">
-              <span class="pick-h">
-                <b class="pick-range">{c.range}　{c.stage}</b>
-                <span class="pick-month">{c.month}</span>
-              </span>
-              <span class="pick-when">{c.rhythm}<span class="pick-when-sep">・</span>共 8 堂</span>
-              <span class="pick-span">{c.span}</span>
+              <span class="pick-tag">{c.range}　{c.stage}</span>
+              <span class="pick-title">{c.title}</span>
+              <span class="pick-when"><b class="pick-month">{c.month}</b><span class="pick-when-sep">・</span>{c.rhythm}<span class="pick-when-sep">・</span>共 8 堂</span>
+
+              <ol class="pick-weeks">
+                {c.weeks.map((w, i) => (
+                  <li>
+                    <span class="wk-i">第 {i + 1} 週</span>
+                    <span class="wk-days">{w.map((d) => <span class="wk-d">{d}</span>)}</span>
+                  </li>
+                ))}
+              </ol>
+
               <span class="pick-w">{c.who}</span>
               {c.note && <span class="pick-n">{c.note}</span>}
             </span>
@@ -425,19 +461,41 @@ const rules = [
   }
 
   .pick-body { grid-column: 2; display: block; }
-  .pick-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
-  .pick-range { font-size: 15px; font-weight: 700; color: var(--act-deep); letter-spacing: .01em; }
-  .pick-month { font-size: 22px; font-weight: 800; color: var(--ink); line-height: 1.25; }
-  .pick-when { display: block; margin-top: 8px; font-size: 15.5px; color: var(--ink); font-variant-numeric: tabular-nums; }
-  .pick-when-sep { color: var(--ink-soft); margin: 0 4px; }
-  .pick-span {
-    display: inline-block; margin-top: 6px;
-    font-size: 14px; color: var(--ink-soft);
-    font-variant-numeric: tabular-nums;
-    background: var(--bg-alt); border-radius: 6px;
-    padding: 2px 8px;
+  .pick-tag {
+    display: inline-block; font-size: 13px; font-weight: 700;
+    color: var(--act-deep); background: var(--bg-alt);
+    padding: 3px 10px; border-radius: 6px; letter-spacing: .02em;
   }
-  .pick-w { display: block; margin-top: 10px; font-size: 15px; color: var(--ink-soft); line-height: 1.75; }
+  .pick-title {
+    display: block; margin-top: 8px;
+    font-size: 22px; font-weight: 800; color: var(--ink); line-height: 1.3;
+  }
+  .pick-when {
+    display: block; margin-top: 8px;
+    font-size: 15.5px; color: var(--ink);
+    font-variant-numeric: tabular-nums; line-height: 1.6;
+  }
+  .pick-month { font-weight: 700; color: var(--act-deep); }
+  .pick-when-sep { color: var(--ink-soft); margin: 0 4px; }
+
+  /* 完整日期表：一週一列，兩堂並排。日期/星期/幾點是關鍵資訊，不折疊。 */
+  .pick-weeks {
+    list-style: none; padding: 0; margin: 14px 0 0;
+    background: var(--bg-alt); border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .pick-weeks li {
+    display: grid; grid-template-columns: 58px 1fr; gap: 12px;
+    align-items: baseline;
+    font-variant-numeric: tabular-nums;
+    padding: 5px 0;
+  }
+  .pick-weeks li + li { border-top: 1px dashed var(--line); }
+  .wk-i { font-size: 13px; color: var(--ink-soft); font-weight: 600; }
+  .wk-days { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+  .wk-d { font-size: 15px; color: var(--ink); font-weight: 600; }
+
+  .pick-w { display: block; margin-top: 14px; font-size: 15px; color: var(--ink-soft); line-height: 1.75; }
   .pick-n { display: block; margin-top: 6px; font-size: 13.5px; color: var(--ink-soft); }
 
   /* 勾選態：整卡背景切成暖色 tint，邊框加粗，勾選記號變填色 */
@@ -446,8 +504,9 @@ const rules = [
     border-color: var(--act);
     box-shadow: 0 0 0 2px var(--act) inset;
   }
-  .pick:has(input:checked) .pick-span {
-    background: rgba(255, 255, 255, .55);
+  .pick:has(input:checked) .pick-tag,
+  .pick:has(input:checked) .pick-weeks {
+    background: rgba(255, 255, 255, .6);
   }
   .pick:has(input:checked) .tick {
     background: var(--act);
