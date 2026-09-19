@@ -21,12 +21,20 @@ const description =
   '超引力成交學是影響力健身房的實戰私教課。它把成交拆成 ATPI 四塊影響力肌肉——吸引、信任、專業、推進，一課一塊，練到在真實對話裡走得通。對外兩個課：超引力顧問課 L1–L8、超引力公眾演說課 L1–L13。';
 
 /* ═══ CTA 單一開關 ═══
-   'retrain'：10/12 B 班開課前的舊生回訓期，hero 下方多一條舊生專屬橫幅（帶倒數）。
-   'consult'：開課後改成這個值，橫幅整條消失，全頁只剩「預約 1v1 諮詢」。
-   主行動鈕在兩種模式下都是諮詢——這頁寫給陌生人，不能把陌生人丟進舊生專用頁。 */
+   'retrain'：10/12 B 班開課前的舊生回訓期，整頁主行動鈕全部推複訓，另有舊生橫幅（帶倒數）。
+   'consult'：開課後改成這個值，橫幅整條消失，主行動鈕全部退回「預約 1v1 諮詢」。
+   ⭐ 2026-09-19 老師指定：回訓期主鈕統一成複訓。原本的規則是「主鈕兩種模式都給諮詢」，
+      理由是這頁寫給陌生人；現在改成回訓優先，陌生人的路留在 hero 副鈕（健檢）與頁尾那行。
+   ⚠️ 主行動鈕**不要**掛 data-deadline——那個屬性會讓元素在開課日之後自己隱藏，
+      主鈕消失等於整頁沒有出口。到期收尾請改這裡的 CTA_MODE，不要靠自動隱藏。 */
 const CTA_MODE: 'retrain' | 'consult' = 'retrain';
 const RETRAIN_OPEN = CTA_MODE === 'retrain';
 const RETRAIN_DEADLINE = '2026-10-12'; // B 班（舊生回訓班）L5–L8 開課日
+
+/* 整頁主行動鈕的唯一真相。要換文案或連結改這裡，不要逐顆改。 */
+const MAIN_CTA = RETRAIN_OPEN
+  ? { href: '/courses/retrain', label: '舊生複訓手刀・看梯次與報名', cta: 'retrain' }
+  : { href: LINKS.booking, label: '預約 1v1 諮詢', cta: 'booking' };
 
 /* 四個斷點流程圖：一場對話會斷在哪四個地方。結果句鎖字典 01:58–61。 */
 const chain = [
@@ -199,8 +207,8 @@ const schema = [
         <p class="lead hero-lead">問題通常不在內容，在那四塊看不見的肌肉。超引力成交學把成交拆成吸引、信任、專業、推進四塊，一課練一塊，練到在真實的對話裡走得通。</p>
 
         <div class="btn-row hero-cta">
-          <a class="btn btn-main" href={LINKS.booking} data-cta="booking" data-cta-position="lp-hero">
-            預約 1v1 諮詢
+          <a class="btn btn-main" href={MAIN_CTA.href} data-cta={MAIN_CTA.cta} data-cta-position="lp-hero">
+            {MAIN_CTA.label}
           </a>
           <a class="btn btn-sub" href={LINKS.quiz} data-cta="quiz" data-cta-position="lp-hero">
             先做免費影響力健檢
@@ -613,24 +621,23 @@ const schema = [
   <!-- ═══ 13 主 CTA ═══ -->
   <section class="section">
     <div class="wrap-text">
+      {/* 回訓期這塊講給舊生聽，陌生人的兩條路收在 cta-sub。開課後 CTA_MODE 一改就全部退回諮詢版。
+          原本這裡是「諮詢主鈕 + 舊生橫幅」兩塊，主鈕改成複訓之後橫幅變成同一顆講兩次，已合併。 */}
       <aside class="cta">
         <p class="kicker">怎麼開始</p>
-        <h2>先把你的狀況攤開來看一次</h2>
-        <p class="lead">1v1 諮詢是線上 60 分鐘，我們會先聽你的現況，再把卡住的地方指出來。不適合會直接說，不會硬推。</p>
-        <a class="btn btn-main" href={LINKS.booking} data-cta="booking" data-cta-position="lp-bottom">
-          預約 1v1 諮詢
+        <h2>{RETRAIN_OPEN ? '上過課的人，直接回來練' : '先把你的狀況攤開來看一次'}</h2>
+        <p class="lead">{RETRAIN_OPEN
+          ? '課改版過了——成交拆成 ATPI 四塊影響力肌肉，攤開成 L1–L13 的全貌，還配了一支每天練的 App。你已經會做了，這一梯是把它變成可以帶人。B 班 10/12 開課。'
+          : '1v1 諮詢是線上 60 分鐘，我們會先聽你的現況，再把卡住的地方指出來。不適合會直接說，不會硬推。'}</p>
+        <a class="btn btn-main" href={MAIN_CTA.href} data-cta={MAIN_CTA.cta} data-cta-position="lp-bottom">
+          {MAIN_CTA.label}
         </a>
-        <p class="cta-sub">還沒準備好聊？<a href={LINKS.quiz} data-cta="quiz" data-cta-position="lp-bottom-sub">先做 3 分鐘免費影響力健檢</a>，量出四塊肌肉現在的樣子。</p>
+        <p class="cta-sub">{RETRAIN_OPEN ? (
+          <>還沒上過課？<a href={LINKS.booking} data-cta="booking" data-cta-position="lp-bottom-sub">先預約 1v1 諮詢</a>，或<a href={LINKS.quiz} data-cta="quiz" data-cta-position="lp-bottom-sub">做 3 分鐘免費影響力健檢</a>。</>
+        ) : (
+          <>還沒準備好聊？<a href={LINKS.quiz} data-cta="quiz" data-cta-position="lp-bottom-sub">先做 3 分鐘免費影響力健檢</a>，量出四塊肌肉現在的樣子。</>
+        )}</p>
       </aside>
-
-      {RETRAIN_OPEN && (
-        <aside class="alum-slim" data-deadline={RETRAIN_DEADLINE}>
-          <p><b>已經上過光頭的課，就不用再走一次諮詢。</b><span class="nb">直接看複訓梯次，B 班 10/12 開課。</span></p>
-          <a class="btn btn-main" href="/courses/retrain" data-cta="retrain" data-cta-position="lp-bottom">
-            舊生複訓手刀・看梯次與報名
-          </a>
-        </aside>
-      )}
     </div>
   </section>
 
