@@ -231,25 +231,69 @@ const schema = [
             <path d="M218 96 A94 94 0 1 1 142 96" fill="none" stroke="var(--p)" stroke-width="1.5" opacity=".38" />
             <path d="M218 130.5 A64 64 0 1 1 142 130.5" fill="none" stroke="var(--i)" stroke-width="1.5" opacity=".38" />
 
-            <text x="180" y="37" font-size="11" font-weight="700" fill="var(--a)" text-anchor="middle">A 想靠近</text>
-            <text x="180" y="68" font-size="11" font-weight="700" fill="var(--t)" text-anchor="middle">T 願意說</text>
-            <text x="180" y="100" font-size="11" font-weight="700" fill="var(--p)" text-anchor="middle">P 要找你</text>
-            <text x="180" y="134" font-size="11" font-weight="700" fill="var(--i)" text-anchor="middle">I 願意動</text>
+            <!-- 繞著你走的人：一個人一枚，顏色＝他現在停在哪一圈（pro 引力場同款讀法） -->
+            <g class="orbit">
+              <g transform="translate(298,281)"><g class="tok">
+                <circle r="13" fill="var(--card-warm)" stroke="var(--a)" stroke-width="1.5" />
+                <circle cy="-3.6" r="3.7" fill="var(--a)" />
+                <path d="M-6.4 7.2a6.4 6.4 0 0 1 12.8 0z" fill="var(--a)" />
+              </g></g>
+              <g transform="translate(35,129)"><g class="tok">
+                <circle r="13" fill="var(--card-warm)" stroke="var(--a)" stroke-width="1.5" />
+                <circle cy="-3.6" r="3.7" fill="var(--a)" />
+                <path d="M-6.4 7.2a6.4 6.4 0 0 1 12.8 0z" fill="var(--a)" />
+              </g></g>
+              <g transform="translate(325,129)"><g class="tok">
+                <circle r="13" fill="var(--card-warm)" stroke="var(--a)" stroke-width="1.5" />
+                <circle cy="-3.6" r="3.7" fill="var(--a)" />
+                <path d="M-6.4 7.2a6.4 6.4 0 0 1 12.8 0z" fill="var(--a)" />
+              </g></g>
+              <g transform="translate(104,280)"><g class="tok">
+                <circle r="13" fill="var(--card-warm)" stroke="var(--t)" stroke-width="1.5" />
+                <circle cy="-3.6" r="3.7" fill="var(--t)" />
+                <path d="M-6.4 7.2a6.4 6.4 0 0 1 12.8 0z" fill="var(--t)" />
+              </g></g>
+              <g transform="translate(287,120)"><g class="tok">
+                <circle r="13" fill="var(--card-warm)" stroke="var(--t)" stroke-width="1.5" />
+                <circle cy="-3.6" r="3.7" fill="var(--t)" />
+                <path d="M-6.4 7.2a6.4 6.4 0 0 1 12.8 0z" fill="var(--t)" />
+              </g></g>
+              <g transform="translate(113,115)"><g class="tok">
+                <circle r="13" fill="var(--card-warm)" stroke="var(--p)" stroke-width="1.5" />
+                <circle cy="-3.6" r="3.7" fill="var(--p)" />
+                <path d="M-6.4 7.2a6.4 6.4 0 0 1 12.8 0z" fill="var(--p)" />
+              </g></g>
+              <g transform="translate(174,246)"><g class="tok">
+                <circle r="13" fill="var(--card-warm)" stroke="var(--i)" stroke-width="1.5" />
+                <circle cy="-3.6" r="3.7" fill="var(--i)" />
+                <path d="M-6.4 7.2a6.4 6.4 0 0 1 12.8 0z" fill="var(--i)" />
+              </g></g>
+            </g>
 
-            <!-- 還在繞的人：同一種灰，身分不是重點，位置才是 -->
-            <circle cx="298" cy="281" r="5.5" fill="var(--ink-soft)" opacity=".5" />
-            <circle cx="35" cy="129" r="5.5" fill="var(--ink-soft)" opacity=".5" />
-            <circle cx="104" cy="280" r="5.5" fill="var(--ink-soft)" opacity=".5" />
-            <circle cx="300" cy="150" r="5.5" fill="var(--ink-soft)" opacity=".5" />
-            <circle cx="113" cy="115" r="5.5" fill="var(--ink-soft)" opacity=".5" />
+            <!-- 軌標壓在人上面：底色擋片是 pro .gring i 的同一招，人會從標籤後面繞過去 -->
+            <g class="ring-tag">
+              <rect x="152" y="26" width="56" height="15" rx="4" fill="var(--card)" />
+              <rect x="152" y="57" width="56" height="15" rx="4" fill="var(--card)" />
+              <rect x="152" y="89" width="56" height="15" rx="4" fill="var(--card)" />
+              <rect x="152" y="123" width="56" height="15" rx="4" fill="var(--card)" />
+              <text x="180" y="37" font-size="11" font-weight="700" fill="var(--a)" text-anchor="middle">A 想靠近</text>
+              <text x="180" y="68" font-size="11" font-weight="700" fill="var(--t)" text-anchor="middle">T 願意說</text>
+              <text x="180" y="100" font-size="11" font-weight="700" fill="var(--p)" text-anchor="middle">P 要找你</text>
+              <text x="180" y="134" font-size="11" font-weight="700" fill="var(--i)" text-anchor="middle">I 願意動</text>
+            </g>
 
-            <!-- 走近的那一個：漸層由淡到亮＝方向 -->
+            <!-- 走到你面前的那一個：漸層由淡到亮＝方向 -->
             <path
-              d="M37 82 Q10 140 31 195 Q48 250 90 272 Q135 296 180 287 Q222 278 239 241 Q252 214 241 193 Q234 180 222 176"
+              d="M24 73 Q4 140 31 195 Q48 250 90 272 Q135 296 180 287 Q222 278 239 241 Q252 214 241 193 Q234 180 222 176"
               fill="none" stroke="url(#pull)" stroke-width="2.5" stroke-linecap="round"
             />
             <polygon points="219,173.3 229.8,176.3 223.2,183.7" fill="var(--i)" />
-            <circle cx="37" cy="82" r="6" fill="var(--i)" opacity=".55" />
+            <!-- 起點刻意擺在最外圈之外：.orbit 會轉，這一枚不轉，擺在軌上遲早會疊到人 -->
+            <g transform="translate(24,73)">
+              <circle r="13" fill="var(--card-warm)" stroke="var(--i)" stroke-width="2" />
+              <circle cy="-3.6" r="3.7" fill="var(--i)" />
+              <path d="M-6.4 7.2a6.4 6.4 0 0 1 12.8 0z" fill="var(--i)" />
+            </g>
 
             <!-- 中心＝你。外圈四段弧＝場是這四塊肌肉撐出來的 -->
             <path d="M155.4 155.7 A36 36 0 0 1 204.6 155.7" fill="none" stroke="var(--a)" stroke-width="3" stroke-linecap="round" />
@@ -278,9 +322,8 @@ const schema = [
             <p class="alum-s">12 月起這套課會系統化：乾貨全部錄播，每週只留 1.5 小時演練課。光頭從頭帶到尾的完整直播梯次，剩下最後兩梯——B 班 10/12 開課。</p>
           </div>
           <div class="alum-act">
-            <p class="alum-count">舊生複訓手刀</p>
-            <a class="btn btn-sub" href="/courses/retrain" data-cta="retrain" data-cta-position="lp-alumni">
-              看梯次與報名
+            <a class="btn btn-main" href="/courses/retrain" data-cta="retrain" data-cta-position="lp-alumni">
+              舊生複訓手刀・看梯次與報名
             </a>
           </div>
         </aside>
@@ -402,6 +445,15 @@ const schema = [
         ))}
         <p class="sku-note">中間的段落不單獨販售。走到最後，不是你變成一個很會講話的人，而是<b>你說的話，開始有人願意照著做</b>。他們相信的是你這個人。</p>
       </div>
+
+      {RETRAIN_OPEN && (
+        <aside class="alum-slim" data-deadline={RETRAIN_DEADLINE}>
+          <p>看完全圖，<b>你已經走過前面那幾格了？</b><span class="nb">B 班 10/12 開課，L5–L8 接著往下。</span></p>
+          <a class="btn btn-main" href="/courses/retrain" data-cta="retrain" data-cta-position="lp-road">
+            舊生複訓手刀・看梯次與報名
+          </a>
+        </aside>
+      )}
     </div>
   </section>
 
@@ -469,6 +521,15 @@ const schema = [
         ))}
       </div>
       <p class="note">這個選擇不會由你自己在網頁上決定。它會在諮詢現場，把你的狀況攤開來看過<span class="nb">之後才決定</span>。<span class="nb">我們不預設賣哪一個。</span></p>
+
+      {RETRAIN_OPEN && (
+        <aside class="alum-slim" data-deadline={RETRAIN_DEADLINE}>
+          <p><b>舊生不用重新選。</b>你上過的那一段直接接下去，<span class="nb">複訓梯次走的是同一條路。</span></p>
+          <a class="btn btn-main" href="/courses/retrain" data-cta="retrain" data-cta-position="lp-sku">
+            舊生複訓手刀・看梯次與報名
+          </a>
+        </aside>
+      )}
     </div>
   </section>
 
@@ -561,6 +622,15 @@ const schema = [
         </a>
         <p class="cta-sub">還沒準備好聊？<a href={LINKS.quiz} data-cta="quiz" data-cta-position="lp-bottom-sub">先做 3 分鐘免費影響力健檢</a>，量出四塊肌肉現在的樣子。</p>
       </aside>
+
+      {RETRAIN_OPEN && (
+        <aside class="alum-slim" data-deadline={RETRAIN_DEADLINE}>
+          <p><b>已經上過光頭的課，就不用再走一次諮詢。</b><span class="nb">直接看複訓梯次，B 班 10/12 開課。</span></p>
+          <a class="btn btn-main" href="/courses/retrain" data-cta="retrain" data-cta-position="lp-bottom">
+            舊生複訓手刀・看梯次與報名
+          </a>
+        </aside>
+      )}
     </div>
   </section>
 
@@ -596,11 +666,10 @@ const schema = [
 <script>
   /* 開課日過了就把整條橫幅收掉。站是靜態建置的，build 時間算出來的結果一部署就過期，
      所以這件事只能在瀏覽器當下判斷。 */
-  const box = document.querySelector<HTMLElement>('.alum[data-deadline]');
-  if (box) {
+  document.querySelectorAll<HTMLElement>('[data-deadline]').forEach((box) => {
     const target = new Date(`${box.dataset.deadline}T00:00:00+08:00`).getTime();
     if (Date.now() > target) box.hidden = true;
-  }
+  });
 </script>
 
 <style>
@@ -653,6 +722,16 @@ const schema = [
   .field { padding: 18px 18px 16px; }
   .field-fig { margin: 4px 0; }
   .field-fig svg { width: 100%; height: auto; }
+  /* 星系慢轉，人反向自轉保持站正（pro .gorbit／.gdot 同一招）。
+     ⚠️ .tok 外面一定要再包一層帶 translate 的 g——CSS transform 會整個蓋掉
+     SVG 的 transform 屬性，位置和自轉寫在同一個元素上，位置就沒了。 */
+  .orbit { animation: gspin 110s linear infinite; transform-box: view-box; transform-origin: 180px 182px; }
+  .tok { animation: gspinrev 110s linear infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes gspin { to { transform: rotate(360deg); } }
+  @keyframes gspinrev { to { transform: rotate(-360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .orbit, .tok { animation: none; }
+  }
   .field-note { font-size: 12.5px; color: var(--ink-soft); line-height: 1.75; }
 
   /* ═══ 舊生專屬橫幅 ═══ */
@@ -668,12 +747,19 @@ const schema = [
   .alum-t b { color: var(--i); }
   .alum-s { margin-top: 10px; font-size: 14.5px; color: var(--ink-soft); line-height: 1.85; max-width: 60ch; }
   .alum-act { text-align: center; }
-  .alum-count {
-    font-size: 14px; font-weight: 700; color: var(--i-deep);
-    background: var(--i-tint); border: 1px solid rgba(232, 200, 154, .45);
-    border-radius: 999px; padding: 5px 14px; display: inline-block; margin-bottom: 12px;
-  }
   .alum-act .btn { display: block; }
+
+  /* 複訓入口在長頁裡重複出現的窄版。舊生不會從頭讀到尾，所以全圖看完、選完課、
+     讀完主 CTA 各放一次，讓他在任何一個「想起自己上過課」的位置都按得到。 */
+  .alum-slim {
+    display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: center; justify-content: space-between;
+    margin-top: clamp(28px, 4vw, 40px);
+    background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--i);
+    border-radius: 0 14px 14px 0; padding: 18px clamp(18px, 2.5vw, 24px);
+  }
+  .alum-slim p { font-size: 14.5px; color: var(--ink-soft); line-height: 1.8; max-width: 52ch; }
+  .alum-slim p b { color: var(--ink); }
+  .alum-slim .btn { flex: none; }
 
   /* ═══ 圖②四個斷點：橫向鏈 ═══ */
   .chain { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 34px; }
