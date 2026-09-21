@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # 每天重建一次，讓 pubDate 排到未來的文章到期自動上線（src/lib/published.ts）。
+  # 01:00 UTC ＝ 台北 09:00。
+  schedule:
+    - cron: '0 1 * * *'
 
 permissions:
   contents: read
@@ -43,3 +47,17 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # 部署完把 sitemap 推給 IndexNow（Bing／Yandex／Naver 吃，Google 不吃）。
+  # 排程上線的文章沒有人會記得手動跑這支，所以掛在這裡。
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # 這支讀的是線上的 sitemap，等 Pages CDN 換完才不會推到舊的那份
+      - run: sleep 60
+      - run: node scripts/indexnow.mjs

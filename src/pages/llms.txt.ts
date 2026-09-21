@@ -1,5 +1,6 @@
 import { getCollection } from 'astro:content';
 import { SITE } from '../consts';
+import { isPublished } from '../lib/published';
 import type { APIContext } from 'astro';
 
 /* llms.txt ── 給 AI 搜尋／語言模型看的站台索引。
@@ -10,7 +11,7 @@ export async function GET(_context: APIContext) {
   const terms = (await getCollection('glossary', ({ data }) => !data.draft)).sort(
     (a, b) => a.data.order - b.data.order
   );
-  const posts = (await getCollection('articles', ({ data }) => !data.draft)).sort(
+  const posts = (await getCollection('articles', ({ data }) => isPublished(data))).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
   );
 

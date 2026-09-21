@@ -4,8 +4,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import Newsletter from '../../components/Newsletter.astro';
 import { SITE } from '../../consts';
+import { isPublished } from '../../lib/published';
 
-const posts = (await getCollection('articles', ({ data }) => !data.draft)).sort(
+const posts = (await getCollection('articles', ({ data }) => isPublished(data))).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
