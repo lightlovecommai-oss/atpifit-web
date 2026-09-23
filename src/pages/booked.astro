@@ -1,0 +1,63 @@
+---
+/* 諮詢預約完成頁。Calendly 在「Confirmation Page → Redirect to an external site」
+   指向這裡，漏斗第⑦段才有「真的約到」這個數字——
+   consult_book_click 只量得到「他想約」，約成沒約成看不到。
+
+   ⚠️ Calendly 的「Pass event details to your redirected page」要打開，
+      不然下面那些 invitee_* 參數全是空的（事件照送，只是少了細節）。 */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, LINKS } from '../consts';
+
+const title = '預約完成';
+const description = '你的 1v1 諮詢已經排進來了。';
+
+const schema = {
+  '@type': 'WebPage',
+  '@id': `${SITE.url}/booked/#webpage`,
+  name: title,
+  description,
+  url: `${SITE.url}/booked/`,
+  inLanguage: 'zh-Hant-TW',
+  isPartOf: { '@id': `${SITE.url}/#website` },
+};
+---
+
+<BaseLayout title={title} description={description} schema={schema} noindex={true}>
+  <section class="section">
+    <div class="wrap-text">
+      <p class="kicker">預約完成</p>
+      <h1>好，時間排進來了</h1>
+      <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
+      <p class="lead">確認信已經寄到你填的信箱，裡面有視訊連結。當天直接點那個連結進來就可以。</p>
+
+      <h2>在那之前，先想一件事</h2>
+      <p>不用準備簡報，也不用先整理好問題。真正有用的是：<b>你最近一次談到一半就卡住的對話，是哪一場。</b>把那一場想起來，我們就從那裡開始拆。</p>
+      <p>聊的是你的狀況，不是我的課。這一小時你帶走的東西，跟你後面有沒有上課沒有關係。</p>
+
+      <h2>想先自己看看</h2>
+      <p>等待的這幾天，這兩個地方可以先去：</p>
+      <ul>
+        <li><a href={LINKS.quiz} data-cta="quiz" data-cta-position="booked">3 分鐘影響力健檢</a>——先知道自己四塊肌肉哪塊最有感，諮詢當天可以直接對著看。</li>
+        <li><a href="/articles" data-cta="articles" data-cta-position="booked">文章</a>——挑跟你現在情境最像的那篇。</li>
+      </ul>
+
+      <p class="lead">要改時間或取消，用確認信裡的連結就可以，不用特地告訴我。</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  /* 重新整理會再送一次，所以用 sessionStorage 擋重複。
+     低摩擦守則：追蹤壞掉不能影響畫面，整段包 try。 */
+  try {
+    const q = new URLSearchParams(location.search);
+    const key = 'cw_booked_' + (q.get('invitee_uuid') || q.get('event_start_time') || 'x');
+    if (!sessionStorage.getItem(key)) {
+      sessionStorage.setItem(key, '1');
+      (window as any).track?.('consult_booked', {
+        event_type: q.get('event_type_name') || '',
+        start_time: q.get('event_start_time') || '',
+      });
+    }
+  } catch {}
+</script>

@@ -361,7 +361,17 @@ const rules = [
       form.hidden = true;
       done.hidden = false;
       done.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      try { (window as any).track?.('lead_submit', { source: 'retrain' }); } catch {}
+      /* 兩個都送不是重複計數：lead_submit 是「留了聯絡方式」（跟訂閱同一層），
+         workshop_register 是「報名了梯次」——漏斗第⑦段只認得後者。
+         ⚠️ 這裡**不送 purchase**：保證金是匯款，瀏覽器看不到錢有沒有進來。 */
+      try {
+        (window as any).track?.('lead_submit', { source: 'retrain' });
+        (window as any).track?.('workshop_register', {
+          workshop_id: 'retrain-2026Q4',
+          cohort: picked().join(' / '),
+          cohort_count: picked().length,
+        });
+      } catch {}
     } catch (err) {
       console.warn('報名送出失敗：', err);
       say('送出的時候出了點狀況，麻煩再按一次。連按兩次不會重複報名。');

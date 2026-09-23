@@ -113,16 +113,34 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
     </a>
   </div>
   <script>
+    import { LINKS } from '../consts';
+    const BOOKING_HOST = new URL(LINKS.booking).host;
+
     /* cta_click 的發射器（規範 31 §4E）：track.js 只給函式不綁 click，
        這裡統一監聽 [data-cta]，否則北極星（Quiz 點擊率）量不到。低摩擦：出事只吞掉，不擋跳轉。 */
     document.addEventListener('click', (e) => {
-      const el = (e.target as Element).closest?.('[data-cta]') as HTMLElement | null;
-      if (!el) return;
+      const t = e.target as Element;
+      const el = t.closest?.('[data-cta]') as HTMLElement | null;
+      if (el) {
+        try {
+          (window as any).track?.('cta_click', {
+            cta_id: el.dataset.cta,
+            cta_position: el.dataset.ctaPosition || '',
+            cta_text: (el.textContent || '').trim(),
+          });
+        } catch {}
+      }
+
+      /* 漏斗事件認的是**去向不是按鈕**：footer 那顆沒有 data-cta，
+         按 host 比對才不會漏掉，日後新增預約連結也自動算進來。 */
+      const a = t.closest?.('a[href]') as HTMLAnchorElement | null;
+      if (!a) return;
       try {
-        (window as any).track?.('cta_click', {
-          cta_id: el.dataset.cta,
-          cta_position: el.dataset.ctaPosition || '',
-          cta_text: (el.textContent || '').trim(),
+        if (new URL(a.href, location.href).host !== BOOKING_HOST) return;
+        (window as any).track?.('consult_book_click', {
+          cta_id: (a as HTMLElement).dataset.cta || '',
+          cta_position: (a as HTMLElement).dataset.ctaPosition || '',
+          from_page: location.pathname,
         });
       } catch {}
     });
