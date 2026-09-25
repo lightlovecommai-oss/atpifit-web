@@ -89,7 +89,7 @@
 }
 .prose .stepbar li::before {
   content: ""; display: block; height: var(--sb-h);
-  border-radius: 9px; background: var(--sb-c); transform: skewX(-12deg);
+  border-radius: 9px; background: var(--sb-c); transform: skewX(var(--skew));
 }
 /* 粗的講結論、細的講後果（§3.9 第 6 條），所以標籤獨立一行、用深版才壓得住 */
 .prose .stepbar li strong {

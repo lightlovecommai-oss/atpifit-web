@@ -60,10 +60,10 @@ const m = dim ? MUSCLE[dim] : null;
     background: var(--dim-tint); color: var(--ink);
     border-radius: 999px; padding: 5px 13px; font-weight: 600;
   }
-  /* 一片斜切薄片＝這篇屬於哪塊肌肉（24 §3.9，斜切角同全站 -12°） */
+  /* 一片斜切薄片＝這篇屬於哪塊肌肉（24 §3.9）。角度走 --skew，不要寫死。 */
   .slice {
     width: 12px; height: 13px; border-radius: 2px;
-    background: var(--dim-c); transform: skewX(-12deg);
+    background: var(--dim-c); transform: skewX(var(--skew));
   }
   .mins { white-space: nowrap; }
 </style>
