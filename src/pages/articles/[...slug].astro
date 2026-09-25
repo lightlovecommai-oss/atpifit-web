@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CtaBlock from '../../components/CtaBlock.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
+import OrientBar from '../../components/OrientBar.astro';
 import { SITE } from '../../consts';
 import { isPublished } from '../../lib/published';
 import '../../styles/prose.css';
@@ -15,6 +16,9 @@ export async function getStaticPaths() {
 const { post, posts } = Astro.props;
 const { Content } = await render(post);
 const d = post.data;
+
+/* 耗時預告：中文以每分鐘 400 字估，不含空白與 markdown 記號。 */
+const minutes = Math.max(1, Math.round((post.body ?? '').replace(/\s+/g, '').length / 400));
 
 const url = `${SITE.url}/articles/${post.id}`;
 const fmt = (x: Date) => x.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -85,6 +89,8 @@ if (d.faq.length) {
           <time datetime={d.pubDate.toISOString().slice(0, 10)}>{fmt(d.pubDate)}</time>
           {d.updatedDate && <span>· 最後更新 {fmt(d.updatedDate)}</span>}
         </p>
+
+        <OrientBar dim={d.dim} minutes={minutes} />
       </div>
     </header>
 

@@ -1,0 +1,69 @@
+---
+/* 定位條＝手冊 34 §2 的「身分條」在文章頁的實作。
+   第一句是字句統一的固定句，改它要回去改 34 §2，不要只改這裡；第二句才是本載體自己的說明。
+   一份實作、全部文章吃到——所以骨層句寫在這裡，不要再逐篇塞同一句金句。
+   四塊肌肉的結果句＝字典〈ATPI〉表原文，改要回去改字典不要改這裡。
+   視覺上刻意不做成左邊框色框（那是 .prose blockquote 的崗位，同頁兩個元素不能長太像）：
+   這裡走「一條實色頂線＋一片斜切薄片」。 */
+interface Props {
+  dim?: 'A' | 'T' | 'P' | 'I';
+  minutes: number;
+}
+const { dim, minutes } = Astro.props;
+
+const MUSCLE = {
+  A: { name: '吸引肌肉', result: '讓他想靠近' },
+  T: { name: '信任肌肉', result: '讓他願意說' },
+  P: { name: '專業肌肉', result: '讓他要找你' },
+  I: { name: '推進肌肉', result: '讓他願意動' },
+} as const;
+const m = dim ? MUSCLE[dim] : null;
+---
+
+<aside class="orient" data-dim={dim}>
+  <p class="who">
+    這裡是<strong>影響力健身房</strong>，一個讓你系統性提升影響力的地方。這個專欄把影響力拆成四塊肌肉，一篇練一塊——練它不是為了贏過誰，是為了讓你真正想幫的人，聽得進你的話。
+  </p>
+  <p class="row">
+    {m && (
+      <span class="chip">
+        <span class="slice" aria-hidden="true"></span>這一篇練：{m.name}・{m.result}
+      </span>
+    )}
+    <span class="mins">讀完約 {minutes} 分鐘</span>
+  </p>
+</aside>
+
+<style>
+  .orient {
+    margin-top: 26px;
+    padding-top: 14px;
+    border-top: 2px solid var(--dim-c);
+    --dim-c: var(--act);
+    --dim-tint: var(--a-tint);
+  }
+  .orient[data-dim='A'] { --dim-c: var(--a); --dim-tint: var(--a-tint); }
+  .orient[data-dim='T'] { --dim-c: var(--t); --dim-tint: var(--t-tint); }
+  .orient[data-dim='P'] { --dim-c: var(--p); --dim-tint: var(--p-tint); }
+  .orient[data-dim='I'] { --dim-c: var(--i); --dim-tint: var(--i-tint); }
+
+  .who { font-size: 15px; line-height: 1.8; color: var(--ink-soft); margin: 0; }
+  .who strong { color: var(--ink); font-weight: 700; }
+
+  .row {
+    margin: 12px 0 0;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
+    font-size: 13px; color: var(--ink-soft);
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--dim-tint); color: var(--ink);
+    border-radius: 999px; padding: 5px 13px; font-weight: 600;
+  }
+  /* 一片斜切薄片＝這篇屬於哪塊肌肉（24 §3.9，斜切角同全站 -12°） */
+  .slice {
+    width: 12px; height: 13px; border-radius: 2px;
+    background: var(--dim-c); transform: skewX(-12deg);
+  }
+  .mins { white-space: nowrap; }
+</style>

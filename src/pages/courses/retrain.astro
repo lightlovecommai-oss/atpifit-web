@@ -167,6 +167,43 @@ const rules = [
 
   <section class="section" id="pick-top">
     <div class="wrap-text">
+      {/* ⚠️ 太多舊生看不懂 L1→L12 是同一套系統、L5–L8 開兩梯只是時間差；
+           所以在 picks 之前先鋪一張三步選課地圖，再讓他勾。 */}
+      <div class="flow">
+        <p class="kicker">怎麼挑</p>
+        <h3 class="flow-h">四梯選三梯，走完一整輪</h3>
+        <p class="flow-lead">L1 到 L12 是同一套系統，一路接下來：<b>基礎心法 → 顧問腳本 → 公眾演說</b>。中間那一段（L5–L8）我們開了兩梯，<span class="nb">是給時間、不是給選內容</span>——內容完全一樣，10 月或 11 月挑一個上就好。</p>
+
+        <ol class="flow-steps">
+          <li class="flow-step">
+            <div class="fs-num">1</div>
+            <div class="fs-body">
+              <span class="fs-tag">L1–L4　鍛鍊段</span>
+              <span class="fs-title">影響力技巧心法</span>
+              <span class="fs-when">9 月開課</span>
+            </div>
+          </li>
+          <li class="flow-step flow-step-choice">
+            <div class="fs-num">2</div>
+            <div class="fs-body">
+              <span class="fs-tag">L5–L8　放大段<b class="fs-choose">二選一</b></span>
+              <span class="fs-title">1v1 顧問腳本</span>
+              <span class="fs-when">10 月 <b>或</b> 11 月</span>
+            </div>
+          </li>
+          <li class="flow-step">
+            <div class="fs-num">3</div>
+            <div class="fs-body">
+              <span class="fs-tag">L9–L12　演說段</span>
+              <span class="fs-title">1vN 公眾演說</span>
+              <span class="fs-when">12 月開課</span>
+            </div>
+          </li>
+        </ol>
+
+        <p class="flow-note">只想單練一塊、或三梯全上，都可以——看你時間怎麼調。</p>
+      </div>
+
       <h2>四梯，想上幾梯都可以</h2>
       <p class="lead">每一梯都是八堂、四週。可以複選，全部報也可以——<span class="nb">保證金還是那一筆</span>。</p>
 
@@ -448,6 +485,87 @@ const rules = [
   /* 這頁的錢鈕只有一顆（送出報名），所以這兩顆走參觀層的框線鈕 */
   .app-btns { display: grid; gap: 10px; margin-top: 24px; }
   .app-btns .btn { background: #fff; text-align: center; }
+
+  /* ── 選課地圖：picks 之前的三步引導 ─────────────────
+     舊生誤解常見兩點：以為 L5–L8 兩梯是兩門不同的課、以為 L1–L12
+     是各自獨立的模組。這張圖把「一條線 + 中段二選一」講出來，
+     再讓下方 picks 承接。 */
+  .flow {
+    margin-top: 4px;
+    padding: clamp(22px, 4vw, 32px);
+    background: var(--bg-alt);
+    border-radius: var(--r-card);
+  }
+  .flow-h { margin-top: 6px; font-size: clamp(21px, 3vw, 26px); }
+  .flow-lead {
+    margin-top: 12px; max-width: 54ch;
+    font-size: 15.5px; line-height: 1.9; color: var(--ink-soft);
+  }
+  .flow-lead b { color: var(--ink); font-weight: 700; }
+
+  .flow-steps {
+    list-style: none; padding: 0;
+    margin: 22px 0 0;
+    display: grid; gap: 14px;
+  }
+  .flow-step {
+    position: relative;
+    background: #fff;
+    border: 1.5px solid var(--line-soft);
+    border-radius: var(--r-btn);
+    padding: 16px 18px;
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    column-gap: 14px;
+    align-items: center;
+  }
+  .fs-num {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--act); color: #fff;
+    font-weight: 800; font-size: 17px;
+    display: grid; place-items: center;
+  }
+  .fs-body { display: block; min-width: 0; }
+  .fs-tag {
+    display: inline-block;
+    font-size: 12.5px; font-weight: 700;
+    color: var(--act-deep); letter-spacing: .03em;
+  }
+  .fs-title {
+    display: block; margin: 4px 0 4px;
+    font-size: 18px; font-weight: 800; line-height: 1.35;
+    color: var(--ink);
+  }
+  .fs-when {
+    display: block;
+    font-size: 14.5px; color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .fs-when b { color: var(--act-deep); font-weight: 700; }
+  .fs-choose {
+    display: inline-block; margin-left: 10px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: .06em;
+    color: #fff; background: var(--act);
+    padding: 2px 8px; border-radius: 4px;
+    vertical-align: 2px;
+  }
+  .flow-step-choice {
+    border-color: var(--act);
+    box-shadow: 0 0 0 1px var(--act);
+  }
+  /* 步驟間的細連接線：暗示「接下來→下一段」 */
+  .flow-step + .flow-step::before {
+    content: '';
+    position: absolute;
+    left: 35px; top: -15px;
+    width: 2px; height: 14px;
+    background: var(--act); opacity: .5;
+  }
+
+  .flow-note {
+    margin-top: 20px; font-size: 14.5px;
+    color: var(--ink-soft); line-height: 1.85;
+  }
 
   /* ── 梯次選擇：整張卡就是可勾選的方框，勾選記號在左邊，勾了整卡切色 ── */
   .picks { margin-top: 24px; display: grid; gap: 12px; }

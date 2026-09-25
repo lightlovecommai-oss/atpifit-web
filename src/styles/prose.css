@@ -20,6 +20,13 @@
   background: var(--act); margin-top: 14px;
 }
 
+/* 段落之間的分割線：長文太密，每個 h2 上面切一刀。
+   用 h2 ~ h2 是刻意的——第一個 h2 不吃，文章不要一開頭就被一條線切斷。 */
+.prose h2 ~ h2 {
+  border-top: 1px solid var(--line);
+  padding-top: 1.7em;
+}
+
 .prose p { color: var(--ink); }
 .prose strong { font-weight: 700; color: var(--ink); }
 .prose em { font-style: normal; color: var(--act-deep); font-weight: 600; }
