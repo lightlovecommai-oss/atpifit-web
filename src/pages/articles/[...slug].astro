@@ -148,7 +148,10 @@ if (d.faq.length) {
   .crumbs a:hover { color: var(--act-deep); text-decoration: underline; }
   .crumbs span { margin: 0 4px; }
 
-  .head h1 { font-size: clamp(28px, 4.6vw, 40px); }
+  /* balance 把兩行拉成差不多長，第二行才不會只剩兩三個字。
+     ⚠️ 它管不到中文的詞界——標題還是可能斷在「要／怎麼回」中間，
+     CSS 無從得知哪裡是一個詞，只能靠標題本身寫短一點。 */
+  .head h1 { font-size: clamp(28px, 4.6vw, 40px); text-wrap: balance; }
   .head .lead { margin-top: 16px; }
   .meta { margin-top: 20px; font-size: 14px; color: var(--ink-soft); }
 
