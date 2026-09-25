@@ -51,6 +51,73 @@
 
 .prose hr { border: 0; border-top: 1px solid var(--line); margin: 2.6em 0; }
 
+/* 步驟圖＝手冊 24 §3.9 的薄片語言在文章正文的實作，跟信裡的 slicebar()
+   （productkit `_tools/流程化.py`）是同一套語言：等高薄片站在一條基線上，
+   先後交給整排漸層講。編號圓圈是通用元件，誰都能畫，所以不用。
+   ⚠️ 高度刻意等高。做成遞增等於宣稱後面那步比較重，那是假資訊。
+   ⚠️ 只給真的有先後的內容。並列的三件事套這張圖，等於用圖說了一個謊。
+   位置放正文中段——頁首是定位條的崗位，同頁兩個視覺元素不能長太像。
+   顏色吃 .prose[data-dim]，跟 frontmatter 的 dim 同步，不在 md 裡寫顏色。 */
+.prose .stepbar {
+  --sb-h: 30px;
+  --sb-c: var(--act);
+  --sb-d: var(--act-deep);
+  list-style: none;
+  padding: 0;
+  margin-block: 2.1em;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  /* 斜切會把底邊往左推，間距要比看起來需要的再大一點，否則相鄰兩片的下角會咬在一起 */
+  gap: 0 14px;
+  position: relative;
+}
+.prose[data-dim='A'] .stepbar { --sb-c: var(--a); --sb-d: var(--a-deep); }
+.prose[data-dim='T'] .stepbar { --sb-c: var(--t); --sb-d: var(--t-deep); }
+.prose[data-dim='P'] .stepbar { --sb-c: var(--p); --sb-d: var(--p-deep); }
+.prose[data-dim='I'] .stepbar { --sb-c: var(--i); --sb-d: var(--i-deep); }
+
+/* 一條基線，所有薄片站在上面（§3.9 第 1 條） */
+.prose .stepbar::after {
+  content: ""; position: absolute; left: 0; right: 0; top: var(--sb-h);
+  height: 2px; border-radius: 1px; background: var(--line);
+}
+/* 窄欄＋中文，最後一行很容易只剩一個字。balance 把行長拉平，孤字就不會出現。 */
+.prose .stepbar li {
+  margin: 0; font-size: 13.5px; line-height: 1.65; color: var(--ink-soft);
+  text-wrap: balance;
+}
+.prose .stepbar li::before {
+  content: ""; display: block; height: var(--sb-h);
+  border-radius: 9px; background: var(--sb-c); transform: skewX(-12deg);
+}
+/* 粗的講結論、細的講後果（§3.9 第 6 條），所以標籤獨立一行、用深版才壓得住 */
+.prose .stepbar li strong {
+  display: block; margin-top: 13px; font-size: 15px; color: var(--sb-d);
+}
+
+/* 一道橫跨整排的家族漸層＝順序。slicebar 的區間是 8%→36%，這裡底把它抬到 14%：
+   信裡的薄片是烘成實色的，螢幕上 8% 疊在米底上會直接讀成灰，家族色就不見了。 */
+.prose .stepbar li:nth-child(1)::before { opacity: .14; }
+.prose .stepbar li:nth-child(2)::before { opacity: .24; }
+.prose .stepbar li:nth-child(3)::before { opacity: .32; }
+.prose .stepbar li:nth-child(4)::before { opacity: .38; }
+.prose .stepbar li:nth-child(5)::before { opacity: .42; }
+
+/* 一格一塊肌肉的時候（例：A→T→P→I 四道關）改吃四色，順序由四色講，
+   漸層就要退掉——同一排同時跑兩套順序語言會互相打架。 */
+.prose .stepbar li[data-dim] { --sb-c: var(--act); --sb-d: var(--act-deep); }
+.prose .stepbar li[data-dim='A'] { --sb-c: var(--a); --sb-d: var(--a-deep); }
+.prose .stepbar li[data-dim='T'] { --sb-c: var(--t); --sb-d: var(--t-deep); }
+.prose .stepbar li[data-dim='P'] { --sb-c: var(--p); --sb-d: var(--p-deep); }
+.prose .stepbar li[data-dim='I'] { --sb-c: var(--i); --sb-d: var(--i-deep); }
+.prose .stepbar li[data-dim]::before { opacity: .5; }
+
+@media (max-width: 640px) {
+  .prose .stepbar { --sb-h: 22px; gap: 0 9px; font-size: 12.5px; }
+  .prose .stepbar li strong { font-size: 13.5px; margin-top: 10px; }
+}
+
 .prose img { border-radius: var(--r-card); margin-block: 1.8em; }
 .prose figure figcaption { margin-top: 10px; font-size: 14px; color: var(--ink-soft); text-align: center; }
 

@@ -34,6 +34,17 @@ faq:
 
 ## 四道關，對應四塊肌肉
 
+四道關有先後，而且每一關過了長什麼樣子，都有一句話可以對：
+
+<ol class="stepbar">
+  <li data-dim="A"><strong>吸引</strong>他想靠近</li>
+  <li data-dim="T"><strong>信任</strong>他願意說</li>
+  <li data-dim="P"><strong>專業</strong>他要找你</li>
+  <li data-dim="I"><strong>推進</strong>他願意動</li>
+</ol>
+
+反過來，你卡在哪一關也有對應的訊號：
+
 | 你卡在哪裡 | 對應的肌肉 |
 |---|---|
 | 講了沒人接，場子不轉向你 | 吸引肌肉 |

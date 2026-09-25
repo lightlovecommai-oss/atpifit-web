@@ -95,7 +95,8 @@ if (d.faq.length) {
     </header>
 
     <div class="wrap-text">
-      <div class="prose"><Content /></div>
+      {/* data-dim 讓正文裡的 .stepbar 吃到這篇的肌肉色，md 裡就不用寫顏色 */}
+      <div class="prose" data-dim={d.dim}><Content /></div>
 
       {d.faq.length > 0 && (
         <section class="faq">
