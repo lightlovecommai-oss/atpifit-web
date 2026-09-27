@@ -64,7 +64,7 @@ export const CASES: CaseItem[] = [
     name: '林珈鉉',
     who: '企管顧問＋身心靈工作者',
     quote:
-      '很感謝光頭教練的課程與協助，讓我在上完課後的第一次實體銷講，就有了很大的突破！',
+      '很感謝平凡人光頭教練的課程與協助，讓我在上完課後的第一次實體銷講，就有了很大的突破！',
     shot: '/assets/cases/linjiaxuan.png',
     shotPos: '50% 4%',
     series: '超引力成交學・學員',
@@ -74,7 +74,7 @@ export const CASES: CaseItem[] = [
     name: '劉沐洋（艾斯）',
     who: '家族辦公室主理人・FB 公開發文',
     quote:
-      '我一直記得光頭教練說過的一句話：「技巧是工具，真實才是地基。」',
+      '我一直記得平凡人光頭教練說過的一句話：「技巧是工具，真實才是地基。」',
     shot: '/assets/cases/liumuyang.png',
     shotPos: '50% 2%',
     series: '超引力成交學・學員',
@@ -86,11 +86,11 @@ export const CASES: CaseItem[] = [
 export const SHEET_API =
   'https://script.google.com/macros/s/AKfycbz7VxeV8ZmjSiGNO-G3ZwRLPg-H1H2NjXHy6brCU5yVaVoYOXB-LItU750j81Q3eno/exec';
 
-/* 關於光頭排第二（2026-09-10 拍板）：官網訪客多是「來查證的人」，
+/* 關於平凡人光頭排第二（2026-09-10 拍板）：官網訪客多是「來查證的人」，
    對他們第二重要的頁就是「教的人是誰」，不藏在最後。 */
 export const NAV = [
   { href: '/method', label: '方法' },
-  { href: '/about', label: '關於光頭' },
+  { href: '/about', label: '關於平凡人光頭' },
   { href: '/courses', label: '課程' },
   { href: '/articles', label: '文章' },
   { href: '/glossary', label: '名詞' },

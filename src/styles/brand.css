@@ -320,7 +320,7 @@ h4 { font-size: 18px; }
   color: var(--ink); text-wrap: balance;
 }
 
-/* ═══ 品牌金句（記憶 quote-visual-layer：只給品牌金句，大金 ❝ ＋署名光頭）═══ */
+/* ═══ 品牌金句（記憶 quote-visual-layer：只給品牌金句，大金 ❝ ＋署名平凡人光頭）═══ */
 .quote { position: relative; padding: 8px 0 0 44px; }
 .quote::before {
   content: "\201C"; position: absolute; left: 0; top: -14px;

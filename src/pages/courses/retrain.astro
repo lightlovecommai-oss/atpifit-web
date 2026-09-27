@@ -82,7 +82,7 @@ const cohorts = [
   },
 ];
 
-/* 給 Sheet 存的梯次字串：光頭對帳時要一眼看得出是哪一梯，所以帶上白話課名＋開課日 */
+/* 給 Sheet 存的梯次字串：平凡人光頭對帳時要一眼看得出是哪一梯，所以帶上白話課名＋開課日 */
 const cohortLabel = (c: typeof cohorts[number]) =>
   `${c.range} ${c.stage}・${c.title}｜${c.month}｜${c.rhythm.replace(/　/g, ' ')}`;
 
@@ -255,7 +255,7 @@ const rules = [
     <div class="wrap-text">
       <div class="quote">
         <p>影響力練起來，是為了給出去，<br />不是為了贏誰。</p>
-        <cite>— 光頭</cite>
+        <cite>— 平凡人光頭</cite>
       </div>
     </div>
   </section>
@@ -304,7 +304,7 @@ const rules = [
       <div class="done card" id="signup-done" hidden>
         <div class="atpi-rule"><i></i><i></i><i></i><i></i></div>
         <h3>收到了，名字已經在名單上。</h3>
-        <p class="done-p">最後一步是保證金。<b>{DEPOSIT} 元</b>匯到下面這個帳戶。<br /><span class="nb">沒有線上金流，光頭是人工對帳</span>，所以匯完麻煩<b class="nb">把後五碼用 LINE 傳給他</b>，這樣對得比較快。</p>
+        <p class="done-p">最後一步是保證金。<b>{DEPOSIT} 元</b>匯到下面這個帳戶。<br /><span class="nb">沒有線上金流，平凡人光頭是人工對帳</span>，所以匯完麻煩<b class="nb">把後五碼用 LINE 傳給他</b>，這樣對得比較快。</p>
 
         <dl class="bank">
           <div><dt>銀行</dt><dd>星展銀行（810）</dd></div>
