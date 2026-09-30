@@ -97,9 +97,9 @@ const courses = [
    不擋的話會斷成「Hot Seat 輪／流」「安／排時間看完」。 */
 const loop = [
   { dim: 'A', n: '①', t: '看錄播乾貨', s: '這週那塊肌肉的結構，<span class="nb">自己安排時間看完。</span>' },
-  { dim: 'T', n: '②', t: '進健身房打卡', s: '一天一個小動作，<span class="nb">一週練 2 到 3 天</span>，<span class="nb">記下今天動到哪塊。</span>' },
-  { dim: 'P', n: '③', t: '討論課對練', s: '<span class="nb">4 到 5 人小組</span> <span class="nb">Hot Seat 輪流</span>，<span class="nb">顧問當場校正。</span>' },
-  { dim: 'I', n: '④', t: '帶回真實現場', s: '拿去用在<span class="nb">這週真的要談的那一場</span>，<span class="nb">結果再帶回下一堂。</span>' },
+  { dim: 'T', n: '②', t: '進健身房打卡', s: '一天一個小動作，<span class="nb">一週練 2 到 3 天，</span><span class="nb">記下今天動到哪塊。</span>' },
+  { dim: 'P', n: '③', t: '討論課對練', s: '<span class="nb">4 到 5 人小組</span> <span class="nb">Hot Seat 輪流，</span><span class="nb">顧問當場校正。</span>' },
+  { dim: 'I', n: '④', t: '帶回真實現場', s: '拿去用在<span class="nb">這週真的要談的那一場，</span><span class="nb">結果再帶回下一堂。</span>' },
 ];
 
 /* 入場到結業（旅程圖）。健檢不佔模組編號＝courses.astro 同一份真相。 */
@@ -128,11 +128,11 @@ const proof = [
    「4 到 5 人／小組」「投／影片」；Hot Seat 中間是半形空白，一樣是可斷點。 */
 const designs = [
   { t: '乾貨錄播，直播只拿來對練',
-    s: '知識自己看就會，能力要有人看著你做。所以直播時間全部留給<span class="nb">對練與當場校正</span>，<span class="nb">不拿來重講一次投影片。</span>' },
+    s: '知識自己看就會，能力要有人看著你做。所以直播時間全部留給<span class="nb">對練與當場校正，</span><span class="nb">不拿來重講一次投影片。</span>' },
   { t: '班級 20 人以內，課中拆成 <span class="nb">4 到 5 人小組</span>',
     s: '<span class="nb">Hot Seat</span> 輪流上場。人少不是為了精緻，<span class="nb">是為了每個人都真的輪得到。</span>' },
   { t: '課與課之間有地方練',
-    s: '影響力健身房是每天打卡的地方：一天一個小動作、記一塊肌肉。課不是<span class="nb">一週一次的事件</span>，<span class="nb">是一條連續的線。</span>' },
+    s: '影響力健身房是每天打卡的地方：一天一個小動作、記一塊肌肉。課不是<span class="nb">一週一次的事件，</span><span class="nb">是一條連續的線。</span>' },
   { t: '前後各量一次',
     s: '開課前做入學健檢，結業後複測做前後對照。<span class="nb">進步不靠感覺，看得到數字。</span>' },
 ];
@@ -168,6 +168,30 @@ const faq = [
   { q: '報名之後可以退嗎？', a: '報名後 7 天內可退款。' },
 ];
 
+/* ═══ 站表：這頁的骨架 ═══
+   這頁有十幾段，原本每一段都是「眉標→大標→導言→一個框」往下堆，十幾次都同一個形狀，
+   捲到中段就沒有任何線索知道自己走了多遠、後面還有多少。所以整頁重新當成一條「站」來排：
+   每一站有編號、線上的一格、以及軌上的一個點。編號與軌上的點都從這一份清單長出來，
+   不在 HTML 裡各寫一次——寫兩次遲早會對不起來。
+   ⚠️ label 全部取自頁面上原本就有的字（眉標或圖標），不另外編新文案。
+   開場不計號（它是入口不是站），終點另外標（它是要按的，不是要讀的）。 */
+const stops = [
+  { id: 'g-open', label: '超引力場' },
+  { id: 'g-break', label: '先看結構' },
+  { id: 'g-why', label: '先講一件事' },
+  { id: 'g-wall', label: '四塊肌肉' },
+  { id: 'g-road', label: 'L1–L13' },
+  { id: 'g-loop', label: '一週迴路' },
+  { id: 'g-journey', label: '怎麼進來' },
+  { id: 'g-sku', label: '兩個課' },
+  { id: 'g-fit', label: '誰適合來' },
+  { id: 'g-coach', label: '教的人是誰' },
+  { id: 'g-proof', label: '練過的人' },
+  { id: 'g-faq', label: '常見問題' },
+];
+const END = { id: 'g-cta', label: '怎麼開始' };
+const no = (id: string) => String(stops.findIndex((s) => s.id === id)).padStart(2, '0');
+
 const url = `${SITE.url}/gravity/`;
 const schema = [
   {
@@ -202,8 +226,46 @@ const schema = [
   bodyClass="theme-dark"
   themeColor="#0c131e"
 >
+  <!-- ═══ 場：整頁的底 ═══
+       這頁叫超引力，底就不做成一塊平板。做成一個有中心的場：中心在視窗正中（「你」永遠
+       在自己那個場的中心），往下捲環會放大、十二道刻度會轉——捲動因此不只是換段落，
+       是往場裡面落。十二道刻度就是十二條小肌群，數量本身是語意。
+       ⚠️ 這層只吃 --gy（整頁進度），不用 [data-px]：那套量的是元素自己穿過視窗，
+          fixed 元素的 rect 不會動，算出來永遠同一個值。
+       ⚠️ z-index 要比 .section-skew::before 的 -1 更低，否則斜切帶會被場壓住。 -->
+  <div class="gfield" aria-hidden="true">
+    <span class="gglow"></span>
+    <svg class="grings" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
+      <g class="grings-g">
+        {[68, 112, 156, 200, 244].map((r) => (
+          <circle cx="200" cy="200" r={r} fill="none" stroke="#E8C89A" stroke-width=".7" />
+        ))}
+        <g class="gticks">
+          {Array.from({ length: 12 }, (_, i) => (
+            <line x1="200" y1="-56" x2="200" y2="-30" stroke="#E8C89A" stroke-width="1.6"
+                  transform={`rotate(${i * 30} 200 200)`} />
+          ))}
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ═══ 軌：十一站的里程尺 ═══
+       頁首那條 .readbar 只講「還剩多少」，講不出「總共幾站、我在第幾站」。這條軌補後者：
+       一點一站，全部先露出（未到的站不畫虛線也不上鎖，這頁的內容是可以先看的）。
+       名字收在 hover 才出來——1280px 以下的螢幕容不下常駐的名字欄，而軌本身只有 14px 寬，
+       任何寬度都擠不到內容。最後那一枚是終點不是站，所以是金色空心環，形狀就跟站不一樣。 -->
+  <nav class="spine" aria-label="頁內導覽">
+    <ul>
+      {stops.map((s) => (
+        <li><a href={`#${s.id}`} data-stop={s.id}><i aria-hidden="true"></i><span class="sp-l">{s.label}</span></a></li>
+      ))}
+      <li class="sp-end"><a href={`#${END.id}`} data-stop={END.id}><i aria-hidden="true"></i><span class="sp-l">{END.label}</span></a></li>
+    </ul>
+  </nav>
+
   <!-- ═══ 01 Hero ═══ -->
-  <section class="hero">
+  <section class="hero" id="g-open">
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <p class="prokick"><span>SUPER ATTRACTION · 實戰私教</span></p>
@@ -318,7 +380,7 @@ const schema = [
             <text x="180" y="195" font-size="9" font-weight="700" fill="var(--i-deep)" text-anchor="middle">YOU</text>
           </svg>
         </div>
-        <p class="field-note">引力是結果，不是方法。四塊肌肉一塊一塊練強，場就成形——對的人會自己一圈一圈繞近，你不用追著跑。</p>
+        <p class="field-note">引力是結果，不是方法。四塊肌肉一塊一塊練強，場就成形——<span class="nb">對的人會自己一圈一圈繞近，</span><span class="nb">你不用追著跑。</span></p>
         <div class="rule4" role="presentation"></div>
       </aside>
     </div>
@@ -332,7 +394,7 @@ const schema = [
           <div>
             <p class="alum-k">已經上過平凡人光頭的課？</p>
             <p class="alum-t">你已經會做了。這一梯是把它變成<b>可以帶人</b>。</p>
-            <p class="alum-s">12 月起這套課會系統化：乾貨全部錄播，每週只留 1.5 小時演練課。平凡人光頭從頭帶到尾的完整直播梯次，剩下最後兩梯——B 班 10/12 開課。</p>
+            <p class="alum-s">12 月起這套課會系統化：乾貨全部錄播，每週只留 1.5 小時演練課。平凡人光頭從頭帶到尾的完整直播梯次，<span class="nb">剩下最後兩梯——</span><span class="nb">B 班 10/12 開課。</span></p>
           </div>
           <div class="alum-act">
             <a class="btn btn-main" href="/courses/retrain" data-cta="retrain" data-cta-position="lp-alumni">
@@ -345,11 +407,14 @@ const schema = [
   )}
 
   <!-- ═══ 02 圖②：一場對話會斷在哪四個地方（流程圖）═══ -->
-  <section class="section section-skew">
+  <section class="section section-skew" id="g-break">
     <div class="wrap">
-      <p class="kicker">先看結構</p>
-      <h2 class="reveal">一場對話，<span class="hl">會斷在四個地方</span></h2>
-      <p class="lead sec-lead">而且每一次斷掉的地方都不一樣。所以你把同一套方法再練一次，結果還是不穩。</p>
+      <header class="shead">
+        <span class="snum num" aria-hidden="true">{no('g-break')}</span>
+        <p class="kicker">先看結構</p>
+        <h2 class="reveal">一場對話，<span class="hl">會斷在四個地方</span></h2>
+        <p class="lead sec-lead reveal" style="--rd:.06s">而且每一次斷掉的地方都不一樣。所以你把同一套方法再練一次，結果還是不穩。</p>
+      </header>
 
       <!-- 橫向鏈：五個狀態、四段推力。每段推力＝一塊肌肉，斷掉會怎樣寫在下面。 -->
       <div class="chain" role="img" aria-label="對話從你開口到他真的做，中間由吸引、信任、專業、推進四塊肌肉推動">
@@ -372,29 +437,37 @@ const schema = [
   </section>
 
   <!-- ═══ 03 為什麼話術沒用（骨層） ═══ -->
-  <section class="section">
+  <section class="section" id="g-why">
     <div class="wrap-text">
-      <p class="kicker">先講一件事</p>
-      <h2 class="reveal">話術像打氣打出來的肌肉，<span class="hl">一鬆手就消</span></h2>
-      <p class="lead reveal" style="--rd:.06s">卡住的時候，多數人會去找更厲害的一句話。學回來當下有用，過兩週又打回原形，因為換掉的是話，沒有換掉底下的能力。</p>
+      <header class="shead narrow">
+        <span class="snum num" aria-hidden="true">{no('g-why')}</span>
+        <p class="kicker">先講一件事</p>
+        <h2 class="reveal">話術像打氣打出來的肌肉，<span class="hl">一鬆手就消</span></h2>
+        <p class="lead reveal" style="--rd:.06s">卡住的時候，多數人會去找更厲害的一句話。學回來當下有用，過兩週又打回原形，因為換掉的是話，沒有換掉底下的能力。</p>
+      </header>
       <p class="body-p">影響力不是天生的個性，也不是話術的天分。它是可以量、可以練、可以驗收的能力。能拆解，就能練；能練，就能量出進步。</p>
       <p class="body-p">這也是為什麼我們不給你腳本。腳本是別人的身體，穿不上你的。</p>
     </div>
   </section>
 
   <!-- ═══ 04 圖③：12 小肌群牆（拆到可以量的顆粒）═══ -->
-  <section class="section section-skew">
+  <section class="section section-skew" id="g-wall">
     <div class="wrap">
-      <p class="kicker">ATPI 四塊影響力肌肉</p>
-      <h2 class="reveal">拆到<span class="hl">量得出來</span>為止</h2>
-      <p class="lead sec-lead">四塊大肌肉，底下各三條小肌群，一共十二條。鍛鍊段的四堂課，就是這四塊。</p>
+      <header class="shead">
+        <span class="snum num" aria-hidden="true">{no('g-wall')}</span>
+        <p class="kicker">ATPI 四塊影響力肌肉</p>
+        <h2 class="reveal">拆到<span class="hl">量得出來</span>為止</h2>
+        <p class="lead sec-lead reveal" style="--rd:.06s">四塊大肌肉，底下各三條小肌群，一共十二條。鍛鍊段的四堂課，就是這四塊。</p>
+      </header>
 
-      <div class="wall" role="img" aria-label="四塊影響力肌肉各有三條小肌群，共十二條">
-        {wall.map((m) => (
+      <!-- 十二片從基線長上來：這面牆講的就是「量得出來」，量表本來就該當著你的面跑一次。
+           一片一片錯開，順序是 A→T→P→I（先信任最高、推進最矮那套預設在別頁，這裡是示意牆）。 -->
+      <div class="wall reveal" role="img" aria-label="四塊影響力肌肉各有三條小肌群，共十二條">
+        {wall.map((m, ci) => (
           <div class="wg" data-dim={m.dim}>
             <div class="wg-bars">
-              {m.minis.map((mi) => (
-                <span class="wg-bar"><i style={`height:${mi.v}%`}></i></span>
+              {m.minis.map((mi, k) => (
+                <span class="wg-bar" style={`--bd:${ci * 3 + k}`}><i style={`height:${mi.v}%`}></i></span>
               ))}
             </div>
             <div class="wg-names">
@@ -411,11 +484,14 @@ const schema = [
   </section>
 
   <!-- ═══ 05 圖④：L1–L13 全貌（全圖露出、現在位置亮、未解鎖描虛線）═══ -->
-  <section class="section">
+  <section class="section" id="g-road">
     <div class="wrap-wide">
-      <p class="kicker">這條路長什麼樣</p>
-      <h2 class="reveal">十三個模組，<span class="hl">全部先給你看</span></h2>
-      <p class="lead sec-lead">一個模組等於一週。包括你現在還沒走到的地方，先看全圖再決定要走多遠。</p>
+      <header class="shead">
+        <span class="snum num" aria-hidden="true">{no('g-road')}</span>
+        <p class="kicker">這條路長什麼樣</p>
+        <h2 class="reveal">十三個模組，<span class="hl">全部先給你看</span></h2>
+        <p class="lead sec-lead reveal" style="--rd:.06s">一個模組等於一週。包括你現在還沒走到的地方，先看全圖再決定要走多遠。</p>
+      </header>
 
       <div class="road">
         {road.map((seg) => (
@@ -460,10 +536,13 @@ const schema = [
   </section>
 
   <!-- ═══ 06 圖⑤：一週迴路（流程圖）═══ -->
-  <section class="section section-skew">
+  <section class="section section-skew" id="g-loop">
     <div class="wrap">
-      <p class="kicker">課是怎麼上的</p>
-      <h2 class="reveal">一週一個迴路，<span class="hl">時間全部留給練</span></h2>
+      <header class="shead">
+        <span class="snum num" aria-hidden="true">{no('g-loop')}</span>
+        <p class="kicker">課是怎麼上的</p>
+        <h2 class="reveal">一週一個迴路，<span class="hl">時間全部留給練</span></h2>
+      </header>
 
       <div class="loop" role="img" aria-label="一週迴路：看錄播、進健身房打卡、討論課對練、帶回真實現場，然後回到下一週">
         <div class="loop-row">
@@ -494,10 +573,13 @@ const schema = [
   </section>
 
   <!-- ═══ 07 圖⑥：入場到結業（旅程圖）═══ -->
-  <section class="section">
+  <section class="section" id="g-journey">
     <div class="wrap-text">
-      <p class="kicker">你會怎麼進來</p>
-      <h2 class="reveal">從量一次開始，<span class="hl">到量第二次結束</span></h2>
+      <header class="shead narrow">
+        <span class="snum num" aria-hidden="true">{no('g-journey')}</span>
+        <p class="kicker">你會怎麼進來</p>
+        <h2 class="reveal">從量一次開始，<span class="hl">到量第二次結束</span></h2>
+      </header>
 
       <div class="map">
         {journey.map((j) => (
@@ -511,10 +593,13 @@ const schema = [
   </section>
 
   <!-- ═══ 08 兩個課 ═══ -->
-  <section class="section section-skew">
+  <section class="section section-skew" id="g-sku">
     <div class="wrap">
-      <p class="kicker">對外只有兩個課</p>
-      <h2 class="reveal">怎麼選，<span class="hl">諮詢現場才決定</span></h2>
+      <header class="shead">
+        <span class="snum num" aria-hidden="true">{no('g-sku')}</span>
+        <p class="kicker">對外只有兩個課</p>
+        <h2 class="reveal">怎麼選，<span class="hl">諮詢現場才決定</span></h2>
+      </header>
       <div class="grid grid-2 courses">
         {courses.map((c) => (
           <article class="card muscle" data-dim={c.dim}>
@@ -525,7 +610,7 @@ const schema = [
           </article>
         ))}
       </div>
-      <p class="note">這個選擇不會由你自己在網頁上決定。它會在諮詢現場，把你的狀況攤開來看過<span class="nb">之後才決定</span>。<span class="nb">我們不預設賣哪一個。</span></p>
+      <p class="note">這個選擇不會由你自己在網頁上決定。它會在諮詢現場，把你的狀況攤開來看過<span class="nb">之後才決定。</span><span class="nb">我們不預設賣哪一個。</span></p>
 
       {RETRAIN_OPEN && (
         <aside class="alum-slim" data-deadline={RETRAIN_DEADLINE}>
@@ -539,10 +624,13 @@ const schema = [
   </section>
 
   <!-- ═══ 09 適合誰／不適合誰 ═══ -->
-  <section class="section">
+  <section class="section" id="g-fit">
     <div class="wrap">
-      <p class="kicker">誰適合來</p>
-      <h2 class="reveal">這套課是<span class="hl">為誰做的</span></h2>
+      <header class="shead">
+        <span class="snum num" aria-hidden="true">{no('g-fit')}</span>
+        <p class="kicker">誰適合來</p>
+        <h2 class="reveal">這套課是<span class="hl">為誰做的</span></h2>
+      </header>
       <div class="grid who">
         {forWhom.map((w) => (
           <div class="who-card" data-dim={w.dim}>
@@ -563,8 +651,17 @@ const schema = [
   </section>
 
   <!-- ═══ 10 教的人是誰 ═══ -->
-  <section class="section section-skew">
-    <div class:list={['wrap', 'coach', { 'has-photo': !!FOUNDER_PHOTO }]}>
+  <section class="section section-skew" id="g-coach">
+    <div class="wrap">
+      <!-- 站頭橫跨滿寬，照片與數字排在底下：站頭要是縮在右欄裡，那條線就只剩半截，
+           十一站的里程尺會在這一站斷掉。 -->
+      <header class="shead">
+        <span class="snum num" aria-hidden="true">{no('g-coach')}</span>
+        <p class="kicker">教的人是誰</p>
+        <h2 class="reveal">平凡人光頭，<span class="hl">不是天生會講的人</span></h2>
+        <p class="lead coach-lead reveal" style="--rd:.06s">本名徐哲彥。影響力健身房創辦人、ATPI 溝通 4 大肌肉框架創始人。名字裡留著「平凡人」三個字，因為這套方法的前提就是：影響力不是天賦，是練出來的肌肉。</p>
+      </header>
+      <div class:list={['coach', { 'has-photo': !!FOUNDER_PHOTO }]}>
       {FOUNDER_PHOTO && (
         <figure class="coach-photo">
           <img src={FOUNDER_PHOTO} alt="平凡人光頭（徐哲彥）——影響力健身房創辦人" width="380" height="450" loading="lazy" />
@@ -572,15 +669,13 @@ const schema = [
         </figure>
       )}
       <div>
-        <p class="kicker">教的人是誰</p>
-        <h2 class="reveal">平凡人光頭，<span class="hl">不是天生會講的人</span></h2>
-        <p class="lead coach-lead">本名徐哲彥。影響力健身房創辦人、ATPI 溝通 4 大肌肉框架創始人。名字裡留著「平凡人」三個字，因為這套方法的前提就是：影響力不是天賦，是練出來的肌肉。</p>
         <ul class="coach-nums">
           <li><b class="bignum">200+</b><span>場演講</span></li>
           <li><b class="bignum">2000+</b><span>位學員</span></li>
           <li><b class="bignum">10 年</b><span>反覆驗證這套公式</span></li>
         </ul>
         <a class="coach-more" href="/about/">認識平凡人光頭的故事 →</a>
+      </div>
       </div>
     </div>
   </section>
@@ -589,10 +684,13 @@ const schema = [
        用 productkit 出好的見證卡原圖，不在這裡重排一次——卡片裡的原始對話／貼文截圖
        才是可信度來源，拆成 HTML 就只剩轉述。⚠️ 圖是暖版，刻意讓它像實體卡疊在科技底上。
        ⚠️ alt 只描述卡面上真的有的字，不代擬引言。 -->
-  <section class="section">
+  <section class="section" id="g-proof">
     <div class="wrap">
-      <p class="kicker">練過的人</p>
-      <h2 class="reveal">他們後來，<span class="hl">怎麼了</span></h2>
+      <header class="shead">
+        <span class="snum num" aria-hidden="true">{no('g-proof')}</span>
+        <p class="kicker">練過的人</p>
+        <h2 class="reveal">他們後來，<span class="hl">怎麼了</span></h2>
+      </header>
       <div class="grid grid-3 proof">
         {proof.map((p) => (
           <a class="proof-card" href={p.src} target="_blank" rel="noopener">
@@ -615,17 +713,21 @@ const schema = [
     </div>
   </section>
 
-  <!-- ═══ 13 主 CTA ═══ -->
-  <section class="section">
+  <!-- ═══ 13 主 CTA ═══
+       這塊刻意不套站頭：它是終點不是站，長得跟前面十一個一樣就變成「還有一段要讀」。 -->
+  <section class="section" id="g-cta">
     <div class="wrap-text">
       {/* 回訓期這塊講給舊生聽，陌生人的兩條路收在 cta-sub。開課後 CTA_MODE 一改就全部退回諮詢版。
           原本這裡是「諮詢主鈕 + 舊生橫幅」兩塊，主鈕改成複訓之後橫幅變成同一顆講兩次，已合併。 */}
       <aside class="cta reveal">
         <p class="kicker">怎麼開始</p>
         <h2 class="reveal">{RETRAIN_OPEN ? '上過課的人，直接回來練' : '先把你的狀況攤開來看一次'}</h2>
-        <p class="lead reveal" style="--rd:.06s">{RETRAIN_OPEN
-          ? '課改版過了——成交拆成 ATPI 四塊影響力肌肉，攤開成 L1–L13 的全貌，還配了一支每天練的 App。你已經會做了，這一梯是把它變成可以帶人。B 班 10/12 開課。'
-          : '1v1 諮詢是線上 60 分鐘，我們會先聽你的現況，再把卡住的地方指出來。不適合會直接說，不會硬推。'}</p>
+        {/* 這段是置中窄欄，斷點落在哪很敏感：「把／它」「10/12」被拆開都會讀成兩件事，所以用 .nb 綁住。 */}
+        <p class="lead reveal" style="--rd:.06s">{RETRAIN_OPEN ? (
+          <>課改版過了——成交拆成 ATPI 四塊影響力肌肉，攤開成 L1–L13 的全貌，還配了一支每天練的 App。你已經會做了，<span class="nb">這一梯是把它變成可以帶人。</span>B 班 <span class="nb">10/12 開課。</span></>
+        ) : (
+          <>1v1 諮詢是線上 60 分鐘，我們會先聽你的現況，<span class="nb">再把卡住的地方指出來。</span>不適合會直接說，<span class="nb">不會硬推。</span></>
+        )}</p>
         <a class="btn btn-main" href={MAIN_CTA.href} data-cta={MAIN_CTA.cta} data-cta-position="lp-bottom">
           {MAIN_CTA.label}
         </a>
@@ -639,10 +741,13 @@ const schema = [
   </section>
 
   <!-- ═══ 14 FAQ ═══ -->
-  <section class="section section-skew">
+  <section class="section section-skew" id="g-faq">
     <div class="wrap-text">
-      <p class="kicker">常見問題</p>
-      <h2 class="reveal">先回答<span class="hl">你可能會問的</span></h2>
+      <header class="shead narrow">
+        <span class="snum num" aria-hidden="true">{no('g-faq')}</span>
+        <p class="kicker">常見問題</p>
+        <h2 class="reveal">先回答<span class="hl">你可能會問的</span></h2>
+      </header>
       <div class="faq reveal">
         {faq.map((f, i) => (
           <details class="qa" open={i === 0}>
@@ -674,6 +779,80 @@ const schema = [
     const target = new Date(`${box.dataset.deadline}T00:00:00+08:00`).getTime();
     if (Date.now() > target) box.hidden = true;
   });
+
+  const soft = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ═══ 場的進度 ═══
+     --gy＝整頁捲動進度 0→1，寫在 <html> 上給 .gfield 用。
+     BaseLayout 的 [data-px] 那套量的是「元素自己穿過視窗多少」，fixed 元素的 rect 不會動，
+     套在場上會永遠算出同一個值，所以這裡自己起一個 rAF 迴圈。 */
+  if (!soft) {
+    const root = document.documentElement;
+    let queued = false;
+    /* max 要快取：scrollHeight 每讀一次就逼瀏覽器重算版面，放進每一幀的 rAF 裡
+       等於自己製造掉幀。頁高只有在尺寸變、或圖片與 FAQ 展開後才會變。 */
+    let max = 0;
+    const measure = () => { max = root.scrollHeight - innerHeight; };
+    const paint = () => {
+      queued = false;
+      root.style.setProperty('--gy', max > 0 ? (scrollY / max).toFixed(4) : '0');
+    };
+    const remeasure = () => { measure(); paint(); };
+    addEventListener('scroll', () => {
+      if (!queued) { queued = true; requestAnimationFrame(paint); }
+    }, { passive: true });
+    addEventListener('resize', remeasure, { passive: true });
+    addEventListener('load', remeasure);
+    if ('ResizeObserver' in window) new ResizeObserver(remeasure).observe(document.body);
+    remeasure();
+  }
+
+  /* ═══ 軌上的站標 ═══
+     觸發線壓在視窗上緣往下 25%：用正中會讓亮著的那一站落後於眼睛實際在讀的位置。 */
+  const dots = document.querySelectorAll<HTMLAnchorElement>('[data-stop]');
+  if (dots.length && 'IntersectionObserver' in window) {
+    const byId = new Map([...dots].map((a) => [a.dataset.stop!, a]));
+    let cur: HTMLAnchorElement | null = null;
+    const io = new IntersectionObserver(
+      (rows) => {
+        for (const r of rows) {
+          if (!r.isIntersecting) continue;
+          const next = byId.get(r.target.id);
+          if (!next || next === cur) continue;
+          cur?.classList.remove('on');
+          next.classList.add('on');
+          cur = next;
+        }
+      },
+      { rootMargin: '-25% 0px -60% 0px' }
+    );
+    byId.forEach((_, id) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+  }
+
+  /* ═══ 首屏引力場跟著游標轉一點點 ═══
+     只有 4 度，而且只在真有指標裝置時掛。要的是「這塊是立體的」，不是要它晃。
+     ⚠️ 只寫 --mx／--my，位移量交給 CSS——觸控裝置上整段不掛，也就不會有殘留的角度。 */
+  const hg = document.querySelector<HTMLElement>('.hero-grid');
+  if (hg && !soft && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let tilting = false;
+    hg.addEventListener('pointermove', (e) => {
+      if (tilting) return;
+      tilting = true;
+      requestAnimationFrame(() => {
+        tilting = false;
+        const r = hg.getBoundingClientRect();
+        hg.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 2 - 1).toFixed(3));
+        hg.style.setProperty('--my', ((e.clientY - r.top) / r.height * 2 - 1).toFixed(3));
+      });
+    });
+    hg.addEventListener('pointerleave', () => {
+      hg.style.setProperty('--mx', '0');
+      hg.style.setProperty('--my', '0');
+    });
+  }
 </script>
 
 <style>
@@ -693,6 +872,122 @@ const schema = [
   [data-dim="T"] { --dim: var(--t); --dim-deep: var(--t-deep); --dim-tint: var(--t-tint); }
   [data-dim="P"] { --dim: var(--p); --dim-deep: var(--p-deep); --dim-tint: var(--p-tint); }
   [data-dim="I"] { --dim: var(--i); --dim-deep: var(--i-deep); --dim-tint: var(--i-tint); }
+
+  /* ═══════════════════════════════════════════════════════════
+     場：整頁的底
+     ⚠️ z-index -2，要低於 .section-skew::before 的 -1，否則斜切帶會被場壓掉。
+     負 z-index 之所以看得到，是因為 body 的底色被提升成畫布底色（先畫），
+     負層在那之後才畫——所以它在底色之上、在所有一般內容之下。
+     ═══════════════════════════════════════════════════════════ */
+  .gfield { position: fixed; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
+  /* 落到頁尾要暗下來：一個場有中心就有邊緣，邊緣不暗它就只是一張貼滿的壁紙 */
+  .gfield::after {
+    content: ""; position: absolute; inset: auto 0 0; height: 45vh;
+    background: linear-gradient(180deg, transparent, rgba(2, 6, 12, .55));
+  }
+  .gglow {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(760px 620px at 78% 4%, rgba(232, 200, 154, .10), transparent 70%),
+      radial-gradient(900px 760px at 50% 50%, rgba(230, 169, 58, .05), transparent 72%);
+  }
+  .grings {
+    position: absolute; left: 50%; top: 50%; width: 175vmax; height: 175vmax;
+    translate: -50% -50%; opacity: .085;
+  }
+  /* 往下捲＝環放大、刻度轉：捲動因此是「往場裡落」，不只是換段落。
+     transform-box: view-box 是必要的——預設的 fill-box 會讓 transform-origin
+     落在圖形本身的邊界框上，環一放大原點就跟著跑，中心會漂掉。 */
+  .grings-g { transform: scale(calc(1 + var(--gy, 0) * .5)); transform-origin: 200px 200px; transform-box: view-box; }
+  .gticks { transform: rotate(calc(var(--gy, 0) * 42deg)); transform-origin: 200px 200px; transform-box: view-box; }
+
+  /* 斜切帶改半透明：底下有一層會動的場，帶子若是實色就把場切成一段一段。
+     原本的 #101b28 疊在 #0c131e 上只差一階，換成同亮度的半透明白，看起來一樣。 */
+  .section-skew::before { background: rgba(234, 241, 250, .035); }
+
+  /* ═══════════════════════════════════════════════════════════
+     軌：十一站的里程尺
+     頁首那條 .readbar 只講「還剩多少」，講不出「總共幾站、我在第幾站」。
+     1280px 以下不出現——再窄就會擠到 .wrap-wide（1200px）的內容。
+     ═══════════════════════════════════════════════════════════ */
+  .spine { display: none; }
+  @media (min-width: 1280px) {
+    .spine {
+      display: block; position: fixed; left: 14px; top: 50%; translate: 0 -50%; z-index: 40;
+    }
+    /* 串起所有站的那條線：畫在 ul 上而不是每個 li 之間，線才不會在 hover 放大時斷開 */
+    .spine ul { list-style: none; margin: 0; padding: 0; position: relative; }
+    .spine ul::before {
+      content: ""; position: absolute; left: 7px; top: 9px; bottom: 9px; width: 1px;
+      background: var(--line-soft);
+    }
+    /* ⚠️ 這個 a 要維持只有一枚點那麼寬。名字若留在流內，即使 opacity 0 也照樣佔位，
+       整條軌會變成一道 110px 寬的隱形柱子，蓋在 .wrap-wide 左緣上吃掉點擊。 */
+    .spine a {
+      position: relative; display: block; width: 15px; padding: 5px 0;
+      text-decoration: none; color: var(--ink-soft);
+    }
+    .spine i {
+      display: block; position: relative; z-index: 1; margin: 0 auto;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(142, 161, 182, .55); box-shadow: 0 0 0 4px var(--bg);
+      transition: background .2s ease, scale .2s var(--ease-out);
+    }
+    /* 終點不是站：金色空心環，形狀就跟站不一樣，不必靠文字解釋 */
+    .sp-end i {
+      width: 11px; height: 11px;
+      background: transparent; border: 2px solid var(--i-deep);
+    }
+    .spine a:hover i, .spine a:focus-visible i { background: var(--i); scale: 1.3; }
+    .sp-end a:hover i, .sp-end a:focus-visible i { background: transparent; border-color: var(--i); }
+    .spine a.on i { background: var(--i); scale: 1.4; box-shadow: 0 0 0 4px var(--bg), 0 0 10px rgba(230, 169, 58, .55); }
+    .sp-end a.on i { background: rgba(230, 169, 58, .3); border-color: var(--i); }
+    /* 名字收在 hover 才出來：常駐的名字欄在 1280px 上會壓到內容，
+       而且十二個名字一直掛在那裡會跟頁面本身的眉標打架。 */
+    .sp-l {
+      position: absolute; left: 100%; top: 50%; margin-left: 8px;
+      font-size: 12.5px; font-weight: 700; white-space: nowrap; color: var(--ink-3);
+      background: var(--bg-blur); border: 1px solid var(--line-soft);
+      border-radius: 999px; padding: 3px 11px;
+      opacity: 0; translate: -6px -50%; pointer-events: none;
+      transition: opacity .2s ease, translate .2s var(--ease-out);
+    }
+    .spine:hover .sp-l, .spine a:focus-visible .sp-l { opacity: 1; translate: 0 -50%; }
+    .spine:hover a.on .sp-l, .spine a:hover .sp-l { color: var(--ink); border-color: var(--i-deep); }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     站頭：一條線、一個站號、左標右釋
+     原本每一段都是「眉標→大標→導言」往下堆，十一次同一個形狀，捲到中段就分不出
+     自己過了幾站。改成：一條橫跨滿寬的細線起頭（節拍）、站號跨在線上（里程）、
+     大標與導言左右並排（頭只佔一段高度，圖才有位置）。
+     窄欄的段落（wrap-text）用 .narrow 退回單欄——720px 裡塞兩欄會兩邊都太窄。
+     ═══════════════════════════════════════════════════════════ */
+  .shead { position: relative; padding-top: 26px; border-top: 1px solid var(--line); }
+  .shead .lead { margin-top: 14px; max-width: 50ch; }
+  /* 站號是描邊字：實心的話它會比大標還搶，而里程只是背景資訊。
+     刻意讓細線從字中間穿過去——那是刻度尺該有的樣子，不是沒對齊。 */
+  .snum {
+    position: absolute; right: 0; top: 0; translate: 0 -50%;
+    font-size: clamp(30px, 4.4vw, 48px); font-weight: 900; line-height: 1;
+    letter-spacing: -.02em; color: transparent;
+    -webkit-text-stroke: 1.2px rgba(142, 161, 182, .38);
+  }
+  @media (min-width: 900px) {
+    /* 只有「真的有導言」的那幾段才分兩欄。沒有導言還分欄的話，大標會被壓在
+       左邊 55% 裡提早斷行，右邊留一塊空白——看起來像少放了一段字。 */
+    .shead:not(.narrow):has(.lead) {
+      display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+      gap: 0 clamp(28px, 4vw, 64px); align-items: end;
+    }
+    .shead:not(.narrow) .kicker, .shead:not(.narrow) h2 { grid-column: 1; }
+    .shead:not(.narrow) .lead { grid-column: 2; grid-row: 1 / span 2; margin: 0; align-self: end; }
+  }
+  @media (max-width: 560px) {
+    /* 描邊大字在手機上會跟眉標疊在一起，退成一枚小號碼 */
+    .snum { font-size: 12px; font-weight: 800; letter-spacing: .18em;
+            color: var(--i-deep); -webkit-text-stroke: 0; translate: 0 -160%; }
+  }
 
   /* ═══ Hero ═══ */
   .hero { padding: clamp(36px, 6vw, 72px) 0 clamp(28px, 4vw, 48px); }
@@ -724,6 +1019,18 @@ const schema = [
 
   /* ═══ 圖①引力場 ═══ */
   .field { padding: 18px 18px 16px; }
+  /* 跟著游標傾一點點。只有 4 度：要的是「這塊是立體的」，不是要它晃。
+     --mx／--my 由 JS 寫（只在有指標裝置時掛），沒掛就是 0，角度歸零。 */
+  @media (min-width: 861px) and (hover: hover) and (pointer: fine) {
+    .field {
+      transform: perspective(1000px)
+                 rotateY(calc(var(--mx, 0) * 4deg))
+                 rotateX(calc(var(--my, 0) * -4deg));
+      transition: transform .55s var(--ease-out);
+      will-change: transform;
+    }
+    .hero-grid:hover .field { transition: transform .1s linear; }
+  }
   .field-fig { margin: 4px 0; }
   .field-fig svg { width: 100%; height: auto; }
   /* 星系慢轉，人反向自轉保持站正（pro .gorbit／.gdot 同一招）。
@@ -800,6 +1107,15 @@ const schema = [
     background: var(--card); border: 1px solid var(--line); border-radius: var(--r-card);
   }
   @media (max-width: 760px) { .wall { grid-template-columns: repeat(2, 1fr); gap: 26px 16px; } }
+  /* 手機退成單欄：兩欄時每格只剩 ~200px，那四段解釋會斷成「練的是怎／麼把你會的」
+     這種把詞拆開的行。柱子橫過來變寬反而更像量表，段落也讀得完整。 */
+  @media (max-width: 520px) {
+    .wall { grid-template-columns: 1fr; gap: 24px; }
+    /* 單欄時整排會撐到 430px 寬，柱子變成比高度還寬的色磚，就不像量表了。
+       軌本身收窄，柱子維持直的；解釋文字仍然吃滿整欄，那才是換單欄的目的。 */
+    .wg-bars { max-width: 250px; height: 120px; }
+    .wg-names { max-width: 250px; }
+  }
   .wg-bars { display: flex; align-items: flex-end; gap: 7px; height: 110px; border-bottom: 2px solid var(--line-soft); }
   .wg-bar { flex: 1; height: 100%; display: flex; align-items: flex-end; }
   /* 十二片都是 done 態（既有的，不是「現在這站」），所以一片實色都沒有——
@@ -807,6 +1123,19 @@ const schema = [
   .wg-bar i {
     display: block; width: 100%; border-radius: 5px 5px 0 0; transform: skewX(var(--skew));
     background: var(--dim); opacity: var(--slice-done); box-shadow: 0 0 12px var(--dim-tint);
+  }
+  /* 十二片從基線長上來。這面牆講的就是「量得出來」，量表本來就該當著你的面跑一次。
+     ⚠️ 原點改成底部中央（skew 原本繞中心）：片會從基線往右斜上去，而不是整片平移，
+        這才是立在一條基線上的柱子該有的斜法。
+     ⚠️ .js-reveal 只在支援 IO、且使用者沒要求減少動態時才掛，所以不需要另寫關閉規則。 */
+  .js-reveal .wall .wg-bar i {
+    transform: skewX(var(--skew)) scaleY(0);
+    transform-origin: 50% 100%;
+  }
+  .js-reveal .wall.in .wg-bar i {
+    transform: skewX(var(--skew)) scaleY(1);
+    transition: transform .75s var(--ease-out);
+    transition-delay: calc(.1s + var(--bd, 0) * .055s);
   }
   .wg-names { display: flex; gap: 7px; margin-top: 8px; }
   .wg-names span { flex: 1; text-align: center; font-size: 11.5px; font-weight: 600; color: var(--ink-3); line-height: 1.4; }
@@ -830,11 +1159,17 @@ const schema = [
   /* ═══ 圖④ L1–L13 全貌 ═══ */
   .road { display: grid; grid-template-columns: 4fr 4fr 5fr; gap: 16px; margin-top: 34px; }
   @media (max-width: 900px) { .road { grid-template-columns: 1fr; } }
+  /* 三段不等重：走得到的那一段是實卡，還沒到的兩段只留邊界線。
+     原本三段都是同一張卡，「你從這裡開始」就沒地方凸出來——而且跟格子本身自相矛盾：
+     卡是實的，裡面的格子卻畫虛線。卡的實虛要跟格子的實虛講同一件事。 */
   .seg {
-    position: relative; background: var(--card); border: 1px solid var(--line);
+    position: relative; background: transparent; border: 1px solid var(--line);
     border-top: 3px solid var(--dim); border-radius: var(--r-card); padding: 18px 16px 16px;
   }
-  .seg.open { box-shadow: 0 0 0 1px var(--dim), 0 8px 28px rgba(0, 0, 0, .35); }
+  .seg.open {
+    background: var(--card);
+    box-shadow: 0 0 0 1px var(--dim), 0 8px 28px rgba(0, 0, 0, .35);
+  }
   .seg-h { display: flex; align-items: center; gap: 10px; }
   .seg-code {
     font-size: 12px; font-weight: 800; letter-spacing: .06em; color: var(--dim-deep);
