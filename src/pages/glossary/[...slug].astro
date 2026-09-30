@@ -78,7 +78,7 @@ if (d.faq.length) {
       <div class="prose"><Content /></div>
 
       {d.faq.length > 0 && (
-        <section class="faq">
+        <section class="faq reveal">
           <h2>常見問題</h2>
           <dl>
             {d.faq.map((f) => (
@@ -89,16 +89,16 @@ if (d.faq.length) {
       )}
     </div>
 
-    <div class="wrap-text cta-slot"><CtaBlock kind="quiz" source={`glossary:${term.id}`} /></div>
+    <div class="wrap-text cta-slot reveal"><CtaBlock kind="quiz" source={`glossary:${term.id}`} /></div>
   </article>
 
   {siblings.length > 0 && (
-    <section class="section section-alt">
+    <section class="section section-skew">
       <div class="wrap">
-        <h2 class="rel-title">其他名詞</h2>
+        <h2 class="rel-title reveal">其他名詞</h2>
         <ul class="siblings">
-          {siblings.map((t) => (
-            <li><a href={`/glossary/${t.id}/`}><b>{t.data.term}</b><span>{t.data.definition}</span></a></li>
+          {siblings.map((t, i) => (
+            <li class="reveal" style={`--rd:${Math.min(0.35, i * 0.05)}s`}><a href={`/glossary/${t.id}/`}><b>{t.data.term}</b><span>{t.data.definition}</span></a></li>
           ))}
         </ul>
       </div>

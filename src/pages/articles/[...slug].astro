@@ -99,7 +99,7 @@ if (d.faq.length) {
       <div class="prose" data-dim={d.dim}><Content /></div>
 
       {d.faq.length > 0 && (
-        <section class="faq">
+        <section class="faq reveal">
           <h2>常見問題</h2>
           <dl>
             {d.faq.map((f) => (
@@ -117,13 +117,13 @@ if (d.faq.length) {
       )}
     </div>
 
-    <div class="wrap-text cta-slot"><CtaBlock kind={d.cta} source={`article:${post.id}`} /></div>
+    <div class="wrap-text cta-slot reveal"><CtaBlock kind={d.cta} source={`article:${post.id}`} /></div>
   </article>
 
   {related.length > 0 && (
-    <section class="section section-alt">
+    <section class="section section-skew">
       <div class="wrap">
-        <h2 class="rel-title">接著讀</h2>
+        <h2 class="rel-title reveal">接著讀</h2>
         <div class="grid grid-3">
           {related.map((p) => (
             <ArticleCard

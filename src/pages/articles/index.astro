@@ -34,9 +34,9 @@ const schema = {
 <BaseLayout title={title} description={description} schema={schema}>
   <section class="section">
     <div class="wrap">
-      <p class="kicker">文章</p>
-      <h1>影響力是<span class="hl">練</span>出來的</h1>
-      <p class="lead head-lead">這裡放的是課堂上講的方法，拆成看得懂、也做得出來的樣子。每一篇最後都會落到一個你今天就能試的小動作。</p>
+      <p class="kicker reveal">文章</p>
+      <h1 class="display reveal" style="--rd:.06s">影響力是<span class="hl">練</span>出來的</h1>
+      <p class="lead head-lead reveal" style="--rd:.12s">這裡放的是課堂上講的方法，拆成看得懂、也做得出來的樣子。每一篇最後都會落到一個你今天就能試的小動作。</p>
 
       {posts.length === 0 ? (
         <p class="empty">文章正在寫，很快就會有第一篇。</p>
@@ -58,7 +58,7 @@ const schema = {
   </section>
 
   <section class="section">
-    <div class="wrap"><Newsletter source="articles-index" /></div>
+    <div class="wrap reveal"><Newsletter source="articles-index" /></div>
   </section>
 </BaseLayout>
 

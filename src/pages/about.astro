@@ -90,12 +90,13 @@ const schema = [
   <section class="section">
     <div class:list={['wrap', 'about-hero', { 'has-photo': !!FOUNDER_PHOTO }]}>
       <div class="about-hero-copy">
-        <p class="kicker">關於</p>
-        <h1>我不是天生會講的人，<span class="hl">我是練出來的</span></h1>
+        <p class="kicker reveal">關於</p>
+        <!-- .nb 把子句包成不可剖半的整塊，大標才不會斷成「我不是天生會講的／人」。 -->
+        <h1 class="display reveal" style="--rd:.06s"><span class="nb">我不是天生會講的人，</span><span class="nb hl">我是練出來的</span></h1>
         <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
-        <p class="lead head-lead">徐哲彥，藝名平凡人光頭。影響力健身房創辦人，ATPI 溝通 4 大肌肉框架創始人。</p>
+        <p class="lead head-lead reveal" style="--rd:.12s">徐哲彥，藝名平凡人光頭。影響力健身房創辦人，ATPI 溝通 4 大肌肉框架創始人。</p>
 
-        <ul class="numbers">
+        <ul class="numbers reveal" style="--rd:.18s">
           {numbers.map((x) => (
             <li>
               <b class="bignum">{x.n}</b>
@@ -108,7 +109,7 @@ const schema = [
       <!-- 照片位（信任肌肉的自我示範：這頁必須看得到「人」）。
            FOUNDER_PHOTO 沒填就整塊不渲染——版位先備好，照片到了 consts.ts 填路徑即上線。 -->
       {FOUNDER_PHOTO && (
-        <figure class="portrait">
+        <figure class="portrait reveal" style="--rd:.1s">
           <img src={FOUNDER_PHOTO} alt="平凡人光頭（徐哲彥）——影響力健身房創辦人" width="440" height="520" loading="eager" />
           <div class="portrait-rule" role="presentation"></div>
           <figcaption>平凡人光頭・徐哲彥</figcaption>
@@ -117,18 +118,19 @@ const schema = [
     </div>
   </section>
 
-  <section class="section section-alt">
+  <section class="section section-skew">
     <div class="wrap-text">
-      <h2>我是怎麼發現這件事的</h2>
+      <!-- 長文段落刻意不掛 .reveal：一段一段淡進來會讓閱讀變得一頓一頓。 -->
+      <h2 class="reveal">我是怎麼發現這件事的</h2>
       <p>十年前，我家裡背了兩千萬的債。</p>
       <p>那不是我欠的，但它就在那裡。我很清楚一件事：沒有人會來救我，我只能為自己的未來拼出一條路。</p>
       <p>於是我把手上最後 100 萬拿去繳學費，飛到對岸去學「怎麼開口」。回來之後我做的第一件事，是隔著一個海峽，簽下一個從沒見過面的陌生客戶，120 萬。</p>
-      <p class="emph">那一刻我確定了一件事：這不是天賦，這有公式。</p>
+      <p class="emph reveal">那一刻我確定了一件事：這不是天賦，這有公式。</p>
 
-      <h2>我在自己身上投了 200 萬學費</h2>
+      <h2 class="reveal">我在自己身上投了 200 萬學費</h2>
       <p>這些年我在自己身上投了大約 200 萬的學費：溝通與銷講 100 萬、身心靈 25 萬、財商 20 萬，加上數不清的小課。安東尼羅賓的會場只是其中一站，我站在幾千人裡面，跟大家一起舉手。</p>
       <p>我不是天生會講的人。我只是很早就決定一件事：</p>
-      <blockquote class="quote">
+      <blockquote class="quote reveal">
         <p>與其省下學費，不如把自己變成值得被投資的人。</p>
         <cite>平凡人光頭</cite>
       </blockquote>
@@ -137,53 +139,53 @@ const schema = [
 
   <section class="section">
     <div class="wrap">
-      <h2>後來的十年，我把這個公式反覆驗證</h2>
-      <p class="lead">同一套方法，換不同的場景，結果是一樣的。</p>
+      <h2 class="reveal">後來的十年，我把這個公式反覆驗證</h2>
+      <p class="lead reveal" style="--rd:.06s">同一套方法，換不同的場景，結果是一樣的。</p>
       <div class="grid grid-2 proof">
-        {proof.map((p) => (
-          <article class="card">
+        {proof.map((p, i) => (
+          <article class="card reveal lift" style={`--rd:${0.1 + i * 0.07}s`}>
             <span class="scene">{p.scene}</span>
             <p>{p.body}</p>
           </article>
         ))}
       </div>
-      <p class="note">這些是我自己走過的路。你的數字不會跟我一樣，因為場景不一樣、起點也不一樣。這裡放出來，是要說明這套方法在很多種場合都成立，不是要你複製同一個結果。</p>
+      <p class="note reveal">這些是我自己走過的路。你的數字不會跟我一樣，因為場景不一樣、起點也不一樣。這裡放出來，是要說明這套方法在很多種場合都成立，不是要你複製同一個結果。</p>
     </div>
   </section>
 
-  <section class="section section-alt">
+  <section class="section section-skew">
     <div class="wrap-text">
-      <h2>為什麼開一間健身房</h2>
+      <h2 class="reveal">為什麼開一間健身房</h2>
       <p>因為我發現最難的不是學會，是練得下去。</p>
       <p>多數人上完課，筆記寫得滿滿的，回到現場還是用回原來的講法。不是課不好，是溝通這件事跟身體一樣，看再多影片都不會變壯，要真的動、真的拿到回饋、真的調整。</p>
       <p>所以我把它做成一間館：先量一次，知道自己四塊肌肉現在的樣子；然後每天練一點，記下對方的反應；卡住的時候，有教練幫你看你自己看不到的地方。</p>
 
-      <h2>練這個，是為了什麼</h2>
+      <h2 class="reveal">練這個，是為了什麼</h2>
       <p>影響力這種東西，用來拿下別人也可以，用來讓別人變好也可以。我選後面那條。</p>
       <p>把它練強，不是為了說贏誰、壓過誰，是為了讓你有能力，把你真正的價值，送進你想幫的那個人心裡。</p>
-      <blockquote class="quote">
+      <blockquote class="quote reveal">
         <p>影響力的盡頭不是成交，是有人因為你變好。</p>
         <cite>平凡人光頭</cite>
       </blockquote>
 
-      <div class="btn-row">
+      <div class="btn-row reveal">
         <a class="btn btn-main" href={LINKS.quiz}
-           data-cta-id="about_quiz" data-cta-position="body">免費做影響力健檢</a>
+           data-cta="about_quiz" data-cta-position="body">免費做影響力健檢</a>
         <a class="btn btn-sub" href="/method/">看這套方法</a>
       </div>
     </div>
   </section>
 
   <section class="section">
-    <div class="wrap-text">
+    <div class="wrap-text reveal">
       <Newsletter source="about" variant="sub" />
     </div>
   </section>
 
-  <section class="section section-alt">
+  <section class="section section-skew">
     <div class="wrap-text">
-      <h2>常見問題</h2>
-      <dl class="faq">
+      <h2 class="reveal">常見問題</h2>
+      <dl class="faq reveal" style="--rd:.08s">
         {faq.map((f) => (
           <>
             <dt>{f.q}</dt>

@@ -12,7 +12,7 @@ const iso = pubDate.toISOString().slice(0, 10);
 const shown = pubDate.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
-<article class="card item" data-dim={dim}>
+<article class="card item reveal lift" data-dim={dim}>
   <p class="meta">
     <span class="cat">{category}</span>
     <time datetime={iso}>{shown}</time>

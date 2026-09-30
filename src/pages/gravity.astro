@@ -340,10 +340,10 @@ const schema = [
   )}
 
   <!-- ═══ 02 圖②：一場對話會斷在哪四個地方（流程圖）═══ -->
-  <section class="section section-alt">
+  <section class="section section-skew">
     <div class="wrap">
       <p class="kicker">先看結構</p>
-      <h2>一場對話，<span class="hl">會斷在四個地方</span></h2>
+      <h2 class="reveal">一場對話，<span class="hl">會斷在四個地方</span></h2>
       <p class="lead sec-lead">而且每一次斷掉的地方都不一樣。所以你把同一套方法再練一次，結果還是不穩。</p>
 
       <!-- 橫向鏈：五個狀態、四段推力。每段推力＝一塊肌肉，斷掉會怎樣寫在下面。 -->
@@ -370,18 +370,18 @@ const schema = [
   <section class="section">
     <div class="wrap-text">
       <p class="kicker">先講一件事</p>
-      <h2>話術像打氣打出來的肌肉，<span class="hl">一鬆手就消</span></h2>
-      <p class="lead">卡住的時候，多數人會去找更厲害的一句話。學回來當下有用，過兩週又打回原形，因為換掉的是話，沒有換掉底下的能力。</p>
+      <h2 class="reveal">話術像打氣打出來的肌肉，<span class="hl">一鬆手就消</span></h2>
+      <p class="lead reveal" style="--rd:.06s">卡住的時候，多數人會去找更厲害的一句話。學回來當下有用，過兩週又打回原形，因為換掉的是話，沒有換掉底下的能力。</p>
       <p class="body-p">影響力不是天生的個性，也不是話術的天分。它是可以量、可以練、可以驗收的能力。能拆解，就能練；能練，就能量出進步。</p>
       <p class="body-p">這也是為什麼我們不給你腳本。腳本是別人的身體，穿不上你的。</p>
     </div>
   </section>
 
   <!-- ═══ 04 圖③：12 小肌群牆（拆到可以量的顆粒）═══ -->
-  <section class="section section-alt">
+  <section class="section section-skew">
     <div class="wrap">
       <p class="kicker">ATPI 四塊影響力肌肉</p>
-      <h2>拆到<span class="hl">量得出來</span>為止</h2>
+      <h2 class="reveal">拆到<span class="hl">量得出來</span>為止</h2>
       <p class="lead sec-lead">四塊大肌肉，底下各三條小肌群，一共十二條。鍛鍊段的四堂課，就是這四塊。</p>
 
       <div class="wall" role="img" aria-label="四塊影響力肌肉各有三條小肌群，共十二條">
@@ -420,7 +420,7 @@ const schema = [
   <section class="section">
     <div class="wrap-wide">
       <p class="kicker">這條路長什麼樣</p>
-      <h2>十三個模組，<span class="hl">全部先給你看</span></h2>
+      <h2 class="reveal">十三個模組，<span class="hl">全部先給你看</span></h2>
       <p class="lead sec-lead">一個模組等於一週。包括你現在還沒走到的地方，先看全圖再決定要走多遠。</p>
 
       <div class="road">
@@ -466,10 +466,10 @@ const schema = [
   </section>
 
   <!-- ═══ 06 圖⑤：一週迴路（流程圖）═══ -->
-  <section class="section section-alt">
+  <section class="section section-skew">
     <div class="wrap">
       <p class="kicker">課是怎麼上的</p>
-      <h2>一週一個迴路，<span class="hl">時間全部留給練</span></h2>
+      <h2 class="reveal">一週一個迴路，<span class="hl">時間全部留給練</span></h2>
 
       <div class="loop" role="img" aria-label="一週迴路：看錄播、進健身房打卡、討論課對練、帶回真實現場，然後回到下一週">
         <div class="loop-row">
@@ -500,7 +500,7 @@ const schema = [
   <section class="section">
     <div class="wrap-text">
       <p class="kicker">你會怎麼進來</p>
-      <h2>從量一次開始，<span class="hl">到量第二次結束</span></h2>
+      <h2 class="reveal">從量一次開始，<span class="hl">到量第二次結束</span></h2>
 
       <div class="map">
         {journey.map((j) => (
@@ -514,10 +514,10 @@ const schema = [
   </section>
 
   <!-- ═══ 08 兩個課 ═══ -->
-  <section class="section section-alt">
+  <section class="section section-skew">
     <div class="wrap">
       <p class="kicker">對外只有兩個課</p>
-      <h2>怎麼選，<span class="hl">諮詢現場才決定</span></h2>
+      <h2 class="reveal">怎麼選，<span class="hl">諮詢現場才決定</span></h2>
       <div class="grid grid-2 courses">
         {courses.map((c) => (
           <article class="card muscle" data-dim={c.dim}>
@@ -545,7 +545,7 @@ const schema = [
   <section class="section">
     <div class="wrap">
       <p class="kicker">誰適合來</p>
-      <h2>這套課是<span class="hl">為誰做的</span></h2>
+      <h2 class="reveal">這套課是<span class="hl">為誰做的</span></h2>
       <div class="grid who">
         {forWhom.map((w) => (
           <div class="who-card" data-dim={w.dim}>
@@ -566,7 +566,7 @@ const schema = [
   </section>
 
   <!-- ═══ 10 教的人是誰 ═══ -->
-  <section class="section section-alt">
+  <section class="section section-skew">
     <div class:list={['wrap', 'coach', { 'has-photo': !!FOUNDER_PHOTO }]}>
       {FOUNDER_PHOTO && (
         <figure class="coach-photo">
@@ -576,7 +576,7 @@ const schema = [
       )}
       <div>
         <p class="kicker">教的人是誰</p>
-        <h2>平凡人光頭，<span class="hl">不是天生會講的人</span></h2>
+        <h2 class="reveal">平凡人光頭，<span class="hl">不是天生會講的人</span></h2>
         <p class="lead coach-lead">本名徐哲彥。影響力健身房創辦人、ATPI 溝通 4 大肌肉框架創始人。名字裡留著「平凡人」三個字，因為這套方法的前提就是：影響力不是天賦，是練出來的肌肉。</p>
         <ul class="coach-nums">
           <li><b class="bignum">200+</b><span>場演講</span></li>
@@ -595,7 +595,7 @@ const schema = [
   <section class="section">
     <div class="wrap">
       <p class="kicker">練過的人</p>
-      <h2>他們後來，<span class="hl">怎麼了</span></h2>
+      <h2 class="reveal">他們後來，<span class="hl">怎麼了</span></h2>
       <div class="grid grid-3 proof">
         {proof.map((p) => (
           <a class="proof-card" href={p.src} target="_blank" rel="noopener">
@@ -608,7 +608,7 @@ const schema = [
   </section>
 
   <!-- ═══ 12 骨層句 ═══ -->
-  <section class="section section-alt">
+  <section class="section section-skew">
     <div class="wrap-text">
       <blockquote class="quote">
         <p>影響力的盡頭不是成交，是有人因為你變好。</p>
@@ -623,10 +623,10 @@ const schema = [
     <div class="wrap-text">
       {/* 回訓期這塊講給舊生聽，陌生人的兩條路收在 cta-sub。開課後 CTA_MODE 一改就全部退回諮詢版。
           原本這裡是「諮詢主鈕 + 舊生橫幅」兩塊，主鈕改成複訓之後橫幅變成同一顆講兩次，已合併。 */}
-      <aside class="cta">
+      <aside class="cta reveal">
         <p class="kicker">怎麼開始</p>
-        <h2>{RETRAIN_OPEN ? '上過課的人，直接回來練' : '先把你的狀況攤開來看一次'}</h2>
-        <p class="lead">{RETRAIN_OPEN
+        <h2 class="reveal">{RETRAIN_OPEN ? '上過課的人，直接回來練' : '先把你的狀況攤開來看一次'}</h2>
+        <p class="lead reveal" style="--rd:.06s">{RETRAIN_OPEN
           ? '課改版過了——成交拆成 ATPI 四塊影響力肌肉，攤開成 L1–L13 的全貌，還配了一支每天練的 App。你已經會做了，這一梯是把它變成可以帶人。B 班 10/12 開課。'
           : '1v1 諮詢是線上 60 分鐘，我們會先聽你的現況，再把卡住的地方指出來。不適合會直接說，不會硬推。'}</p>
         <a class="btn btn-main" href={MAIN_CTA.href} data-cta={MAIN_CTA.cta} data-cta-position="lp-bottom">
@@ -642,11 +642,11 @@ const schema = [
   </section>
 
   <!-- ═══ 14 FAQ ═══ -->
-  <section class="section section-alt">
+  <section class="section section-skew">
     <div class="wrap-text">
       <p class="kicker">常見問題</p>
-      <h2>先回答<span class="hl">你可能會問的</span></h2>
-      <div class="faq">
+      <h2 class="reveal">先回答<span class="hl">你可能會問的</span></h2>
+      <div class="faq reveal">
         {faq.map((f, i) => (
           <details class="qa" open={i === 0}>
             <summary>{f.q}</summary>

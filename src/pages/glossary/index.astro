@@ -30,13 +30,13 @@ const schema = {
 <BaseLayout title={title} description={description} schema={schema}>
   <section class="section">
     <div class="wrap">
-      <p class="kicker">名詞</p>
-      <h1>我們說的每個詞，<span class="hl">都有定義</span></h1>
-      <p class="lead head-lead">影響力這種東西最怕的就是各說各話。這裡把我們用的每個名詞攤開來寫清楚，你可以拿去對照，也可以拿去反駁。</p>
+      <p class="kicker reveal">名詞</p>
+      <h1 class="display reveal" style="--rd:.06s"><span class="nb">我們說的每個詞，</span><span class="nb hl">都有定義</span></h1>
+      <p class="lead head-lead reveal" style="--rd:.12s">影響力這種東西最怕的就是各說各話。這裡把我們用的每個名詞<span class="nb">攤開來寫清楚</span>，你可以拿去對照，也可以拿去反駁。</p>
 
       <ul class="terms">
-        {terms.map((t) => (
-          <li class="card" data-dim={t.data.dim}>
+        {terms.map((t, i) => (
+          <li class="card reveal lift" data-dim={t.data.dim} style={`--rd:${Math.min(0.4, i * 0.04)}s`}>
             <a href={`/glossary/${t.id}/`}>
               <b>{t.data.term}</b>
               <span>{t.data.definition}</span>

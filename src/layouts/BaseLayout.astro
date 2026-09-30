@@ -96,9 +96,19 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
   <!-- 數位足跡。規範＝productkit 31-數位足跡與追蹤規範。
        ⭐ 鐵則：只 push dataLayer，絕不在頁面直接呼叫 gtag／fbq。 -->
   <script is:inline src="/track.js"></script>
+
+  <!-- 揭示動畫的「上膛」開關。必須在 head 就掛，否則元素會先以可見狀態畫一次再消失（閃一下）。
+       不支援 IntersectionObserver 或使用者要求減少動態時就不上膛＝內容全程可見。 -->
+  <script is:inline>
+    if ('IntersectionObserver' in window &&
+        !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('js-reveal');
+    }
+  </script>
 </head>
 <body class={bodyClass}>
   <a class="skip" href="#main">跳到主要內容</a>
+  <div class="readbar" id="readbar" role="presentation"></div>
   <Header />
   <main id="main">
     <slot />
@@ -146,17 +156,73 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
     });
 
     const bar = document.getElementById('sticky-quiz')!;
+    const readbar = document.getElementById('readbar')!;
     let shown = false;
-    const onScroll = () => {
-      const want = window.scrollY > 560;
+    let queued = false;
+
+    /* 一個 scroll listener 管兩件事，並用 rAF 收斂：
+       捲動事件一秒可以打上百次，直接在裡面寫樣式會掉frame。 */
+    const paint = () => {
+      queued = false;
+      const y = window.scrollY;
+
+      const want = y > 560;
       if (want !== shown) {
         shown = want;
         bar.classList.toggle('on', want);
         bar.setAttribute('aria-hidden', String(!want));
       }
+
+      const max = document.documentElement.scrollHeight - innerHeight;
+      readbar.style.setProperty('--read', String(max > 0 ? Math.min(1, y / max) : 0));
+    };
+    const onScroll = () => {
+      if (!queued) { queued = true; requestAnimationFrame(paint); }
     };
     addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    paint();
+
+    /* ═══ 滾動揭示 ═══
+       只在「上膛」時才跑（head 那段決定）。揭示一次就停止觀察，不做來回淡出：
+       捲回去又消失一次會讓長頁讀起來很躁。 */
+    if (document.documentElement.classList.contains('js-reveal')) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        },
+        { rootMargin: '0px 0px -12% 0px', threshold: 0.12 },
+      );
+      document.querySelectorAll('.reveal, .slice-field').forEach((el) => io.observe(el));
+
+      /* 數字爬升。放在這裡而不是各頁：體格單、教練頁的 200+／2000+ 都要用。
+         ⚠️ 只認 data-count 的數值部分，「200+」「10 年」的後綴由 HTML 自己留在旁邊。 */
+      const nio = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            const el = e.target as HTMLElement;
+            nio.unobserve(el);
+            const to = Number(el.dataset.count);
+            if (!Number.isFinite(to)) continue;
+            const t0 = performance.now();
+            const tick = (now: number) => {
+              const k = Math.min(1, (now - t0) / 900);
+              /* easeOutCubic：末段慢下來，讀起來像儀表停穩而不是硬切 */
+              el.textContent = String(Math.round(to * (1 - Math.pow(1 - k, 3))));
+              if (k < 1) requestAnimationFrame(tick);
+            };
+            el.textContent = '0';
+            requestAnimationFrame(tick);
+          }
+        },
+        { threshold: 0.6 },
+      );
+      document.querySelectorAll('[data-count]').forEach((el) => nio.observe(el));
+    }
   </script>
   <style>
     .sticky-quiz {
