@@ -85,18 +85,25 @@ const schema = [
 ---
 
 <BaseLayout title={title} description={description} schema={schema}>
-  <section class="section">
-    <div class="wrap">
+  <!-- ═══ 開場：把「拆開」演在版面上 ═══
+       標題壓在左欄、地圖出血到兩側，兩者刻意不共用同一條左界，讓版面本身是被剖開的。
+       出血層帶視差：捲動時地圖與標題以不同速度移動，那個錯位就是「拆」。 -->
+  <!-- ⚠️ 這頁不放 .slice-field：薄片場是 12 條小肌群，下面的地圖也是 12 條小肌群，
+       兩套疊在一起會變成一團斜線，誰都讀不出來。地圖就是這頁的薄片宣告。 -->
+  <section class="mhero">
+    <div class="wrap mhead">
       <p class="kicker reveal">方法</p>
       <!-- .nb 把子句包成不可剖半的整塊：沒有它，大標會斷成「影響力可以拆／開」。 -->
       <h1 class="display reveal" style="--rd:.06s"><span class="nb">影響力可以拆開，</span><span class="nb hl">所以可以練</span></h1>
       <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
       <p class="lead head-lead reveal" style="--rd:.12s">整團的「影響力」沒辦法練，因為你不知道要練什麼。拆成四塊、<span class="nb">再拆成十二個看得到的行為</span>之後，每一個都有具體的動作可以做，也有對方的反應可以檢查。</p>
+    </div>
 
-      <!-- 12 小肌群薄片地圖（24 §3.9 八條）：一條基線、斜切共軸鎖畫面中線 y=175、
-           全部淡底＋深版描邊（紅線：實色最多兩片——這張 0 片；I 金一律淡底＋深版描邊與字）。
-           片高遞增＝三條小肌群是一階一階往上練的梯；字是標籤貼片下、放斜切群組外保持直立。
-           標籤 x 補 skew 位移：底邊在 y=250，往左位移 tan12°×75≈16px。 -->
+    <!-- 12 小肌群薄片地圖（24 §3.9 八條）：一條基線、斜切共軸鎖畫面中線 y=175、
+         全部淡底＋深版描邊（紅線：實色最多兩片——這張 0 片；I 金一律淡底＋深版描邊與字）。
+         片高遞增＝三條小肌群是一階一階往上練的梯；字是標籤貼片下、放斜切群組外保持直立。
+         標籤 x 補 skew 位移：底邊在 y=250，往左位移 tan12°×75≈16px。 -->
+    <div class="mmap-bleed" data-px=".5" style="--px-amt:-30px">
       <div class="mmap-scroll reveal" style="--rd:.18s">
         <svg class="mmap" viewBox="0 88 940 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <line x1="26" y1="250" x2="914" y2="250" stroke="var(--ink)" stroke-width="3" opacity=".25" stroke-linecap="round" />
@@ -127,6 +134,9 @@ const schema = [
           ))}
         </svg>
       </div>
+    </div>
+
+    <div class="wrap">
       <p class="mmap-note reveal" style="--rd:.24s">一片＝一條小肌群，三片一組＝一塊大肌肉。十二個名字的主詞<span class="nb">全在對方身上</span>——<span class="nb">練到哪，看他的反應就知道。</span></p>
     </div>
   </section>
@@ -136,22 +146,41 @@ const schema = [
       <h2 class="reveal">四塊肌肉，各自在解決什麼</h2>
       <p class="lead reveal" style="--rd:.06s">每一塊都對應一個問句。你在對話裡卡住的地方，通常就是其中一個問句你還沒有答案。</p>
 
-      <div class="grid grid-2 muscles">
+      <!-- 四塊改成四條全幅橫帶，不用 2×2 卡片網格：
+           卡片會把四塊排成「四個選項」，但它們其實是一條會升溫的順序。
+           橫帶讓 A→T→P→I 只能由上往下讀一次，順序就變成版面本身在說的事。 -->
+      <ol class="bands">
         {muscles.map((m, i) => (
-          <article class="card muscle reveal lift" data-dim={m.dim} style={`--rd:${0.1 + i * 0.07}s`}>
-            <span class="muscle-tag">{m.dim}　{m.en}</span>
-            <h3>{m.name}</h3>
-            <p class="muscle-result">{m.result}</p>
-            <dl class="spec">
-              <dt>要練的方向</dt><dd>{m.ask}</dd>
-              <dt>在關係裡的角色</dt><dd>{m.role}</dd>
-              <dt>三個小肌群</dt><dd>{m.subs.join('・')}</dd>
-              <dt>身體上的對照</dt><dd>{m.body}</dd>
-            </dl>
-            <a class="more" href={`/glossary/${m.slug}/`}>看這塊怎麼練 →</a>
-          </article>
+          <li class="band reveal" data-dim={m.dim} style={`--rd:${0.06 + i * 0.05}s`}>
+            <div class="band-id">
+              <span class="band-ghost" aria-hidden="true" data-px=".5" style="--px-amt:18px">{m.dim}</span>
+              <span class="band-en">{m.en}</span>
+              <h3 class="band-name">{m.name}</h3>
+              <p class="band-result">{m.result}</p>
+            </div>
+
+            <div class="band-spec">
+              <dl class="spec">
+                <dt>要練的方向</dt><dd>{m.ask}</dd>
+                <dt>在關係裡的角色</dt><dd>{m.role}</dd>
+                <dt>身體上的對照</dt><dd>{m.body}</dd>
+              </dl>
+            </div>
+
+            <div class="band-subs">
+              <p class="subs-label">三個小肌群</p>
+              <!-- 用薄片而不是頓號串字：三條小肌群是一階一階往上練的梯，
+                   遞增的片高把那個順序畫出來，跟上面的地圖同一套語彙。 -->
+              <ul class="subs">
+                {m.subs.map((sub, s) => (
+                  <li style={`--sh:${54 + s * 16}px`}><i></i><span>{sub}</span></li>
+                ))}
+              </ul>
+              <a class="more" href={`/glossary/${m.slug}/`}>看這塊怎麼練 →</a>
+            </div>
+          </li>
         ))}
-      </div>
+      </ol>
     </div>
   </section>
 
@@ -210,23 +239,98 @@ const schema = [
 </BaseLayout>
 
 <style>
+  /* ═══ 開場 ═══ */
+  .mhero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(48px, 8vw, 96px) 0 clamp(40px, 6vw, 72px);
+  }
+  /* 標題欄縮到六成寬並靠左：右邊那塊空白是留給地圖出血用的，不是沒排滿 */
+  .mhead { position: relative; max-width: 62ch; }
   .head-lead { max-width: 50ch; margin-top: 14px; }
 
+  /* 地圖不進 .wrap：整塊貼齊視窗左右，出血本身就是「拆開」的動作。
+     它是 .mhero 的直接子代，所以沒有版心邊界要掙脫。 */
+  .mmap-bleed { position: relative; margin-top: 44px; }
+
   /* 薄片地圖：桌機滿版縮放；窄螢幕保住字級、改橫向滑動 */
-  .mmap-scroll { margin-top: 40px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .mmap-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .mmap { width: 100%; min-width: 720px; height: auto; }
-  .mmap-note { margin-top: 12px; font-size: 14.5px; color: var(--ink-soft); max-width: 62ch; }
+  .mmap-note { margin-top: 16px; font-size: 14.5px; color: var(--ink-soft); max-width: 62ch; }
 
-  /* 固定 2×2，不用 auto-fit：四塊要排成整齊一組，不能被斷成 3+1（順序 A→T→P→I 是規範） */
-  .muscles { margin-top: 36px; grid-template-columns: repeat(2, 1fr); }
-  @media (max-width: 640px) { .muscles { grid-template-columns: 1fr; } }
+  /* ═══ 四條肌肉橫帶 ═══ */
+  .bands { list-style: none; padding: 0; margin: 40px 0 0; }
+  .band {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.15fr) minmax(0, .95fr);
+    gap: clamp(20px, 3.4vw, 52px);
+    align-items: start;
+    padding: clamp(28px, 4vw, 44px) 0;
+    border-top: 1px solid var(--line);
+  }
+  .band:last-child { border-bottom: 1px solid var(--line); }
 
-  .muscle-result {
-    margin-top: 4px !important; font-size: 17px !important;
-    font-weight: 700; color: var(--dim-deep) !important;
+  /* 巨型幽靈字母：墊在肌肉名後面當份量，不負責資訊（aria-hidden＋不可選）。
+     ⚠️ 不要放在小肌群薄片那一欄：兩個都是色塊，疊起來會互相吃掉。 */
+  .band-id { position: relative; }
+  .band-ghost {
+    position: absolute; left: -.18em; top: -.26em;
+    z-index: 0;
+    font-size: clamp(104px, 13vw, 168px);
+    font-weight: 900;
+    line-height: .8;
+    letter-spacing: -.06em;
+    /* 描邊而不是填色：填色在四個維度色下明暗差太多，輕的看不見、重的變色斑；
+       描邊讓四條帶的份量一致，也才看得出來那是一個字母而不是一塊污漬。 */
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--dim);
+    opacity: .22;
+    pointer-events: none;
+    user-select: none;
+  }
+  .band-en, .band-name, .band-result { position: relative; z-index: 1; }
+  .band-en {
+    display: block; font-size: 12px; font-weight: 700;
+    letter-spacing: .16em; color: var(--dim-deep);
+  }
+  .band-name { margin-top: 6px; font-size: clamp(24px, 3.2vw, 34px); line-height: 1.25; }
+  .band-result {
+    margin-top: 8px; font-size: clamp(17px, 2vw, 20px);
+    font-weight: 700; color: var(--dim-deep);
   }
 
-  .spec { margin-top: 18px; font-size: 15px; }
+  .band-spec, .band-subs { position: relative; }
+
+  /* 小肌群薄片梯：片高遞增＝一階一階往上練，跟開場地圖同一套語彙 */
+  .subs-label {
+    font-size: 13px; font-weight: 700; letter-spacing: .04em; color: var(--ink-soft);
+  }
+  .subs {
+    list-style: none; padding: 0;
+    margin: 12px 0 0;
+    display: flex; align-items: flex-end; gap: 10px;
+  }
+  .subs li { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .subs i {
+    display: block; height: var(--sh);
+    background: var(--dim-tint);
+    border: 2px solid var(--dim-deep);
+    border-radius: 8px;
+    transform: skewX(var(--skew));
+  }
+  .subs span { font-size: 13.5px; font-weight: 600; line-height: 1.4; }
+
+  @media (max-width: 900px) {
+    .band { grid-template-columns: 1fr 1fr; }
+    .band-id { grid-column: 1 / -1; }
+  }
+  @media (max-width: 620px) {
+    .band { grid-template-columns: 1fr; gap: 22px; }
+    .band-ghost { font-size: clamp(88px, 24vw, 120px); -webkit-text-stroke-width: 1.5px; opacity: .34; }
+  }
+
+  .spec { font-size: 15px; }
   .spec dt {
     font-size: 13px; font-weight: 700; color: var(--ink-soft);
     letter-spacing: .04em; margin-top: 12px;

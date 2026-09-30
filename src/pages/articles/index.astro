@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ArticleCard from '../../components/ArticleCard.astro';
 import Newsletter from '../../components/Newsletter.astro';
 import { SITE } from '../../consts';
 import { isPublished } from '../../lib/published';
@@ -9,6 +8,35 @@ import { isPublished } from '../../lib/published';
 const posts = (await getCollection('articles', ({ data }) => isPublished(data))).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
+
+/* ═══ 這頁的結構就是 ATPI 本身 ═══
+   文章不是二十幾件一樣大的東西，它們本來就分屬四條線——想練哪一塊，就讀哪一欄。
+   每條線裡面還有一層分工：方法論那篇在講「這塊肌肉是什麼」，是整欄的地基；
+   其餘的溝通現場則是同一塊肌肉在各種場合的用法。所以每欄開頭放方法論那篇並且
+   帶出摘要，底下的現場篇只留標題——一欄之內先厚後薄，眼睛才知道要從哪裡進去。
+   四條線之外還有三篇不掛肌肉的，那三篇講的是「為什麼要這樣練」，獨立成一段。 */
+const DIMS = [
+  { key: 'A', name: '吸引肌肉', result: '讓他想靠近' },
+  { key: 'T', name: '信任肌肉', result: '讓他願意說' },
+  { key: 'P', name: '專業肌肉', result: '讓他要找你' },
+  { key: 'I', name: '推進肌肉', result: '讓他願意動' },
+];
+
+const lines = DIMS.map((d) => {
+  const inLine = posts.filter((p) => p.data.dim === d.key);
+  return {
+    ...d,
+    anchor: inLine.find((p) => p.data.category === '方法論'),
+    rest: inLine.filter((p) => p.data.category !== '方法論'),
+    count: inLine.length,
+  };
+}).filter((l) => l.count > 0);
+
+const groundwork = posts.filter((p) => !p.data.dim);
+const latestId = posts[0]?.id;
+
+const fmt = (d: Date) =>
+  `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
 
 const title = '文章';
 const description =
@@ -36,26 +64,85 @@ const schema = {
     <div class="wrap">
       <p class="kicker reveal">文章</p>
       <h1 class="display reveal" style="--rd:.06s">影響力是<span class="hl">練</span>出來的</h1>
-      <p class="lead head-lead reveal" style="--rd:.12s">這裡放的是課堂上講的方法，拆成看得懂、也做得出來的樣子。每一篇最後都會落到一個你今天就能試的小動作。</p>
-
-      {posts.length === 0 ? (
-        <p class="empty">文章正在寫，很快就會有第一篇。</p>
-      ) : (
-        <div class="grid grid-2 list">
-          {posts.map((p) => (
-            <ArticleCard
-              href={`/articles/${p.id}/`}
-              title={p.data.title}
-              description={p.data.description}
-              category={p.data.category}
-              pubDate={p.data.pubDate}
-              dim={p.data.dim}
-            />
-          ))}
-        </div>
-      )}
+      <p class="lead head-lead reveal" style="--rd:.12s">這裡放的是課堂上講的方法，拆成<span class="nb">看得懂、也做得出來的樣子</span>。每一篇最後都會落到<span class="nb">一個你今天就能試的小動作</span>。</p>
     </div>
   </section>
+
+  {posts.length === 0 ? (
+    <section class="section"><div class="wrap"><p class="empty">文章正在寫，很快就會有第一篇。</p></div></section>
+  ) : (
+    <>
+      <!-- ═══ 四條線：報紙的分欄目次 ═══
+           四欄不是為了排得整齊，是因為讀者來這裡通常已經知道自己缺哪一塊。
+           欄首那條斜片是維度色，整欄從頭到尾只有它是彩色的——標題全部維持墨色，
+           一欄之內才不會有第二個東西在跟標題搶。 -->
+      <section class="section lines-sec">
+        <div class="wrap">
+          <h2 class="reveal">四塊肌肉，四條線</h2>
+          <p class="sec-lead reveal" style="--rd:.06s">每一欄的第一篇在講這塊肌肉<span class="nb">是什麼、怎麼練</span>；底下的是它在<span class="nb">各種現場的用法</span>。</p>
+
+          <div class="lines">
+            {lines.map((l, i) => (
+              <section class="line reveal" data-dim={l.key} style={`--rd:${0.1 + i * 0.05}s`}>
+                <header class="line-head">
+                  <span class="line-slice" aria-hidden="true"></span>
+                  <h3>
+                    <span class="line-letter">{l.key}</span>{l.name}
+                    <span class="line-count">{l.count} 篇</span>
+                  </h3>
+                  <p class="line-result">{l.result}</p>
+                </header>
+
+                {l.anchor && (
+                  <a class="anchor-art" href={`/articles/${l.anchor.id}/`}>
+                    <p class="anchor-cat">{l.anchor.data.category}</p>
+                    {l.anchor.id === latestId && <span class="tag-new">最新</span>}
+                    <h4>{l.anchor.data.title}</h4>
+                    <p class="anchor-desc">{l.anchor.data.description}</p>
+                  </a>
+                )}
+
+                <ul class="line-list">
+                  {l.rest.map((p) => (
+                    <li>
+                      <a href={`/articles/${p.id}/`}>
+                        {p.id === latestId && <span class="tag-new">最新</span>}
+                        <span class="art-title">{p.data.title}</span>
+                        <time datetime={p.data.pubDate.toISOString()}>{fmt(p.data.pubDate)}</time>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {groundwork.length > 0 && (
+        <!-- 不掛肌肉的幾篇獨立一段：它們講的是「為什麼用這種方式練」，
+             是四條線底下共用的地基，混進任何一欄都會變成那一欄的東西。 -->
+        <section class="section ground-sec">
+          <div class="wrap">
+            <h2 class="reveal">不分肌肉的那幾篇</h2>
+            <p class="sec-lead reveal" style="--rd:.06s">這幾篇不屬於任何一塊肌肉，<span class="nb">講的是為什麼要用這種方式練</span>。</p>
+            <ol class="ground">
+              {groundwork.map((p, i) => (
+                <li class="reveal" style={`--rd:${0.1 + i * 0.06}s`}>
+                  <a href={`/articles/${p.id}/`}>
+                    <p class="ground-cat">{p.data.category}<time datetime={p.data.pubDate.toISOString()}>{fmt(p.data.pubDate)}</time></p>
+                    <h3>{p.data.title}</h3>
+                    <p class="ground-desc">{p.data.description}</p>
+                    <span class="ground-arrow" aria-hidden="true">→</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+    </>
+  )}
 
   <section class="section">
     <div class="wrap reveal"><Newsletter source="articles-index" /></div>
@@ -64,6 +151,162 @@ const schema = {
 
 <style>
   .head-lead { max-width: 52ch; margin-top: 14px; }
-  .list { margin-top: 44px; }
-  .empty { margin-top: 32px; color: var(--ink-soft); }
+  .empty { color: var(--ink-soft); }
+  .sec-lead { margin-top: 10px; max-width: 46ch; color: var(--ink-soft); text-wrap: pretty; }
+
+  /* ═══ 四條線 ═══ */
+  .lines-sec { padding-bottom: 0; }
+  .lines {
+    margin-top: clamp(30px, 4vw, 48px);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(18px, 2.4vw, 34px);
+    /* 欄跟欄之間用細線隔開，不用留白：留白會讓四欄看起來只是四團字，
+       線在的時候它才讀得出來是「四條並行的線」。 */
+  }
+  .line { position: relative; }
+  .line + .line { padding-left: clamp(18px, 2.4vw, 34px); }
+  .line + .line::before {
+    content: "";
+    position: absolute; left: 0; top: 4px; bottom: 0;
+    border-left: 1px solid var(--line);
+  }
+
+  /* 欄首壓成三行：斜片、肌肉名（篇數靠右擠在同一行）、結果句。
+     一開始篇數自己佔一行還帶一條分隔線，等於在兩三篇文章上面疊了五層抬頭——
+     欄位本來就窄，抬頭比內容重的時候，這一欄就不像一條線了。 */
+  .line-head { padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .line-slice {
+    display: block; width: 46px; height: 9px;
+    background: var(--dim, var(--act));
+    border-radius: var(--slice-r);
+    transform: skewX(var(--skew));
+    transform-origin: left center;
+    transition: width .3s cubic-bezier(.2,.7,.2,1);
+  }
+  .line:hover .line-slice { width: 74px; }
+  .line-head h3 {
+    margin-top: 12px;
+    display: flex; align-items: baseline; gap: 8px;
+    font-size: clamp(18px, 2.1vw, 21px); font-weight: 800; letter-spacing: -.01em;
+  }
+  /* 字母用維度色、肌肉名維持墨色：整欄只有這一個字母跟上面那條斜片是彩的 */
+  .line-letter { color: var(--dim, var(--act)); margin-right: -3px; }
+  .line-count {
+    margin-left: auto;
+    font-size: 11.5px; font-weight: 700; letter-spacing: .08em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .line-result { margin-top: 3px; font-size: 14px; color: var(--ink-soft); }
+
+  /* 地基篇：整欄唯一有摘要的一篇，字級也最大——一欄之內先厚後薄 */
+  .anchor-art {
+    display: block; text-decoration: none; color: inherit;
+    padding: 14px 0 16px; border-bottom: 1px solid var(--line);
+  }
+  /* 標出「這篇是方法論」：它排第一不是因為最新，是因為它在講這塊肌肉本身。
+     沒有這一行，讀者只會以為第一篇比較大是排版隨便挑的。 */
+  .anchor-cat {
+    margin-bottom: 7px;
+    font-size: 11px; font-weight: 700; letter-spacing: .12em;
+    color: var(--dim-deep, var(--act));
+  }
+  .anchor-art h4 {
+    font-size: clamp(16px, 1.75vw, 18px); font-weight: 700; line-height: 1.5;
+    letter-spacing: -.005em; text-wrap: pretty;
+    background-image: linear-gradient(var(--dim, var(--act)), var(--dim, var(--act)));
+    background-size: 0 1.5px; background-position: 0 100%; background-repeat: no-repeat;
+    transition: background-size .24s ease;
+    display: inline; padding-bottom: 2px;
+  }
+  .anchor-art:hover h4, .anchor-art:focus-visible h4 { background-size: 100% 1.5px; }
+  .anchor-desc {
+    margin-top: 9px; font-size: 13.5px; line-height: 1.8; color: var(--ink-soft);
+    text-wrap: pretty;
+    /* 摘要都是三四句的完整段落，整段放進 270px 的欄會變成一根柱子。
+       截到四行剛好夠判斷要不要點，再多就是把詳細頁的內容搬到目次上。 */
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4;
+    overflow: hidden;
+  }
+
+  .line-list { list-style: none; padding: 0; margin: 0; }
+  .line-list a {
+    display: block; padding: 13px 0; border-bottom: 1px solid var(--line);
+    text-decoration: none; color: inherit;
+  }
+  .art-title {
+    display: block;
+    font-size: 14.5px; line-height: 1.65; font-weight: 600; color: var(--ink);
+    text-wrap: pretty;
+    transition: color .18s ease;
+  }
+  /* hover 變色一樣走深版：原版的 T 跟 I 放在 14.5px 的標題上都不夠深 */
+  .line-list a:hover .art-title, .line-list a:focus-visible .art-title { color: var(--dim-deep, var(--act)); }
+  .line-list time {
+    display: block; margin-top: 5px;
+    font-size: 11.5px; letter-spacing: .06em; color: var(--ink-soft); opacity: .75;
+  }
+
+  /* 底色用深版不用原版：I 的原版是 #C99A4E，白字壓上去只有 2.3:1。
+     這顆字只有 10.5px，是全頁最小的字，色對比不能將就。 */
+  .tag-new {
+    display: inline-block; vertical-align: 2px; margin-right: 7px;
+    padding: 1px 7px; border-radius: 999px;
+    font-size: 10.5px; font-weight: 800; letter-spacing: .08em;
+    color: var(--bg); background: var(--dim-deep, var(--act));
+  }
+
+  /* ═══ 不分肌肉的那幾篇 ═══ */
+  .ground { list-style: none; padding: 0; margin: clamp(26px, 3.4vw, 40px) 0 0; }
+  .ground li + li { margin-top: 0; }
+  .ground a {
+    position: relative; display: block;
+    padding: 24px clamp(40px, 5vw, 72px) 24px 0;
+    border-top: 1px solid var(--line);
+    text-decoration: none; color: inherit;
+  }
+  .ground li:last-child a { border-bottom: 1px solid var(--line); }
+  .ground-cat {
+    display: flex; gap: 12px;
+    font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--ink-soft);
+  }
+  .ground-cat time { font-weight: 400; opacity: .7; letter-spacing: .06em; }
+  .ground h3 {
+    margin-top: 8px; max-width: 34ch;
+    font-size: clamp(19px, 2.3vw, 24px); font-weight: 800; letter-spacing: -.015em;
+    line-height: 1.4; text-wrap: pretty;
+  }
+  .ground-desc {
+    margin-top: 8px; max-width: 62ch;
+    font-size: 15px; line-height: 1.85; color: var(--ink-soft); text-wrap: pretty;
+  }
+  /* 整列都是目標，箭頭是唯一的提示：三列橫排沒有卡片的邊框，
+     沒有這個箭頭讀者不會知道它整條可以點。 */
+  .ground-arrow {
+    position: absolute; right: 4px; top: 26px;
+    font-size: 19px; font-weight: 700; color: var(--act);
+    opacity: 0; translate: -8px 0;
+    transition: opacity .24s ease, translate .24s ease;
+  }
+  .ground a:hover .ground-arrow, .ground a:focus-visible .ground-arrow { opacity: 1; translate: 0 0; }
+  .ground a:hover h3, .ground a:focus-visible h3 { color: var(--act); }
+
+  @media (max-width: 1060px) {
+    /* 四欄變兩欄：欄寬低於 230px 之後，標題會斷成五六行，一欄就讀不成一條線了。
+       兩欄時第三欄的左線要補回來，不然第二排會缺一條。 */
+    .lines { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: clamp(30px, 4vw, 44px); }
+    .line:nth-child(odd) { padding-left: 0; }
+    .line:nth-child(odd)::before { display: none; }
+    .line:nth-child(n+3) { padding-top: 26px; border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 620px) {
+    .lines { grid-template-columns: minmax(0, 1fr); }
+    .line { padding-left: 0 !important; }
+    .line::before { display: none !important; }
+    .line + .line { padding-top: 26px; border-top: 1px solid var(--line); }
+    /* 單欄時摘要不用再截：欄寬夠了，截四行反而會在句子中間斷掉 */
+    .anchor-desc { -webkit-line-clamp: unset; }
+    .ground-arrow { display: none; }
+    .ground a { padding-right: 0; }
+  }
 </style>

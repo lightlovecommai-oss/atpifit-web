@@ -7,6 +7,22 @@ const terms = (await getCollection('glossary', ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order
 );
 
+/* 別名欄只留「掃過去有多得到東西」的那幾個。字典檔的 aliases 是給搜尋用的，
+   所以會收進主詞本身（平凡人光頭）和主詞＋已列別名的長版（影響力健身房 ATPIFit）——
+   那些字串搜尋需要，但印在主詞旁邊只會變成同一個詞講兩次。
+   判斷方式是「扣掉主詞還剩什麼」，不是單純看有沒有包含主詞：
+   ATPI 的別名整排都以 ATPI 開頭（ATPI 框架、ATPI 四大肌肉），用包含去濾會全砍光。
+   詳細頁仍然列完整的 aliases，那頁是這個詞的正式記錄，不是掃描用的清單。 */
+const scanAliases = (term: string, aliases?: string[]) => {
+  const kept: string[] = [];
+  for (const a of aliases ?? []) {
+    const rest = a.replace(term, '').trim();
+    if (!rest || kept.includes(rest)) continue;
+    kept.push(a);
+  }
+  return kept.slice(0, 2);
+};
+
 const title = '名詞表';
 const description =
   '影響力健身房用到的名詞，一個一個講清楚：ATPI、四塊影響力肌肉、影響力健檢、超引力成交學。';
@@ -33,31 +49,177 @@ const schema = {
       <p class="kicker reveal">名詞</p>
       <h1 class="display reveal" style="--rd:.06s"><span class="nb">我們說的每個詞，</span><span class="nb hl">都有定義</span></h1>
       <p class="lead head-lead reveal" style="--rd:.12s">影響力這種東西最怕的就是各說各話。這裡把我們用的每個名詞<span class="nb">攤開來寫清楚</span>，你可以拿去對照，也可以拿去反駁。</p>
+    </div>
+  </section>
 
-      <ul class="terms">
-        {terms.map((t, i) => (
-          <li class="card reveal lift" data-dim={t.data.dim} style={`--rd:${Math.min(0.4, i * 0.04)}s`}>
-            <a href={`/glossary/${t.id}/`}>
-              <b>{t.data.term}</b>
-              <span>{t.data.definition}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
+  <!-- ═══ 辭典排法：左邊索引軌 ＋ 右邊密排詞條 ═══
+       名詞表不做成一排卡片。卡片會把每個詞包成獨立的一格，讀者只會挑一格點進去；
+       但這頁的用處是「一路掃過去對照」——密排的詞條才掃得動，而掃得動就需要一根
+       永遠看得到的索引軌，知道總共幾個詞、自己現在在哪一條。
+       詞條用懸掛縮排（詞往左凸出來），是紙本辭典幾百年前就解完的問題。 -->
+  <section class="section glos">
+    <div class="wrap glos-grid">
+      <nav class="rail" aria-label="名詞索引">
+        <p class="rail-head">{terms.length} 個名詞</p>
+        <ul>
+          {terms.map((t) => (
+            <li data-dim={t.data.dim}>
+              <a href={`#${t.id}`} data-rail={t.id}>
+                <i aria-hidden="true"></i>{t.data.term}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="entries">
+        {terms.map((t, i) => {
+          const alias = scanAliases(t.data.term, t.data.aliases);
+          return (
+          <article class="entry reveal" id={t.id} data-dim={t.data.dim} style={`--rd:${Math.min(0.3, i * 0.03)}s`}>
+            <!-- ⚠️ 詞跟釋義不做成同一行的接排（辭典常見的那種）：
+                 這些釋義是從字典檔搬過來的完整句子，開頭就會再講一次詞本身，
+                 接排會變成「影響力健身房　影響力健身房（英文 ATPIFit）是⋯」。 -->
+            <h2 class="ent-head">
+              <a class="ent-term" href={`/glossary/${t.id}/`}>{t.data.term}</a>
+              <span class="ent-arrow" aria-hidden="true">→</span>
+              {alias.length > 0 && <span class="ent-alias">{alias.join('・')}</span>}
+            </h2>
+            <p class="ent-def">{t.data.definition}</p>
+          </article>
+          );
+        })}
+      </div>
     </div>
   </section>
 </BaseLayout>
 
+<script>
+  /* 索引軌跟著捲動亮起來：詞條密排的代價是「我讀到哪了」會糊掉，
+     軌上那一格亮著就是答案。rootMargin 把觸發線壓到視窗上緣往下 30%——
+     用視窗正中會讓標示落後於眼睛實際在讀的位置。 */
+  const rail = document.querySelectorAll<HTMLAnchorElement>('[data-rail]');
+  const entries = document.querySelectorAll<HTMLElement>('.entry[id]');
+  if (rail.length && entries.length && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const byId = new Map([...rail].map((a) => [a.dataset.rail!, a]));
+    let current: HTMLAnchorElement | null = null;
+    const io = new IntersectionObserver(
+      (rows) => {
+        for (const r of rows) {
+          if (!r.isIntersecting) continue;
+          const next = byId.get(r.target.id);
+          if (!next || next === current) continue;
+          current?.classList.remove('on');
+          next.classList.add('on');
+          current = next;
+        }
+      },
+      { rootMargin: '-30% 0px -60% 0px' }
+    );
+    entries.forEach((e) => io.observe(e));
+  }
+</script>
+
 <style>
   .head-lead { max-width: 50ch; margin-top: 14px; }
-  .terms { list-style: none; padding: 0; margin-top: 44px; display: grid; gap: 14px; }
-  .terms li { padding: 0; transition: border-color .15s ease; }
-  .terms li:hover { border-color: var(--act); }
-  .terms li[data-dim="A"] { border-left: 4px solid var(--a); }
-  .terms li[data-dim="T"] { border-left: 4px solid var(--t); }
-  .terms li[data-dim="P"] { border-left: 4px solid var(--p); }
-  .terms li[data-dim="I"] { border-left: 4px solid var(--i); }
-  .terms a { display: block; padding: 20px 24px; text-decoration: none; color: var(--ink); }
-  .terms b { font-size: 19px; }
-  .terms span { display: block; margin-top: 6px; font-size: 16px; color: var(--ink-soft); line-height: 1.8; }
+
+  /* overflow-x: clip 不是 hidden：窄螢幕的籤條軌靠負 margin 出血到兩側，
+     沒有它整份文件會多出 48px 可以橫捲。clip 不會建立捲動容器，
+     所以軌上的 position: sticky 還活著——換成 hidden 就會失效。 */
+  .glos { padding-top: 0; overflow-x: clip; }
+  .glos-grid {
+    display: grid;
+    grid-template-columns: clamp(150px, 17vw, 210px) minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 64px);
+  }
+
+  /* ═══ 索引軌 ═══ */
+  .rail { position: sticky; top: 104px; align-self: start; }
+  .rail-head {
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    color: var(--ink-soft); padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .rail ul { list-style: none; padding: 0; margin: 10px 0 0; }
+  .rail a {
+    display: flex; align-items: center; gap: 9px;
+    padding: 5px 0;
+    font-size: 14px; line-height: 1.5;
+    color: var(--ink-soft); text-decoration: none;
+    transition: color .18s ease;
+  }
+  /* 小方塊是維度色；沒有維度的詞（像「影響力健身房」）給灰線，
+     不借四色——那四個色在這個站只代表 ATPI，借出去就不準了。 */
+  .rail i {
+    flex: 0 0 auto; width: 7px; height: 7px; border-radius: 2px;
+    background: var(--dim, var(--line));
+    transform: skewX(var(--skew));
+    transition: transform .18s ease;
+  }
+  .rail a:hover { color: var(--ink); }
+  .rail a.on { color: var(--ink); font-weight: 700; }
+  .rail a.on i { transform: skewX(var(--skew)) scale(1.7); }
+
+  /* ═══ 詞條：懸掛縮排的密排 ═══ */
+  .entry { padding: 24px 0; border-top: 1px solid var(--line); }
+  .entry:first-child { border-top: 0; padding-top: 0; }
+  /* 捲到錨點時別被 sticky 頁首吃掉 */
+  .entry { scroll-margin-top: 96px; }
+
+  .ent-head {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px;
+    font-size: inherit; line-height: 1.3;
+  }
+  .ent-term {
+    font-size: clamp(20px, 2.4vw, 25px); font-weight: 800; color: var(--ink);
+    letter-spacing: -.01em; text-decoration: none;
+    /* 底線只在 hover 長出來：十一條詞都先畫好底線，整頁就變成一堆橫線 */
+    background-image: linear-gradient(var(--dim, var(--act)), var(--dim, var(--act)));
+    background-size: 0 2px; background-position: 0 100%; background-repeat: no-repeat;
+    transition: background-size .22s ease;
+    padding-bottom: 3px;
+  }
+  /* 整條詞條都是滑鼠的目標，不是只有詞那幾個字：
+     詞看起來像標題，沒有這個提示讀者不會知道它點得進去。 */
+  .entry:hover .ent-term, .ent-term:focus-visible { background-size: 100% 2px; }
+  .ent-arrow {
+    font-size: 15px; font-weight: 700; color: var(--dim, var(--act));
+    opacity: 0; translate: -6px 0;
+    transition: opacity .22s ease, translate .22s ease;
+  }
+  .entry:hover .ent-arrow, .ent-term:focus-visible + .ent-arrow { opacity: 1; translate: 0 0; }
+  /* 別名是辭典的異體字欄：字小、只給要對照的人看，不跟主詞搶 */
+  .ent-alias {
+    font-size: 13px; font-weight: 400; color: var(--ink-soft); opacity: .8;
+    letter-spacing: .02em;
+  }
+  .ent-def {
+    margin-top: 10px;
+    /* 懸掛縮排：釋義整段往右退一格，左邊那一排詞就自成一條掃得動的線 */
+    padding-left: 1.5em;
+    max-width: 58ch;
+    font-size: 16px; line-height: 1.95; color: var(--ink-soft);
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 860px) {
+    /* 窄螢幕：索引軌橫過來變成一條可以滑的籤條，仍然看得到總共幾個詞。
+       直排的軌在手機上會先佔掉半個畫面，那就本末倒置了。 */
+    .glos-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .rail { position: sticky; top: 64px; z-index: 2;
+            background: var(--bg); padding: 10px 0 8px; margin-inline: -24px; }
+    .rail-head { display: none; }
+    .rail ul {
+      margin: 0; display: flex; gap: 8px;
+      overflow-x: auto; scrollbar-width: none;
+      padding-inline: 24px;
+    }
+    .rail ul::-webkit-scrollbar { display: none; }
+    .rail li { flex: 0 0 auto; }
+    .rail a {
+      padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px;
+      white-space: nowrap; font-size: 13px;
+    }
+    .rail a.on { border-color: var(--dim, var(--act)); }
+  }
 </style>

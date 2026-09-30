@@ -20,10 +20,12 @@ const numbers = [
 ];
 
 const proof = [
-  { scene: '一對一', body: '2 小時陌生開發，成交 20 萬。' },
-  { scene: '一對多', body: '3 小時新品發表會，1000 萬營業額。' },
-  { scene: '帶團隊', body: '帶一個業務團隊，6 個月從 300 萬做到 3000 萬。' },
-  { scene: '帶機構', body: '輔導一家教育機構，公司營收從 50 萬一個月，到穩定 200 萬以上。' },
+  { scene: '一對一', body: '2 小時陌生開發，成交 <span class="nb">20 萬</span>。' },
+  { scene: '一對多', body: '3 小時新品發表會，<span class="nb">1000 萬營業額</span>。' },
+  { scene: '帶團隊', body: '帶一個業務團隊，<span class="nb">6 個月</span>從 <span class="nb">300 萬</span>做到 <span class="nb">3000 萬</span>。' },
+  /* 用 set:html 是為了塞 .nb 斷行保護，字句一個都沒動。
+     數字跟單位之間有半形空白，窄螢幕會斷成「200／萬」，那是最不能斷的地方。 */
+  { scene: '帶機構', body: '輔導一家教育機構，公司營收從 <span class="nb">50 萬一個月</span>，到穩定 <span class="nb">200 萬以上</span>。' },
 ];
 
 const faq = [
@@ -87,53 +89,70 @@ const schema = [
 ---
 
 <BaseLayout title={title} description={description} schema={schema}>
-  <section class="section">
-    <div class:list={['wrap', 'about-hero', { 'has-photo': !!FOUNDER_PHOTO }]}>
-      <div class="about-hero-copy">
-        <p class="kicker reveal">關於</p>
-        <!-- .nb 把子句包成不可剖半的整塊，大標才不會斷成「我不是天生會講的／人」。 -->
-        <h1 class="display reveal" style="--rd:.06s"><span class="nb">我不是天生會講的人，</span><span class="nb hl">我是練出來的</span></h1>
-        <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
-        <p class="lead head-lead reveal" style="--rd:.12s">徐哲彥，藝名平凡人光頭。影響力健身房創辦人，ATPI 溝通 4 大肌肉框架創始人。</p>
-
-        <ul class="numbers reveal" style="--rd:.18s">
-          {numbers.map((x) => (
-            <li>
-              <b class="bignum">{x.n}</b>
-              <span>{x.label}</span>
-            </li>
-          ))}
-        </ul>
+  <!-- ═══ 開場：雜誌特稿的跨頁 ═══
+       照片出血到右邊界、標題壓在照片上，兩者刻意重疊——這頁講的是一個人，
+       版面就得先讓人看到那個人，而不是把他收進右欄的一個框裡。
+       壓字能壓得住，是因為照片左緣有一層由底色化過去的遮罩（.ahero-media::after），
+       不是把字丟上去賭照片那一塊剛好夠暗。 -->
+  <section class:list={['ahero', { 'has-photo': !!FOUNDER_PHOTO }]}>
+    {FOUNDER_PHOTO && (
+      <div class="ahero-media" aria-hidden="true">
+        <img src={FOUNDER_PHOTO} alt="" width="880" height="1040" loading="eager" data-px=".4" style="--px-amt:26px" />
       </div>
+    )}
 
-      <!-- 照片位（信任肌肉的自我示範：這頁必須看得到「人」）。
-           FOUNDER_PHOTO 沒填就整塊不渲染——版位先備好，照片到了 consts.ts 填路徑即上線。 -->
-      {FOUNDER_PHOTO && (
-        <figure class="portrait reveal" style="--rd:.1s">
-          <img src={FOUNDER_PHOTO} alt="平凡人光頭（徐哲彥）——影響力健身房創辦人" width="440" height="520" loading="eager" />
-          <div class="portrait-rule" role="presentation"></div>
-          <figcaption>平凡人光頭・徐哲彥</figcaption>
-        </figure>
-      )}
+    <div class="wrap ahero-inner">
+      <p class="kicker reveal">關於</p>
+      <!-- .nb 把子句包成不可剖半的整塊，大標才不會斷成「我不是天生會講的／人」。 -->
+      <h1 class="display reveal" style="--rd:.06s"><span class="nb">我不是天生會講的人，</span><span class="nb hl">我是練出來的</span></h1>
+      <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
+      <p class="lead head-lead reveal" style="--rd:.12s">徐哲彥，藝名平凡人光頭。<span class="nb">影響力健身房創辦人，</span><span class="nb">ATPI 溝通 4 大肌肉框架創始人。</span></p>
+
+      <!-- 數字軌壓在照片下緣：雜誌把圖說做成一條橫過照片的帶子，
+           這裡用同一個手法，順便讓三個數字有自己的底、不用擔心壓在照片上讀不到。 -->
+      <ul class="numbers reveal" style="--rd:.18s">
+        {numbers.map((x, i) => (
+          <li style={`--rd:${0.2 + i * 0.06}s`}>
+            <b class="bignum">{x.n}</b>
+            <span>{x.label}</span>
+          </li>
+        ))}
+      </ul>
+      {FOUNDER_PHOTO && <p class="ahero-credit">平凡人光頭・徐哲彥</p>}
     </div>
   </section>
 
+  <!-- ═══ 正文：章節編號掛在左邊的天地欄 ═══
+       長文不用置中的單欄，改成雜誌的懸掛欄：編號留在左邊、正文靠右自成一條，
+       捲動時編號黏住——你永遠知道自己在第幾章，不用回頭找標題。
+       ⚠️ 編號是描邊不是填色：填色的 96px 數字會比 h2 還搶，那是頁碼不是標題。 -->
   <section class="section section-skew">
-    <div class="wrap-text">
+    <div class="wrap chapters">
       <!-- 長文段落刻意不掛 .reveal：一段一段淡進來會讓閱讀變得一頓一頓。 -->
-      <h2 class="reveal">我是怎麼發現這件事的</h2>
-      <p>十年前，我家裡背了兩千萬的債。</p>
-      <p>那不是我欠的，但它就在那裡。我很清楚一件事：沒有人會來救我，我只能為自己的未來拼出一條路。</p>
-      <p>於是我把手上最後 100 萬拿去繳學費，飛到對岸去學「怎麼開口」。回來之後我做的第一件事，是隔著一個海峽，簽下一個從沒見過面的陌生客戶，120 萬。</p>
-      <p class="emph reveal">那一刻我確定了一件事：這不是天賦，這有公式。</p>
+      <article class="chap">
+        <p class="chap-no" aria-hidden="true">01</p>
+        <div class="chap-body">
+          <h2 class="reveal">我是怎麼發現這件事的</h2>
+          <!-- 首段放大＝雜誌的導引段，讓眼睛知道從哪裡開始讀 -->
+          <p class="chap-open">十年前，我家裡背了兩千萬的債。</p>
+          <p>那不是我欠的，但它就在那裡。我很清楚一件事：沒有人會來救我，我只能為自己的未來拼出一條路。</p>
+          <p>於是我把手上最後 100 萬拿去繳學費，飛到對岸去學「怎麼開口」。回來之後我做的第一件事，是隔著一個海峽，簽下一個從沒見過面的陌生客戶，120 萬。</p>
+          <p class="emph reveal">那一刻我確定了一件事：這不是天賦，這有公式。</p>
+        </div>
+      </article>
 
-      <h2 class="reveal">我在自己身上投了 200 萬學費</h2>
-      <p>這些年我在自己身上投了大約 200 萬的學費：溝通與銷講 100 萬、身心靈 25 萬、財商 20 萬，加上數不清的小課。安東尼羅賓的會場只是其中一站，我站在幾千人裡面，跟大家一起舉手。</p>
-      <p>我不是天生會講的人。我只是很早就決定一件事：</p>
-      <blockquote class="quote reveal">
-        <p>與其省下學費，不如把自己變成值得被投資的人。</p>
-        <cite>平凡人光頭</cite>
-      </blockquote>
+      <article class="chap">
+        <p class="chap-no" aria-hidden="true">02</p>
+        <div class="chap-body">
+          <h2 class="reveal">我在自己身上投了 200 萬學費</h2>
+          <p class="chap-open">這些年我在自己身上投了大約 200 萬的學費：溝通與銷講 100 萬、身心靈 25 萬、財商 20 萬，加上數不清的小課。安東尼羅賓的會場只是其中一站，我站在幾千人裡面，跟大家一起舉手。</p>
+          <p>我不是天生會講的人。我只是很早就決定一件事：</p>
+          <blockquote class="quote pullquote reveal">
+            <p>與其省下學費，<span class="nb">不如把自己變成</span><span class="nb">值得被投資的人。</span></p>
+            <cite>平凡人光頭</cite>
+          </blockquote>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -141,38 +160,52 @@ const schema = [
     <div class="wrap">
       <h2 class="reveal">後來的十年，我把這個公式反覆驗證</h2>
       <p class="lead reveal" style="--rd:.06s">同一套方法，換不同的場景，結果是一樣的。</p>
-      <div class="grid grid-2 proof">
+      <!-- 四個場景不做成 2×2 卡片，做成一張帳：
+           卡片會讓四個場景看起來像四個並列的選項，但這裡要說的是「同一套方法、換場景、
+           結果一樣」——四條並排的橫列才讀得出那個「一樣」。場景名掛在左邊當欄目，
+           結果用大字寫在右邊，一路掃下來就是一份對照表。 -->
+      <ol class="ledger">
         {proof.map((p, i) => (
-          <article class="card reveal lift" style={`--rd:${0.1 + i * 0.07}s`}>
+          <li class="reveal" style={`--rd:${0.1 + i * 0.06}s`}>
             <span class="scene">{p.scene}</span>
-            <p>{p.body}</p>
-          </article>
+            <p set:html={p.body} />
+          </li>
         ))}
-      </div>
+      </ol>
       <p class="note reveal">這些是我自己走過的路。你的數字不會跟我一樣，因為場景不一樣、起點也不一樣。這裡放出來，是要說明這套方法在很多種場合都成立，不是要你複製同一個結果。</p>
     </div>
   </section>
 
   <section class="section section-skew">
-    <div class="wrap-text">
-      <h2 class="reveal">為什麼開一間健身房</h2>
-      <p>因為我發現最難的不是學會，是練得下去。</p>
-      <p>多數人上完課，筆記寫得滿滿的，回到現場還是用回原來的講法。不是課不好，是溝通這件事跟身體一樣，看再多影片都不會變壯，要真的動、真的拿到回饋、真的調整。</p>
-      <p>所以我把它做成一間館：先量一次，知道自己四塊肌肉現在的樣子；然後每天練一點，記下對方的反應；卡住的時候，有教練幫你看你自己看不到的地方。</p>
+    <div class="wrap chapters">
+      <article class="chap">
+        <p class="chap-no" aria-hidden="true">03</p>
+        <div class="chap-body">
+          <h2 class="reveal">為什麼開一間健身房</h2>
+          <p class="chap-open">因為我發現最難的不是學會，是練得下去。</p>
+          <p>多數人上完課，筆記寫得滿滿的，回到現場還是用回原來的講法。不是課不好，是溝通這件事跟身體一樣，看再多影片都不會變壯，要真的動、真的拿到回饋、真的調整。</p>
+          <p>所以我把它做成一間館：先量一次，知道自己四塊肌肉現在的樣子；然後每天練一點，記下對方的反應；卡住的時候，有教練幫你看你自己看不到的地方。</p>
+        </div>
+      </article>
 
-      <h2 class="reveal">練這個，是為了什麼</h2>
-      <p>影響力這種東西，用來拿下別人也可以，用來讓別人變好也可以。我選後面那條。</p>
-      <p>把它練強，不是為了說贏誰、壓過誰，是為了讓你有能力，把你真正的價值，送進你想幫的那個人心裡。</p>
-      <blockquote class="quote reveal">
-        <p>影響力的盡頭不是成交，是有人因為你變好。</p>
-        <cite>平凡人光頭</cite>
-      </blockquote>
+      <article class="chap">
+        <p class="chap-no" aria-hidden="true">04</p>
+        <div class="chap-body">
+          <h2 class="reveal">練這個，是為了什麼</h2>
+          <p class="chap-open">影響力這種東西，用來拿下別人也可以，用來讓別人變好也可以。我選後面那條。</p>
+          <p>把它練強，不是為了說贏誰、壓過誰，是為了讓你有能力，把你真正的價值，送進你想幫的那個人心裡。</p>
+          <blockquote class="quote pullquote reveal">
+            <p>影響力的盡頭不是成交，是有人因為你變好。</p>
+            <cite>平凡人光頭</cite>
+          </blockquote>
 
-      <div class="btn-row reveal">
-        <a class="btn btn-main" href={LINKS.quiz}
-           data-cta="about_quiz" data-cta-position="body">免費做影響力健檢</a>
-        <a class="btn btn-sub" href="/method/">看這套方法</a>
-      </div>
+          <div class="btn-row reveal">
+            <a class="btn btn-main" href={LINKS.quiz}
+               data-cta="about_quiz" data-cta-position="body">免費做影響力健檢</a>
+            <a class="btn btn-sub" href="/method/">看這套方法</a>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -198,32 +231,114 @@ const schema = [
 </BaseLayout>
 
 <style>
-  .head-lead { max-width: 50ch; margin-top: 14px; }
+  /* ═══ 開場 ═══ */
+  .ahero { position: relative; overflow: hidden; padding-block: clamp(48px, 7vw, 92px) clamp(40px, 5vw, 64px); }
+  .ahero-inner { position: relative; z-index: 1; }
+  .head-lead { max-width: 34ch; margin-top: 14px; }
 
-  /* 照片位：有照片時 hero 變兩欄；photo 圓角框＋四色 rule 收底（品牌 60/30/10 的 10%） */
-  .about-hero.has-photo { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(28px, 4vw, 56px); align-items: center; }
-  @media (max-width: 860px) { .about-hero.has-photo { grid-template-columns: 1fr; } }
-  .portrait { margin: 0; max-width: 440px; }
-  .portrait img { display: block; width: 100%; height: auto; border-radius: 18px; box-shadow: 0 8px 30px rgba(90, 60, 30, .14); }
-  .portrait-rule { height: 3px; border-radius: 3px; margin-top: 12px;
-                   background: linear-gradient(90deg, var(--a), var(--t), var(--p), var(--i)); }
-  .portrait figcaption { margin-top: 8px; font-size: 13px; color: var(--ink-soft); }
+  /* 照片出血到右邊界，不放在右欄的框裡。
+     ::after 是從左邊化過來的遮罩——標題能安心壓過去靠的是它，
+     不是賭照片左側剛好夠淡。 */
+  .ahero-media {
+    position: absolute; inset: 0 0 auto auto;
+    width: min(56%, 720px); height: 100%;
+    z-index: 0;
+  }
+  .ahero-media img {
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%;
+    display: block;
+  }
+  .ahero-media::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(100deg, var(--bg) 0%, var(--bg) 22%, color-mix(in srgb, var(--bg) 55%, transparent) 46%, transparent 78%);
+  }
+  .has-photo .ahero-inner { min-height: clamp(380px, 42vw, 520px); }
+  .has-photo .head-lead { max-width: 30ch; }
 
+  /* 圖說貼在照片那一側：放在左邊會離照片太遠，看起來像數字軌的註腳。
+     底下墊一塊淡片是必要的——照片右下角是人群，深色，沒有底就讀不到字。 */
+  .ahero-credit {
+    position: absolute; right: 0; bottom: 0;
+    margin: 0; padding: 5px 13px;
+    font-size: 12px; letter-spacing: .06em;
+    color: var(--ink-soft);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(5px);
+    border-radius: 999px;
+  }
+  @media (max-width: 860px) {
+    .ahero-credit { position: static; margin-top: 20px; padding: 0; background: none; backdrop-filter: none; }
+  }
+
+  /* 數字軌：三格等寬、用細線隔開，像雜誌橫過照片下緣的圖說帶 */
   .numbers {
-    list-style: none; padding: 0; margin: 44px 0 0;
-    display: flex; flex-wrap: wrap; gap: 20px 56px;
+    list-style: none; padding: 0; margin: clamp(38px, 5vw, 60px) 0 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 640px;
   }
-  .numbers li { display: flex; flex-direction: column; }
-  .numbers span { margin-top: 2px; font-size: 15px; color: var(--ink-soft); }
+  .numbers li {
+    display: flex; flex-direction: column;
+    padding-left: clamp(14px, 2vw, 22px);
+    border-left: 1px solid var(--line);
+  }
+  .numbers li:first-child { padding-left: 0; border-left: 0; }
+  .numbers span { margin-top: 4px; font-size: 14px; color: var(--ink-soft); line-height: 1.5; }
 
-  .proof { margin-top: 32px; grid-template-columns: repeat(2, 1fr); }
-  @media (max-width: 640px) { .proof { grid-template-columns: 1fr; } }
-  .scene {
-    display: inline-block; font-size: 13px; font-weight: 700;
-    letter-spacing: .06em; color: var(--act-deep);
-    background: var(--a-tint); border-radius: 999px; padding: 4px 12px;
+  @media (max-width: 860px) {
+    /* 窄螢幕不做壓字：照片退成頂部的一條橫幅，字回到自己的地盤。
+       硬把兩欄疊起來只會讓標題騎在臉上。 */
+    .ahero-media { position: relative; width: 100%; height: clamp(200px, 46vw, 300px); margin-bottom: 26px; }
+    .ahero-media::after { background: linear-gradient(180deg, transparent 55%, var(--bg) 100%); }
+    .has-photo .ahero-inner { min-height: 0; }
+    .has-photo .head-lead, .head-lead { max-width: 40ch; }
+    .numbers { max-width: none; }
   }
-  .proof p { margin-top: 12px; font-size: 17px; line-height: 1.85; }
+  @media (max-width: 520px) {
+    .numbers { grid-template-columns: 1fr; gap: 18px; }
+    .numbers li { padding-left: 0; border-left: 0; padding-top: 14px; border-top: 1px solid var(--line); }
+    .numbers li:first-child { padding-top: 0; border-top: 0; }
+  }
+
+  /* ═══ 正文章節：編號掛在左邊的天地欄 ═══ */
+  .chapters { display: flex; flex-direction: column; gap: clamp(48px, 6vw, 80px); }
+  .chap { display: grid; grid-template-columns: clamp(78px, 9vw, 132px) minmax(0, 60ch); gap: clamp(16px, 3vw, 40px); }
+  .chap-no {
+    position: sticky; top: 108px; align-self: start;
+    margin: 0; font-size: clamp(40px, 5.2vw, 68px); font-weight: 900;
+    line-height: .9; letter-spacing: -.04em;
+    /* 描邊不填色：填色的大數字會比 h2 還重，那就變成頁碼在當標題 */
+    color: transparent; -webkit-text-stroke: 1.5px var(--act);
+    opacity: .5;
+  }
+  .chap-body > p { text-wrap: pretty; }
+  .chap-open { font-size: clamp(18px, 2.1vw, 20px); font-weight: 600; color: var(--ink); }
+
+  @media (max-width: 760px) {
+    /* 疊起來之後編號不再黏住：它變成章節的帽子，黏著只會擋到正文 */
+    .chap { grid-template-columns: 1fr; gap: 6px; }
+    .chap-no { position: static; font-size: 34px; }
+  }
+
+  /* ═══ 四個場景：一張帳，不是四張卡 ═══ */
+  .ledger { list-style: none; padding: 0; margin: 34px 0 0; }
+  .ledger li {
+    display: grid; grid-template-columns: clamp(84px, 11vw, 132px) minmax(0, 1fr);
+    gap: clamp(14px, 2.4vw, 32px); align-items: baseline;
+    padding: 22px 0;
+    border-top: 1px solid var(--line);
+  }
+  .ledger li:last-child { border-bottom: 1px solid var(--line); }
+  .scene {
+    font-size: 13px; font-weight: 700; letter-spacing: .06em;
+    color: var(--act-deep);
+  }
+  .ledger p {
+    margin: 0; font-size: clamp(17px, 2vw, 20px); line-height: 1.7;
+    text-wrap: pretty;
+  }
+  @media (max-width: 560px) {
+    .ledger li { grid-template-columns: 1fr; gap: 6px; }
+  }
 
   .note {
     margin-top: 28px; font-size: 15px; color: var(--ink-soft);
@@ -231,6 +346,12 @@ const schema = [
   }
 
   .emph { font-size: 20px !important; font-weight: 700; color: var(--act-deep); }
+
+  /* 金句往左推出正文欄，跟編號欄對齊：雜誌的抽言就是這樣脫離文欄的。
+     視覺上它不再是段落之一，是這一章被抽出來的那句話。 */
+  .pullquote { margin-top: 30px; margin-left: calc(clamp(78px, 9vw, 132px) * -1 - clamp(16px, 3vw, 40px)); }
+  .pullquote p { font-size: clamp(20px, 2.8vw, 26px); }
+  @media (max-width: 760px) { .pullquote { margin-left: 0; } }
 
   .faq { margin-top: 24px; }
   .faq dt { font-weight: 700; font-size: 18px; margin-top: 28px; }

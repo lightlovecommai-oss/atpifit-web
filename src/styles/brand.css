@@ -228,7 +228,17 @@ h3 { font-size: clamp(19px, 2.4vw, 22px); }
 h4 { font-size: 18px; }
 .hl { color: var(--act); font-style: normal; }   /* 大標裡唯一那個重點詞 */
 
-.lead { font-size: clamp(17px, 2vw, 19px); color: var(--ink-soft); line-height: 1.85; }
+/* text-wrap 用 pretty 不用 balance：導言常有三四行，balance 會把每行壓成一樣長，
+   pretty 只管不讓最後一行剩一小截，中文的孤字行主要靠它擋。 */
+.lead { font-size: clamp(17px, 2vw, 19px); color: var(--ink-soft); line-height: 1.85; text-wrap: pretty; }
+
+/* ═══ 內文節奏 ═══
+   最上面的 * { margin: 0 } 連段落間距一起清掉了，長文就會糊成一整片字牆——
+   中文沒有空格、沒有縮排，段落之間如果也沒有空隙，讀者根本找不到換氣的地方。
+   這裡只補相鄰段落與標題後的那一口氣，不做整套 prose 樣式：
+   區塊之間要留多少，各頁的版型自己決定（那些規則都帶 class，一定蓋得過這兩條）。 */
+p + p { margin-top: 1.05em; }
+:is(h2, h3) + p { margin-top: .55em; }
 
 /* ═══ 八招 ③：四色橫線＝品牌簽名（A→T→P→I 順序鎖）═══
    只有兩個崗位：頁尾收邊（每個製作物必有）、進度/時間/比例（寬度＝實際比例）。
@@ -307,12 +317,16 @@ h4 { font-size: 18px; }
 .grid-3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
 .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 
+/* ═══ ATPI 維度色票 ═══
+   掛在 [data-dim] 而不是某一種卡片上：維度是資料屬性，任何版型標了維度就該拿得到色。
+   ⚠️ --dim-deep 才是能放字的那支（I 原版 2.28:1），純色塊用 --dim。 */
+[data-dim="A"] { --dim: var(--a); --dim-deep: var(--a-deep); --dim-tint: var(--a-tint); }
+[data-dim="T"] { --dim: var(--t); --dim-deep: var(--t-deep); --dim-tint: var(--t-tint); }
+[data-dim="P"] { --dim: var(--p); --dim-deep: var(--p-deep); --dim-tint: var(--p-tint); }
+[data-dim="I"] { --dim: var(--i); --dim-deep: var(--i-deep); --dim-tint: var(--i-tint); }
+
 /* ═══ ATPI 肌肉卡：靠左色條標示維度 ═══ */
 .muscle { border-left: 5px solid var(--dim, var(--a)); }
-.muscle[data-dim="A"] { --dim: var(--a); --dim-deep: var(--a-deep); --dim-tint: var(--a-tint); }
-.muscle[data-dim="T"] { --dim: var(--t); --dim-deep: var(--t-deep); --dim-tint: var(--t-tint); }
-.muscle[data-dim="P"] { --dim: var(--p); --dim-deep: var(--p-deep); --dim-tint: var(--p-tint); }
-.muscle[data-dim="I"] { --dim: var(--i); --dim-deep: var(--i-deep); --dim-tint: var(--i-tint); }
 .muscle .muscle-tag {
   display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .1em;
   color: var(--dim-deep); background: var(--dim-tint);
@@ -331,7 +345,7 @@ h4 { font-size: 18px; }
   content: "\201C"; position: absolute; left: 0; top: -14px;
   font-size: 64px; line-height: 1; color: var(--i); font-family: Georgia, serif;
 }
-.quote p { font-size: clamp(18px, 2.4vw, 21px); font-weight: 600; line-height: 1.65; }
+.quote p { font-size: clamp(18px, 2.4vw, 21px); font-weight: 600; line-height: 1.65; text-wrap: pretty; }
 .quote cite { display: block; margin-top: 10px; font-style: normal;
               font-size: 14px; color: var(--ink-soft); }
 
@@ -476,6 +490,18 @@ h4 { font-size: 18px; }
   pointer-events: none;
 }
 
+/* ═══ 捲動視差 ═══
+   BaseLayout 的 rAF 迴圈只寫 --px（-0.5～0.5 的進度），位移量由 --px-amt 決定，
+   所以同一個掛勾可以給不同版型用不同的強度。
+
+   ⚠️ 走 transform 不走 translate：.reveal.in 會把 translate 歸零，兩個系統
+   共用同一個屬性會互相清掉。也因此 [data-px] 不要跟 .lift 掛在同一個元素上。
+   ⚠️ --px-amt 給小一點（40～90px）：視差一大就從「有深度」變成「在晃」。 */
+[data-px] {
+  transform: translate3d(0, calc(var(--px, 0) * var(--px-amt, 60px)), 0);
+  will-change: transform;
+}
+
 /* ═══ 微互動：卡片浮起 ═══ */
 .lift { transition: transform .4s var(--ease-out), box-shadow .4s var(--ease-out); }
 .lift:hover { transform: translateY(-5px); box-shadow: 0 16px 38px rgba(90, 60, 30, .15); }
@@ -488,5 +514,6 @@ body.theme-dark .lift:hover { box-shadow: 0 16px 38px rgba(0, 0, 0, .4); }
   .js-reveal .reveal { opacity: 1; translate: none; }
   .js-reveal .slice-field > i { transform: skewX(var(--skew)); }
   .lift:hover { transform: none; }
+  [data-px] { transform: none; will-change: auto; }
   .readbar { display: none; }
 }

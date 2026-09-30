@@ -223,6 +223,42 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
       );
       document.querySelectorAll('[data-count]').forEach((el) => nio.observe(el));
     }
+
+    /* ═══ 捲動視差 ═══
+       data-px="0.5" ＝ 這一層跟著捲動走多遠（1 ＝ 一個視窗高）。
+       只寫 --px 這個 -0.5～0.5 的進度值，位移量交給各頁的 CSS 用 --px-amt 決定：
+       各頁版型對視差的用法不同，有的要位移、有的要縮放或轉角度。
+
+       ⚠️ 視差一律走 transform，不要走 translate——.reveal.in 會把 translate 歸零，
+       兩個系統用同一個屬性會互相清掉對方。 */
+    const pxEls = Array.from(document.querySelectorAll<HTMLElement>('[data-px]'));
+    if (pxEls.length && document.documentElement.classList.contains('js-reveal')) {
+      let box: { el: HTMLElement; mid: number; span: number }[] = [];
+      /* 量測與寫入分開：在 rAF 裡邊讀 getBoundingClientRect 邊改樣式會逼瀏覽器
+         一個元素重排一次。位置只在載入與尺寸變動時量。 */
+      const measure = () => {
+        box = pxEls.map((el) => {
+          const r = el.getBoundingClientRect();
+          return { el, mid: r.top + window.scrollY + r.height / 2, span: innerHeight + r.height };
+        });
+      };
+      const shift = () => {
+        const mid = window.scrollY + innerHeight / 2;
+        for (const b of box) {
+          const k = (mid - b.mid) / b.span; /* 穿過視窗中線：上方為負、下方為正 */
+          if (k < -0.75 || k > 0.75) continue; /* 離畫面太遠就不寫，省掉大部分工作 */
+          b.el.style.setProperty('--px', k.toFixed(4));
+        }
+      };
+      let pxQueued = false;
+      const onPx = () => { if (!pxQueued) { pxQueued = true; requestAnimationFrame(() => { pxQueued = false; shift(); }); } };
+      addEventListener('scroll', onPx, { passive: true });
+      addEventListener('resize', () => { measure(); shift(); }, { passive: true });
+      /* 字體換上來會改變高度，量早了會偏 */
+      (document as any).fonts?.ready.then(() => { measure(); shift(); });
+      measure();
+      shift();
+    }
   </script>
   <style>
     .sticky-quiz {

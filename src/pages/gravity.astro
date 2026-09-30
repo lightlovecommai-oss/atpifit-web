@@ -92,12 +92,14 @@ const courses = [
     stages: '鍛鍊段＋放大段＋演說段', who: '一對一已經會了，卡在一次只能面對一個人。' },
 ];
 
-/* 一週迴路（流程圖）：乾貨自己看、時間全部拿去練。 */
+/* 一週迴路（流程圖）：乾貨自己看、時間全部拿去練。
+   s 走 set:html，只為了塞 .nb——四格在窄螢幕會縮到 150px 上下，
+   不擋的話會斷成「Hot Seat 輪／流」「安／排時間看完」。 */
 const loop = [
-  { dim: 'A', n: '①', t: '看錄播乾貨', s: '這週那塊肌肉的結構，自己安排時間看完。' },
-  { dim: 'T', n: '②', t: '進健身房打卡', s: '一天一個小動作，一週練 2 到 3 天，記下今天動到哪塊。' },
-  { dim: 'P', n: '③', t: '討論課對練', s: '4 到 5 人小組 Hot Seat 輪流，顧問當場校正。' },
-  { dim: 'I', n: '④', t: '帶回真實現場', s: '拿去用在這週真的要談的那一場，結果再帶回下一堂。' },
+  { dim: 'A', n: '①', t: '看錄播乾貨', s: '這週那塊肌肉的結構，<span class="nb">自己安排時間看完。</span>' },
+  { dim: 'T', n: '②', t: '進健身房打卡', s: '一天一個小動作，<span class="nb">一週練 2 到 3 天</span>，<span class="nb">記下今天動到哪塊。</span>' },
+  { dim: 'P', n: '③', t: '討論課對練', s: '<span class="nb">4 到 5 人小組</span> <span class="nb">Hot Seat 輪流</span>，<span class="nb">顧問當場校正。</span>' },
+  { dim: 'I', n: '④', t: '帶回真實現場', s: '拿去用在<span class="nb">這週真的要談的那一場</span>，<span class="nb">結果再帶回下一堂。</span>' },
 ];
 
 /* 入場到結業（旅程圖）。健檢不佔模組編號＝courses.astro 同一份真相。 */
@@ -121,15 +123,18 @@ const proof = [
     alt: '學員見證・劉沐洋（艾斯，家族辦公室主理人）：FB 公開發文寫「他只講了幾句話，就把我成交了。」，卡片附原始貼文截圖。維度標籤 A 吸引肌肉、T 信任肌肉、P 專業肌肉。' },
 ];
 
+/* 用 set:html 是為了塞 .nb 斷行保護，字句本身一個字都沒動。
+   中文可以在任兩個漢字之間斷，這四條放進兩欄的規格表會斷在
+   「4 到 5 人／小組」「投／影片」；Hot Seat 中間是半形空白，一樣是可斷點。 */
 const designs = [
   { t: '乾貨錄播，直播只拿來對練',
-    s: '知識自己看就會，能力要有人看著你做。所以直播時間全部留給對練與當場校正，不拿來重講一次投影片。' },
-  { t: '班級 20 人以內，課中拆成 4 到 5 人小組',
-    s: 'Hot Seat 輪流上場。人少不是為了精緻，是為了每個人都真的輪得到。' },
+    s: '知識自己看就會，能力要有人看著你做。所以直播時間全部留給<span class="nb">對練與當場校正</span>，<span class="nb">不拿來重講一次投影片。</span>' },
+  { t: '班級 20 人以內，課中拆成 <span class="nb">4 到 5 人小組</span>',
+    s: '<span class="nb">Hot Seat</span> 輪流上場。人少不是為了精緻，<span class="nb">是為了每個人都真的輪得到。</span>' },
   { t: '課與課之間有地方練',
-    s: '影響力健身房是每天打卡的地方：一天一個小動作、記一塊肌肉。課不是一週一次的事件，是一條連續的線。' },
+    s: '影響力健身房是每天打卡的地方：一天一個小動作、記一塊肌肉。課不是<span class="nb">一週一次的事件</span>，<span class="nb">是一條連續的線。</span>' },
   { t: '前後各量一次',
-    s: '開課前做入學健檢，結業後複測做前後對照。進步不靠感覺，看得到數字。' },
+    s: '開課前做入學健檢，結業後複測做前後對照。<span class="nb">進步不靠感覺，看得到數字。</span>' },
 ];
 
 /* 原文＝03-產品體系總覽 §A 誰不是我們的人（諮詢過濾用），語氣不改。 */
@@ -395,24 +400,13 @@ const schema = [
             <div class="wg-names">
               {m.minis.map((mi) => <span>{mi.n}</span>)}
             </div>
-            <p class="wg-t"><b>{m.dim}</b> {m.name}</p>
+            <p class="wg-t"><b>{m.dim}</b> {m.name}<span class="wg-les">{m.lesson}</span></p>
             <p class="wg-r">{m.result}</p>
+            <p class="wg-body">{m.body}</p>
           </div>
         ))}
       </div>
       <p class="wall-note">上面是示意。你自己那面牆，健檢三分鐘就量得出來。</p>
-
-      <div class="grid muscles">
-        {wall.map((m) => (
-          <article class="card muscle" data-dim={m.dim}>
-            <span class="m-slices" role="presentation"><i></i><i></i><i></i></span>
-            <span class="m-en">{m.dim} · {m.en}<b class="m-les">{m.lesson}</b></span>
-            <h3>{m.name}</h3>
-            <p class="muscle-result">{m.result}</p>
-            <p class="m-body">{m.body}</p>
-          </article>
-        ))}
-      </div>
     </div>
   </section>
 
@@ -477,22 +471,25 @@ const schema = [
             <div class="lp" data-dim={s.dim}>
               <span class="lp-n num">{s.n}</span>
               <p class="lp-t">{s.t}</p>
-              <p class="lp-s">{s.s}</p>
+              <p class="lp-s" set:html={s.s} />
             </div>
           ))}
         </div>
         <p class="loop-back" aria-hidden="true">↻ 回到 ①，下一塊肌肉</p>
       </div>
 
-      <div class="grid grid-2 designs">
+      <!-- 這四件事排成規格列，不排成 2×2 卡片：正上方的一週迴路已經是一個帶框的
+           四格圖，底下再來一組帶框的四格，兩塊會長得像同一件事重講一次。
+           這四條其實是課的規格（怎麼上、多少人、課間做什麼、怎麼驗收），
+           規格就該像規格：編號、標題、說明，一條一列，掃得完。 -->
+      <dl class="designs">
         {designs.map((d, i) => (
-          <div class="design card">
-            <span class="dnum num">{String(i + 1).padStart(2, '0')}</span>
-            <h3>{d.t}</h3>
-            <p>{d.s}</p>
+          <div class="design">
+            <dt><span class="dnum num">{String(i + 1).padStart(2, '0')}</span><span set:html={d.t} /></dt>
+            <dd set:html={d.s} />
           </div>
         ))}
-      </div>
+      </dl>
     </div>
   </section>
 
@@ -816,24 +813,19 @@ const schema = [
   .wg-t { margin-top: 12px; font-size: 14.5px; font-weight: 700; color: var(--ink); }
   .wg-t b { color: var(--dim-deep); letter-spacing: .08em; }
   .wg-r { font-size: 13px; color: var(--dim-deep); font-weight: 700; margin-top: 2px; }
-  .wall-note { margin-top: 14px; font-size: 14px; color: var(--ink-soft); }
-
-  .muscles { margin-top: 28px; grid-template-columns: repeat(2, 1fr); }
-  @media (max-width: 640px) { .muscles { grid-template-columns: 1fr; } }
-  .m-slices { display: flex; gap: 4px; margin-bottom: 12px; }
-  .m-slices i {
-    width: 26px; height: 12px; border-radius: 3.5px; background: var(--dim);
-    transform: skewX(var(--skew)); opacity: var(--slice-done);
+  /* 解釋直接掛在牆的每一欄底下，不另外再排一次 2×2 卡片：
+     這頁在這之前已經把四塊肌肉的名字跟結果句講過兩次（斷點鏈、這面牆），
+     卡片會是第三次，而且是最弱的那種排法——四張一樣大的方格，看起來像四個選項，
+     可是這四塊的關係是相乘不是四選一。留一份就好，那一份要能自己把話講完。 */
+  .wg-les {
+    margin-left: 7px; padding: 1px 6px; border-radius: 999px;
+    font-size: 10.5px; font-weight: 800; letter-spacing: .06em;
+    color: var(--bg); background: var(--dim-deep); vertical-align: 1px;
   }
-  .m-slices i:nth-child(n+2) { opacity: var(--slice-base); }
-  .m-en { display: block; font-size: 11px; font-weight: 900; letter-spacing: 2px; color: var(--dim-deep); margin-bottom: 8px; }
-  .m-les {
-    margin-left: 8px; font-size: 10.5px; letter-spacing: 1px; color: var(--bg);
-    background: var(--dim); border-radius: 999px; padding: 2px 7px;
+  .wg-body {
+    margin-top: 9px; padding-top: 10px; border-top: 1px solid var(--line-soft);
+    font-size: 13.5px; line-height: 1.8; color: var(--ink-soft); text-wrap: pretty;
   }
-  .muscles h3 { font-size: 19px; }
-  .muscle-result { margin-top: 2px; font-size: 18px; font-weight: 700; color: var(--dim-deep); }
-  .m-body { margin-top: 10px; font-size: 15px; color: var(--ink-soft); line-height: 1.8; }
 
   /* ═══ 圖④ L1–L13 全貌 ═══ */
   .road { display: grid; grid-template-columns: 4fr 4fr 5fr; gap: 16px; margin-top: 34px; }
@@ -906,11 +898,22 @@ const schema = [
     font-size: 13.5px; font-weight: 700; color: var(--i-deep); text-align: center;
   }
 
-  .designs { margin-top: 24px; grid-template-columns: repeat(2, 1fr); }
-  @media (max-width: 640px) { .designs { grid-template-columns: 1fr; } }
-  .dnum { display: block; font-size: 13px; font-weight: 800; letter-spacing: .08em; color: var(--i-deep); }
-  .design h3 { margin-top: 8px; font-size: 18px; }
-  .design p { margin-top: 8px; font-size: 15px; color: var(--ink-soft); line-height: 1.8; }
+  .designs { margin-top: 26px; }
+  /* 標題欄固定 28ch：四條的標題長短差很多（從 7 個字到 20 個字），
+     讓欄寬跟著內容跑的話，右邊的說明會四條各從不同的位置起跳，就不成一份規格表了。 */
+  .design {
+    display: grid; grid-template-columns: minmax(0, 28ch) minmax(0, 1fr);
+    gap: 6px clamp(20px, 3.5vw, 52px);
+    padding: 20px 0; border-top: 1px solid var(--line);
+  }
+  .design:last-child { border-bottom: 1px solid var(--line); }
+  .design dt { font-size: clamp(16px, 1.9vw, 18px); font-weight: 700; color: var(--ink); line-height: 1.55; }
+  .dnum {
+    display: block; margin-bottom: 5px;
+    font-size: 12px; font-weight: 800; letter-spacing: .1em; color: var(--i-deep);
+  }
+  .design dd { margin: 0; font-size: 15px; color: var(--ink-soft); line-height: 1.85; text-wrap: pretty; }
+  @media (max-width: 720px) { .design { grid-template-columns: minmax(0, 1fr); gap: 8px; } }
 
   /* ═══ 圖⑥ 旅程（四色縱線＋現在位置脈動）═══ */
   .map { position: relative; margin-top: 30px; padding-left: 26px; }

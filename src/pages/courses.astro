@@ -10,25 +10,32 @@ const description =
    ⚠️ 不放價格：定價是諮詢現場攤開狀況之後才講的事，不在官網上比價。
    ⚠️ 8800 是隱藏產品，不上官網。99 元是館的會員費，不屬超引力成交學。
    ⚠️ 作廢：一階／二階／三階／Level 1-3／引力式系列／8週·12週／1+1 系統。 */
+/* from／to 是畫階梯用的模組編號，跟 code 字串是同一件事的兩種形式；
+   要改範圍時兩邊都要改，code 是給人讀的、from-to 是給版面畫的。 */
 const stages = [
   {
+    from: 1, to: 4,
     code: 'L1–L4', name: '鍛鍊段',
     body: '一課一塊肌肉。L1 練吸引、L2 練信任、L3 練專業、L4 練推進，四堂涵蓋十二個小肌群。這一段練的是單點零件，目的是先讓每一塊都動得起來。',
   },
   {
+    from: 5, to: 8,
     code: 'L5–L8', name: '放大段',
     body: '把四塊肌肉串成你自己的一對一路徑。同樣是那四塊，但這裡練的是怎麼在一場真實的對話裡把它們接起來。',
   },
   {
+    from: 9, to: 13,
     code: 'L9–L13', name: '演說段',
-    body: '把同一條路搬上舞台。從一對一換到一對多，肌肉沒變，動作變了。',
+    body: '把同一條路搬上舞台。從一對一換到一對多，<span class="nb">肌肉沒變，</span><span class="nb">動作變了。</span>',
   },
 ];
 
+/* upto ＝ 這個課吃到第幾個模組，用來畫覆蓋條；跟 range 字串是同一件事的兩種形式。 */
 const courses = [
   {
     name: '超引力顧問課',
     range: 'L1–L8',
+    upto: 8,
     stages: '鍛鍊段＋放大段',
     who: '一對一還沒跑順，講完之後對方沒有下一步。',
     dim: 'T',
@@ -36,18 +43,23 @@ const courses = [
   {
     name: '超引力公眾演說課',
     range: 'L1–L13',
+    upto: 13,
     stages: '鍛鍊段＋放大段＋演說段',
     who: '一對一已經會了，卡在一次只能面對一個人。',
     dim: 'I',
   },
 ];
+const TOTAL = 13;
 
+/* 用 set:html 是為了塞 .nb 斷行保護，字句本身一個字都沒動。
+   中文可以在任兩個漢字之間斷，窄螢幕會把「健檢」拆成「健／檢」；
+   Hot Seat 中間是半形空白，瀏覽器一樣當成可斷點。 */
 const how = [
-  '班級 20 人以內，課中拆成 4 到 5 人小組做對練，Hot Seat 輪流。',
+  '班級 20 人以內，課中拆成 4 到 5 人小組做對練，<span class="nb">Hot Seat</span> 輪流。',
   '乾貨課是錄播，自己先看；直播只上討論課，把時間全部拿來對練與校正。',
   '一週的迴路：看錄播乾貨，進影響力健身房打卡練 2 到 3 天，回到討論課做對練與顧問校正。',
-  '回放一年，討論會籍一年，一年內都可以回來參加討論課。',
-  '課程之前有一次入學健檢，結業之後複測做前後對照。健檢不佔模組編號。',
+  '回放一年，討論會籍一年，<span class="nb">一年內都可以回來參加討論課。</span>',
+  '課程之前有一次入學<span class="nb">健檢</span>，結業之後複測做前後對照。<span class="nb">健檢</span>不佔模組編號。',
   '報名後 7 天內可退款。',
 ];
 
@@ -112,7 +124,7 @@ const schema = [
       <!-- .nb 把子句包成不可剖半的整塊，大標才不會斷成「超引力成交／學」。 -->
       <h1 class="display reveal" style="--rd:.06s"><span class="nb">超引力成交學，</span><span class="nb hl">館裡的教練課</span></h1>
       <!-- ⚠️ 中文段落一律寫成單行：原始碼換行會變成一個空白，在中文裡會看成排版破洞。 -->
-      <p class="lead head-lead reveal" style="--rd:.12s">影響力健身房是館，你可以自己進來練。超引力成交學是<span class="nb">這間館裡的教練課</span>，把四塊肌肉從單塊練習，串成一條在<span class="nb">真實場景</span>裡走得通的路。</p>
+      <p class="lead head-lead reveal" style="--rd:.12s">影響力健身房是館，你可以自己進來練。超引力成交學是<span class="nb">這間館裡的教練課</span>，把四塊肌肉從單塊練習，串成一條在<span class="nb">真實場景裡</span><span class="nb">走得通的路。</span></p>
       <p class="head-more reveal" style="--rd:.18s"><a href="/gravity/">完整看一次超引力成交學 →</a></p>
     </div>
   </section>
@@ -121,12 +133,23 @@ const schema = [
     <div class="wrap">
       <h2 class="reveal">三個段落，十三個模組</h2>
       <p class="lead reveal" style="--rd:.06s">一個模組等於一週，全系列從 L1 排到 L13。</p>
-      <ol class="stages">
+
+      <!-- 段落不用三張並排的卡片，改成一條會往上爬的階梯：
+           卡片會把三個段落排成「三個選項」，但它們是一條只能照順序走完的路。
+           片高從 L1 一路遞增到 L13＝越練越強，這是版面在講的事，不是裝飾。
+           ⚠️ 不用 ATPI 四色：段落不是維度，借那四個色會讓人以為段落對應肌肉。 -->
+      <ol class="ladder">
         {stages.map((s, i) => (
-          <li class="card reveal lift" style={`--rd:${0.1 + i * 0.07}s`}>
-            <span class="code">{s.code}</span>
-            <h3>{s.name}</h3>
-            <p>{s.body}</p>
+          <li class="lstage reveal" style={`--rd:${0.1 + i * 0.08}s`}>
+            <ul class="lmods" aria-hidden="true">
+              {Array.from({ length: s.to - s.from + 1 }).map((_, k) => {
+                const n = s.from + k;
+                return <li style={`--h:${34 + (n - 1) * 6}px; --lo:${(0.16 + (n - 1) * 0.032).toFixed(3)}`}><i></i><b>L{n}</b></li>;
+              })}
+            </ul>
+            <p class="lstage-code">{s.code}</p>
+            <h3 class="lstage-name">{s.name}</h3>
+            <p class="lstage-body" set:html={s.body} />
           </li>
         ))}
       </ol>
@@ -143,11 +166,18 @@ const schema = [
             <span class="muscle-tag">{c.range}</span>
             <h3>{c.name}</h3>
             <p class="stages-line">{c.stages}</p>
+            <!-- 覆蓋條：兩個課攤在同一條十三格的尺上，差別用看的就知道，
+                 不用讀完兩段文字再自己比對。 -->
+            <div class="cov" aria-hidden="true">
+              {Array.from({ length: TOTAL }).map((_, k) => (
+                <i class:list={[{ on: k < c.upto }]}></i>
+              ))}
+            </div>
             <p class="who"><b>適合的情況</b><br />{c.who}</p>
           </article>
         ))}
       </div>
-      <p class="note reveal">實際上這個選擇不會由你自己在網頁上決定。它會在諮詢現場，把你的狀況攤開來看過之後才決定，我們不預設賣哪一個。</p>
+      <p class="note reveal">實際上這個選擇不會由你自己在網頁上決定。它會在諮詢現場，把你的狀況<span class="nb">攤開來看過之後</span>才決定，<span class="nb">我們不預設賣哪一個。</span></p>
     </div>
   </section>
 
@@ -155,12 +185,12 @@ const schema = [
     <div class="wrap-text">
       <h2 class="reveal">上課方式</h2>
       <ul class="how reveal" style="--rd:.06s">
-        {how.map((h) => <li>{h}</li>)}
+        {how.map((h) => <li set:html={h} />)}
       </ul>
 
-      <h2 class="reveal">名字裡的「引力」</h2>
-      <p>引力是結果，不是方法。</p>
-      <p>在健身房把溝通練成一身肌力，強到自然產生引力場，客戶被你吸過來。練是過程，引力是那個過程的結果。這也是為什麼這套課不教你怎麼追著客戶跑，而是教你把自己練到讓對的人自己走過來。</p>
+      <h2 class="reveal h2-next">名字裡的「引力」</h2>
+      <p class="reveal" style="--rd:.06s">引力是結果，不是方法。</p>
+      <p class="reveal" style="--rd:.1s">在健身房把溝通練成一身肌力，強到自然產生引力場，客戶被你吸過來。練是過程，引力是那個過程的結果。這也是為什麼這套課不教你怎麼追著客戶跑，而是教你把自己練到讓對的人自己走過來。</p>
     </div>
   </section>
 
@@ -169,7 +199,7 @@ const schema = [
       <aside class="cta reveal">
         <p class="kicker">怎麼開始</p>
         <h2>先量一次，再談要不要練</h2>
-        <p class="lead">影響力健檢會問你 12 題，量出四塊肌肉現在的樣子，並告訴你先練哪一塊最有感。免費，大約三分鐘。做完之後如果想談，我們再約諮詢。</p>
+        <p class="lead">影響力健檢會問你 12 題，量出四塊肌肉現在的樣子，並告訴你先練哪一塊最有感。免費，<span class="nb">大約三分鐘</span>。<span class="nb">做完之後如果想談，</span><span class="nb">我們再約諮詢。</span></p>
         <a class="btn btn-main" href={LINKS.quiz}
            data-cta="courses_quiz" data-cta-position="bottom">免費做影響力健檢</a>
       </aside>
@@ -195,13 +225,78 @@ const schema = [
   .head-lead { max-width: 50ch; margin-top: 14px; }
   .head-more { margin-top: 16px; font-weight: 700; }
 
-  .stages { list-style: none; padding: 0; margin-top: 32px; display: grid; gap: 14px; }
-  .code {
-    display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .06em;
-    color: var(--act-deep); background: var(--a-tint); border-radius: 999px; padding: 4px 12px;
+  /* ═══ L1–L13 階梯 ═══
+     三個段落是三欄，但欄寬跟模組數成正比（4:4:5），所以每一片的寬度全程一致——
+     階梯才會讀成一條連續的路，而不是三組各自為政的柱狀圖。 */
+  .ladder {
+    list-style: none; padding: 0; margin-top: 36px;
+    display: grid;
+    grid-template-columns: 4fr 4fr 5fr;
+    gap: clamp(18px, 2.6vw, 38px);
+    /* 從頂端對齊，不是底部：三段的說明字數不一樣，底部對齊會把字少的那段整個往下推，
+       薄片的底線也跟著錯開——那條底線一斷，三段就不再是同一道往上爬的階梯。
+       薄片本身靠 .lmods 的固定高度貼齊底線。 */
+    align-items: start;
   }
-  .stages h3 { margin-top: 12px; font-size: 20px; }
-  .stages p { margin-top: 8px; }
+  .lstage { position: relative; }
+  /* 段與段之間的分界線，用斜的：跟全站的斜切同一個角度 */
+  .lstage + .lstage::before {
+    content: "";
+    position: absolute; left: calc(clamp(18px, 2.6vw, 38px) / -2); bottom: 0;
+    width: 1px; height: 100%;
+    background: var(--line);
+    transform: skewX(var(--skew));
+  }
+
+  /* 固定高度＝最高那片（L13）＋標籤的高度。
+     沒有它，三段的薄片各自貼著自己的底，下面的文字就會跟著階梯一路往下錯開。 */
+  .lmods {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; align-items: flex-end; gap: 5px;
+    height: 128px;
+  }
+  .lmods > li { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  /* ⚠️ 透明度封頂在 .55：行動色是頁面唯一那顆錢鈕在用的（60/30/10），
+     這裡鋪十三片、顏色再重就會跟按鈕搶注意力。 */
+  .lmods i {
+    display: block; width: 100%; height: var(--h);
+    background: var(--act);
+    opacity: var(--lo);
+    border-radius: var(--slice-r);
+    transform: skewX(var(--skew));
+  }
+  .lmods b { font-size: 11px; font-weight: 700; color: var(--ink-soft); letter-spacing: .02em; }
+
+  .lstage-code {
+    margin-top: 18px; font-size: 12px; font-weight: 700;
+    letter-spacing: .08em; color: var(--act-deep);
+  }
+  .lstage-name { margin-top: 4px; font-size: clamp(19px, 2.2vw, 23px); }
+  .lstage-body { margin-top: 8px; font-size: 15.5px; color: var(--ink-soft); text-wrap: pretty; }
+
+  @media (max-width: 760px) {
+    /* 窄螢幕：三欄疊成三列，每一段自己是一排薄片＋文字 */
+    .ladder { grid-template-columns: 1fr; gap: 30px; }
+    .lstage + .lstage::before { display: none; }
+    .lstage + .lstage { border-top: 1px solid var(--line); padding-top: 26px; }
+    /* 單欄時薄片不能再 flex:1 撐滿——一片寬 100px 高 34px 就成了橫躺的色塊，
+       階梯感全沒了。固定窄寬度，高度差才重新變成畫面上最明顯的事。 */
+    .lmods { justify-content: flex-start; gap: 8px; height: 150px; }
+    .lmods > li { flex: 0 0 auto; width: 44px; }
+    /* 疊成單欄之後說明會吃滿整個寬度，一行三十幾個字讀起來很吃力 */
+    .lstage-body { max-width: 44ch; }
+  }
+
+  /* ═══ 兩個課的覆蓋條 ═══ */
+  .cov { display: flex; gap: 3px; margin-top: 16px; }
+  .cov i {
+    flex: 1; height: 16px;
+    background: var(--ink);
+    opacity: .09;
+    border-radius: 3px;
+    transform: skewX(var(--skew));
+  }
+  .cov i.on { background: var(--dim); opacity: .85; }
 
   .courses { margin-top: 32px; grid-template-columns: repeat(2, 1fr); }
   @media (max-width: 640px) { .courses { grid-template-columns: 1fr; } }
@@ -209,10 +304,13 @@ const schema = [
   .who { margin-top: 18px !important; font-size: 16px; }
   .who b { font-size: 13px; letter-spacing: .04em; color: var(--ink-soft); }
 
-  .note { margin-top: 28px; font-size: 15px; color: var(--ink-soft); line-height: 1.9; max-width: 62ch; }
+  .note { margin-top: 28px; font-size: 15px; color: var(--ink-soft); line-height: 1.9; max-width: 62ch; text-wrap: pretty; }
 
+  /* 同一個 section 裡的第二個 h2：沒有這段就會緊貼在上一段的最後一行下面，
+     讀起來像清單的一部分，而不是新的一段。 */
+  .h2-next { margin-top: clamp(46px, 6vw, 72px); }
   .how { margin-top: 20px; padding-left: 20px; }
-  .how li { margin-top: 10px; line-height: 1.9; }
+  .how li { margin-top: 10px; line-height: 1.9; text-wrap: pretty; }
 
   .cta { background: var(--a-tint); border-radius: 20px; padding: clamp(28px, 5vw, 44px); text-align: center; }
   .cta h2 { font-size: clamp(21px, 3vw, 26px); }
