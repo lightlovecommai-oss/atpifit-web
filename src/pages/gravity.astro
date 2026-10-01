@@ -485,6 +485,14 @@ const schema = [
 
       <p class="coach-belief">我相信一件事：<b>影響力不是天賦，是一塊可以練的肌肉。</b><span class="nb">把它練強，</span><span class="nb">不是為了說贏誰、</span><span class="nb">壓過誰，</span>是為了讓你有能力，<span class="nb">把你真正的價值，</span><span class="nb">送進你想幫的那個人心裡。</span></p>
       <a class="coach-more" href="/about/">認識平凡人光頭的故事 →</a>
+
+      <!-- ═══ 中途出口 ① ═══ 見 .jump 的註解：這裡是「信了人」那一拍 -->
+      <div class="jump reveal">
+        <p class="jump-t">看到這裡已經想談了？<b><span class="nb">那就不用把整頁讀完。</span></b></p>
+        <a class="btn btn-main" href={LINKS.booking} data-cta="booking" data-cta-position="lp-mid-coach">
+          預約免費 1v1 諮詢
+        </a>
+      </div>
     </div>
   </section>
 
@@ -598,6 +606,14 @@ const schema = [
         ))}
       </div>
       <p class="proof-note">點任一張可以放大，看卡片裡的原始對話與貼文截圖。</p>
+
+      <!-- ═══ 中途出口 ② ═══ 見 .jump 的註解：這裡是「信了結果」那一拍 -->
+      <div class="jump reveal">
+        <p class="jump-t">他們都是從一次 60 分鐘的對話開始的。<b><span class="nb">那一次不收費。</span></b></p>
+        <a class="btn btn-main" href={LINKS.booking} data-cta="booking" data-cta-position="lp-mid-proof">
+          預約免費 1v1 諮詢
+        </a>
+      </div>
     </div>
   </section>
 
@@ -1343,6 +1359,41 @@ const schema = [
   .cta h2 { font-size: clamp(21px, 3vw, 26px); }
   .cta .lead { margin: 10px auto 24px; max-width: 46ch; }
   .cta-sub { margin-top: 18px; font-size: 14.5px; color: var(--ink-soft); line-height: 1.85; }
+
+  /* ═══ 中途出口 ═══
+     這頁有十站，捲到底要一段時間，而讀者不是讀完才決定的——有兩個地方他可能已經想談了：
+     剛讀完「教你的人是誰」（信了人）、剛讀完「練過的人」（信了結果）。那兩處各開一道出口。
+     ⚠️ 它刻意不是第三塊 CTA：沒有眉標、沒有大標、沒有導言，就一句話加一顆鈕，
+        橫著排、佔一行高。長成跟頁尾那塊一樣就變成同一段話講三次，讀起來是在催。
+     ⚠️ 鈕本身照用 .btn-main 不降級成幽靈鈕：放這兩顆的理由就是怕人在按之前先離開，
+        一顆看起來可按可不按的鈕解決不了那件事。brand.css 的「每頁唯一」在這頁不適用，
+        這頁從頭到尾沒有付款動作，三顆鈕指的是同一件免費的事。 */
+  .jump {
+    margin-top: clamp(34px, 4.5vw, 54px);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 16px clamp(20px, 3vw, 40px);
+    padding: clamp(18px, 2.4vw, 24px) clamp(20px, 2.8vw, 30px);
+    /* 左邊多留一截：那一刀往上傾 12 度，最上緣會比最下緣再往右 20px */
+    padding-left: clamp(34px, 3.8vw, 50px);
+    border: 1px solid var(--line-soft); border-radius: var(--r-card);
+    background: rgba(234, 241, 250, .025);
+    position: relative; overflow: hidden;
+  }
+  /* 左緣那一刀＝薄片語言的最小用法，讓它一眼跟上下的內文分開。
+     ⚠️ 樞紐釘 50% 100%（brand.css:12 的基線）：skewX 預設繞中心轉，
+        條子下半截會整個被推到 left:0 以外，被 overflow 切掉只剩上面一小段。
+        釘在底邊就只會往右倒，整條都留在框裡，而且跟站上其他薄片同角同軸。 */
+  .jump::before {
+    content: ""; position: absolute; inset: 0 auto 0 0; width: 4px;
+    background: linear-gradient(180deg, var(--i-deep), var(--act));
+    transform: skewX(var(--skew)); transform-origin: 50% 100%;
+  }
+  .jump-t { margin: 0; font-size: clamp(15px, 1.7vw, 17px); color: var(--ink-soft); line-height: 1.8; }
+  .jump-t b { color: var(--ink); font-weight: 700; }
+  .jump .btn { flex: 0 0 auto; }
+  @media (max-width: 560px) {
+    .jump .btn { width: 100%; }
+  }
 
   /* ═══ FAQ ═══ */
   .faq { margin-top: 28px; }
