@@ -1,0 +1,516 @@
+---
+/* ⚠️ 本檔由 productkit/_tools/build_金句對應地圖.py 產生，**請勿手改**。
+   金句原文／作者／出處／查證記號／禁用區證據全部現場解析
+   productkit `1-手冊（內部）/35-外部引用庫.md`，小肌群與心法解析《22》——
+   要改那些內容去改那兩份再重跑產生器，改這裡下次會被蓋掉。
+   公開版刻意不含招名、不含簡報站號、不含「付印前要核」這類內部待辦。 */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+
+const title = '理論血緣與引用查證';
+const description =
+  '把 ATPI 四塊肌肉、十二個小肌群各自接到哪一個知識體系攤開，附 25 句可查證的原典引文與出處，'
+  + '也誠實標出哪裡接不上、以及九句市面上引用率最高卻查出來是誤植的名言。';
+
+const schema = {
+  '@type': 'WebPage',
+  '@id': `${SITE.url}/lineage/#webpage`,
+  name: title,
+  description,
+  url: `${SITE.url}/lineage/`,
+  inLanguage: 'zh-Hant-TW',
+  isPartOf: { '@id': `${SITE.url}/#website` },
+};
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <section class="section hero">
+    <div class="wrap">
+      <p class="kicker">出處</p>
+      <h1 class="display"><span class="nb">我們站在</span><span class="nb hl">誰的肩膀上</span></h1>
+      <p class="lead head-lead">這一頁不是借名人抬轎。每一條都寫了<b>為什麼接得上</b>，也寫了<b>哪裡接不上</b>——章次有異文、脈絡被摘出來、歸屬是三層的，全部標在旁邊。誠實指出接不上的地方，才證明真的讀過原典。</p>
+      <div class="atpi-rule" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <ul class="tally">
+        <li><b>25</b><span>句可查證的原典引文</span></li>
+        <li><b>18</b><span>條追到原始出處</span></li>
+        <li><b>7</b><span>條只到可靠二手，照實標⚠️</span></li>
+        <li><b>9</b><span>句查出來是誤植，我們不用</span></li>
+      </ul>
+      <p class="legend"><b>✅</b> 追到原始出處 ／ <b>⚠️</b> 只到可靠二手，還沒親驗原件。
+      兩個記號都公開，因為把沒驗完的寫成驗完的，就是這一頁在反對的那件事。</p>
+    </div>
+  </section>
+
+      <section class="section band" data-dim="A">
+        <div class="wrap">
+          <header class="bandhead">
+            <span class="bandcode">A</span>
+            <div class="bandname">
+              <h2>吸引肌肉</h2>
+              <p class="bandask">他跟你待多久</p>
+            </div>
+            <p class="bandlin"><span class="lbl">整塊的血緣</span>古典修辭學早就寫下開場有三個目的：讓人願意聽、聽得懂、對你有好感。A 做的是同一件事。</p>
+          </header>
+          <div class="cells">
+          <article class="card muscle cell">
+            <header>
+              <span class="muscle-tag">A1</span>
+              <h3>讓他開口</h3>
+              <span class="node">當下</span>
+            </header>
+            <p class="heart">心法 · <b>欣賞</b></p>
+            <p class="lin"><span class="lbl">理論血緣</span>醫療與心理訪談裡有個動作叫「先取得同意再談」——開口前先問一句「我可以問你一件事嗎」。字面上跟這一格幾乎重疊。</p>
+
+            <figure class="q">
+              <blockquote>「One comes from the heart out; the other from the teeth out. One is unselfish; the other selfish. One is universally admired; the other is universally condemned.」（論真誠讚賞與奉承之別）</blockquote>
+              <figcaption><b>Dale Carnegie</b> · <span class="src"><i>How to Win Friends and Influence People</i> (1936), Part One, Ch.2</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">讚美從心裡出來、還是從牙縫裡擠出來，對方聽得出差別。這一格要的是真的看見對方，不是嘴甜。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>引章不引頁——頁次隨版本變。繁中譯本各家譯法不一，所以附原文。</p>
+            </figure>
+          </article>
+          <article class="card muscle cell">
+            <header>
+              <span class="muscle-tag">A2</span>
+              <h3>讓他追問</h3>
+              <span class="node">短期(記住這件事)</span>
+            </header>
+            <p class="heart">心法 · <b>改變</b></p>
+            <p class="lin"><span class="lbl">理論血緣</span>好奇心的資訊缺口理論（Loewenstein, 1994）：人不是對什麼都好奇，是發現自己知道的事缺了一塊才會想追。</p>
+
+            <figure class="q">
+              <blockquote>「Curiosity arises when attention becomes focused on a gap in one's knowledge. Such information gaps produce the feeling of deprivation labeled curiosity.」</blockquote>
+              <figcaption><b>George Loewenstein</b> · <span class="src"><i>Psychological Bulletin</i>, 116(1), 1994</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">好奇不是天生愛問，是發現自己知道的事缺了一塊才會癢。要讓他追問，先讓他發現那個缺口。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>論文卷期查到了，頁次還沒核，所以只寫到卷期。</p>
+            </figure>
+          </article>
+          <article class="card muscle cell">
+            <header>
+              <span class="muscle-tag">A3</span>
+              <h3>讓他記得</h3>
+              <span class="node">長期(記住你這個人)</span>
+            </header>
+            <p class="heart">心法 · <b>生命影響生命</b></p>
+            <p class="lin"><span class="lbl">理論血緣</span>敘事結構上接得到 Campbell 的英雄之旅，但有兩個斷裂要先講：他研究的是比較神話學、不是記憶實證；而且他的英雄是故事主角，這一格讓講的人當英雄，方向正好相反。</p>
+
+            <figure class="q">
+              <blockquote>「Example is not the main thing. <b>It is the only thing.</b> That is, if the one giving the example is not saying to himself, 'Behold I am giving an example.' That spoils it. Anyone thinking of the example he will give to others has lost his simplicity.」</blockquote>
+              <figcaption><b>Albert Schweitzer</b> · <span class="src">訪談 "God's Own Man"（Eugene Exman 採訪），<i>United Nations World</i>, 1952；另見 <i>Brothers in Spirit</i> (Syracuse UP, 1996), p.18</span>
+                <span class="mark" title="只到可靠二手，還沒親驗原件">⚠️</span>
+              </figcaption>
+              <p class="why">示範不是方法之一，是唯一的方法；但完整版後半句自帶反轉——一旦你想著「我在示範」就毀了。生命影響生命的門檻在起心動念。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>我們還沒親驗原始刊物。追到的是 1952 年的訪談與 1996 年的書信集，拿到原件以前它就掛著⚠️。</p>
+            </figure>
+          </article></div>
+        </div>
+      </section>
+      <section class="section band section-alt" data-dim="T">
+        <div class="wrap">
+          <header class="bandhead">
+            <span class="bandcode">T</span>
+            <div class="bandname">
+              <h2>信任肌肉</h2>
+              <p class="bandask">誰先給</p>
+            </div>
+            <p class="bandlin"><span class="lbl">整塊的血緣</span>亞里斯多德把「可信」拆成三塊：善意、德行、實踐智慧。T 處理的是前兩塊——他信不信你這個人。</p>
+          </header>
+          <div class="cells">
+          <article class="card muscle cell">
+            <header>
+              <span class="muscle-tag">T1</span>
+              <h3>讓他敢說</h3>
+              <span class="node">我先給</span>
+            </header>
+            <p class="heart">心法 · <b>心口合一</b></p>
+            <p class="lin"><span class="lbl">理論血緣</span>自我揭露的互惠效應（Jourard 1964；Altman & Taylor 1973）：先講的那個人，決定對方願意講多深。</p>
+
+            <figure class="q">
+              <blockquote>「Vulnerability sounds like truth and feels like courage. Truth and courage aren't always comfortable, but they're never weakness.」</blockquote>
+              <figcaption><b>Brené Brown</b> · <span class="src"><i>Daring Greatly</i> (Gotham Books, 2012)</span>
+                <span class="mark" title="只到可靠二手，還沒親驗原件">⚠️</span>
+              </figcaption>
+              <p class="why">把脆弱講出來，聽起來像真話、感覺像勇氣，從來不是軟弱。要讓對方敢說，先講的那個人是你。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>繁體中文有官方譯本（馬可孛羅《脆弱的力量》）。要引中文就用那一版並標頁，不自己翻。</p>
+            </figure>
+          </article>
+          <article class="card muscle cell">
+            <header>
+              <span class="muscle-tag">T2</span>
+              <h3>讓他交心</h3>
+              <span class="node">他才給</span>
+            </header>
+            <p class="heart">心法 · <b>真誠</b></p>
+            <p class="lin"><span class="lbl">理論血緣</span>反映式聆聽：把對方說的話回述一次再確認，而不是接著評價。</p>
+
+            <figure class="q">
+              <blockquote>「The major barrier to mutual interpersonal communication is our very natural tendency to judge, to evaluate, to approve or disapprove, the statement of the other person, or the other group.」</blockquote>
+              <figcaption><b>Carl R. Rogers</b> · <span class="src">1951 年西北大學演講 "Communication: Its Blocking and Its Facilitation"，收於 <i>On Becoming a Person</i> (1961) 第 17 章</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">溝通最大的障礙不是講不清楚，是我們一聽就想評價。要拆掉的就是這個反射。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「誠者，物之終始，不誠無物。是故君子誠之為貴。」</blockquote>
+              <figcaption><b>《中庸》</b> · <span class="src">《中庸》第二十五章</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">誠是一件事的頭跟尾，不誠就什麼都不存在。真誠（T2）跟言行一致（T3）同一個根，所以這句兩格共用。</p>
+            </figure>
+          </article>
+          <article class="card muscle cell">
+            <header>
+              <span class="muscle-tag">T3</span>
+              <h3>讓他當真</h3>
+              <span class="node">我兌現</span>
+            </header>
+            <p class="heart">心法 · <b>言行一致</b></p>
+            <p class="lin"><span class="lbl">理論血緣</span>Kouzes & Posner 的可信度研究——受訪者自己把可信度講成一句行為：說到做到。</p>
+
+            <figure class="q">
+              <blockquote>「子曰：人而無信，不知其可也。大車無輗，小車無軏，其何以行之哉？」</blockquote>
+              <figcaption><b>孔子</b> · <span class="src">《論語·為政》2.22</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">不守信的人沒法用，像大車少了那根銷子，接不上就動不了。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「子貢問君子。子曰：先行其言，而後從之。」</blockquote>
+              <figcaption><b>孔子</b> · <span class="src">《論語·<b>為政</b>》2.13</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">先做到，再說。不是先說再做。這句最常被誤記在〈憲問〉，其實在〈為政〉。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>這句最常被誤記在〈憲問〉篇。它在〈為政〉。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「子曰：君子恥其言而過其行。」</blockquote>
+              <figcaption><b>孔子</b> · <span class="src">《論語·憲問》</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">話超過行動，是該覺得丟臉的事。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>章次依版本而異（通行本多作 27，部分版本作 29），所以只寫篇名、不寫章號。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「誠者，物之終始，不誠無物。是故君子誠之為貴。」</blockquote>
+              <figcaption><b>《中庸》</b> · <span class="src">《中庸》第二十五章</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">誠是一件事的頭跟尾，不誠就什麼都不存在。真誠（T2）跟言行一致（T3）同一個根，所以這句兩格共用。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「未有知而不行者。知而不行，只是未知。」</blockquote>
+              <figcaption><b>王陽明</b> · <span class="src">《傳習錄·卷上·徐愛錄》</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">知道卻沒做，那就不叫知道。比只引「知行合一」四個字扎實得多。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「Do What You Say You Will Do」（DWYSYWD）</blockquote>
+              <figcaption><b>Kouzes & Posner</b> · <span class="src"><i>Credibility</i> (Jossey-Bass, 1993)</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">研究裡受訪者自己把「可信度」講成一句話：說到做到。</p>
+            </figure>
+          </article></div>
+        </div>
+      </section>
+      <section class="section band" data-dim="P">
+        <div class="wrap">
+          <header class="bandhead">
+            <span class="bandcode">P</span>
+            <div class="bandname">
+              <h2>專業肌肉</h2>
+              <p class="bandask">怎麼證明你能解</p>
+            </div>
+            <p class="bandlin"><span class="lbl">整塊的血緣</span>修辭學裡 P 的位置是 phronesis（實踐智慧），不是 logos（邏輯論證）。專業不是你論證得多嚴密，是他相信你有解決這件事的判斷力。</p>
+          </header>
+          <div class="cells">
+          <article class="card muscle cell">
+            <header>
+              <span class="muscle-tag">P1</span>
+              <h3>讓他釐清</h3>
+              <span class="node">證明你懂他的問題</span>
+            </header>
+            <p class="heart">心法 · <b>無我</b></p>
+            <p class="lin"><span class="lbl">理論血緣</span>Schein《Humble Inquiry》（謙遜提問）：內容上最貼「不替對方猜」這件事。</p>
+
+            <figure class="q">
+              <blockquote>「子曰：『吾有知乎哉？無知也。有鄙夫問於我，空空如也，我<b>叩</b>其兩端而竭焉。』」</blockquote>
+              <figcaption><b>孔子</b> · <span class="src">《論語·子罕》</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">你不必比對方更懂他的行業。從他問題的兩頭往中間敲，敲到他自己把答案說出來——專業感是這樣來的，不是靠你先講。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>異文：有的刊本作「扣其兩端」，多數作「叩」。章次也依版本而異（9.7／9.8），所以只寫篇名。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「子絕四：毋意，毋必，毋固，毋我。」</blockquote>
+              <figcaption><b>孔子</b> · <span class="src">《論語·子罕》</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">不臆測、不武斷、不固執、不自我。「毋意」就是不替客戶猜，所以 P1 跟 I2 共用這句。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>多數現代版編 9.4，舊注疏分章不同，所以只寫篇名。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「Seek first to understand, then to be understood.」</blockquote>
+              <figcaption><b>Stephen Covey</b> · <span class="src"><i>The 7 Habits of Highly Effective People</i> (Simon & Schuster, 1989), Habit 5</span>
+                <span class="mark" title="只到可靠二手，還沒親驗原件">⚠️</span>
+              </figcaption>
+              <p class="why">先求理解，再求被理解。好記，但跟〈子罕〉那句比明顯單薄，只在需要一句英文當錨點時用。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>這句好記，但跟《論語·子罕》那句比明顯單薄。我們只在需要一句英文當錨點的時候用它。</p>
+            </figure>
+          </article>
+          <article class="card muscle cell">
+            <header>
+              <span class="muscle-tag">P2</span>
+              <h3>讓他有感</h3>
+              <span class="node">證明你解得了</span>
+            </header>
+            <p class="heart">心法 · <b>體驗</b></p>
+            <p class="lin"><span class="lbl">理論血緣</span>《荀子·儒效》才是真血緣，Kolb 的經驗學習圈是兩千年以後才到的。</p>
+
+            <figure class="q">
+              <blockquote>「不聞不若聞之，聞之不若見之，見之不若知之，知之不若行之；<b>學至於行之而止矣</b>。」</blockquote>
+              <figcaption><b>荀子</b> · <span class="src">《荀子·儒效》</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">聽不如看、看不如懂、懂不如做，學到做出來才算到站。「體驗」這件事的祖宗，而且比 Kolb 早兩千年。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「夫人必有欲食之心，然後知食；欲食之心即是意、即是行之始矣。食味之美惡，必待入口而後知。豈有不待入口而已先知食味之美惡者邪？」</blockquote>
+              <figcaption><b>王陽明</b> · <span class="src">《傳習錄·卷中·答顧東橋書》</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">好不好吃，嘴巴嘗了才知道。沒讓他體驗就想說服，順序是反的。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>坊間說的「第 132 條」是現代的標準分條，舊版並不分條；篇名另有〈答人論學書〉的異稱。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「百聞不如一見。兵難隃度，臣願馳至金城，圖上方略。」</blockquote>
+              <figcaption><b>趙充國（上奏語）</b> · <span class="src">《漢書·卷六十九·趙充國辛慶忌傳》</span>
+                <span class="mark" title="只到可靠二手，還沒親驗原件">⚠️</span>
+              </figcaption>
+              <p class="why">一個專業者當場拒絕遠距開方案：讓我去看了再給你方略。兼作 I2 的不算命。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>「隃」與「遙」有異文，以中華書局本為準。</p>
+            </figure>
+          </article>
+          <article class="card muscle cell">
+            <header>
+              <span class="muscle-tag">P3</span>
+              <h3>讓他放心</h3>
+              <span class="node">證明你解過</span>
+            </header>
+            <p class="heart">心法 · <b>數據</b></p>
+            <p class="lin"><span class="lbl">理論血緣</span>訊號理論（Spence）：當對方沒辦法直接驗證你的品質，他看的是那些「說謊成本很高」的訊號。</p>
+
+            <figure class="q">
+              <blockquote>「余睹李將軍，悛悛如鄙人，口不能道辭。及死之日，天下知與不知，皆為盡哀。彼其忠實心誠信於士大夫也！」</blockquote>
+              <figcaption><b>司馬遷（太史公曰）</b> · <span class="src">《史記·卷一百九·李將軍列傳》</span>
+                <span class="mark" title="只到可靠二手，還沒親驗原件">⚠️</span>
+              </figcaption>
+              <p class="why">一個笨嘴拙舌的將軍，死的時候連不認識他的人都哭了。最有力的背書從來不是自己開口。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>這一段附近有兩句流傳極廣的話，常被誤掛在司馬遷名下——見下面的禁用區。</p>
+            </figure>
+          </article></div>
+        </div>
+      </section>
+      <section class="section band section-alt" data-dim="I">
+        <div class="wrap">
+          <header class="bandhead">
+            <span class="bandcode">I</span>
+            <div class="bandname">
+              <h2>推進肌肉</h2>
+              <p class="bandask">差什麼</p>
+            </div>
+            <p class="bandlin"><span class="lbl">整塊的血緣</span>西方的提問框架幾乎都預設「問的人是中立的」，所以「你自己站不站得住」沒有位置。I 把它放回來——這也是為什麼 I 底下的中文出處是承重的，不是點綴。</p>
+          </header>
+          <div class="cells">
+          <article class="card muscle cell">
+            <header>
+              <span class="muscle-tag">I1</span>
+              <h3>讓他想要</h3>
+              <span class="node">差理由</span>
+            </header>
+            <p class="heart">心法 · <b>結果思維</b></p>
+            <p class="lin"><span class="lbl">理論血緣</span>動機式晤談的 evoking：改變的理由要從對方嘴裡出來，不是從你嘴裡。Amrhein 等人 2003 年的研究顯示，真正預測行為改變的是對方自己說出口的承諾強度。</p>
+
+            <figure class="q">
+              <blockquote>「子貢問為仁。子曰：『工欲善其事，必先利其器。居是邦也，事其大夫之賢者，友其士之仁者。』」</blockquote>
+              <figcaption><b>孔子</b> · <span class="src">《論語·衞靈公》</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">沒有人想要一把利器，想要的是事情做成。對方也一樣——他要的不是你的產品，是產品幫他換到的那個結果。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>必須同時交代原始脈絡：孔子那一整段真正在講的是「該跟誰來往」，不是說服。隱喻撐得住，整段不是。只在能把脈絡一起講清楚的時候才用。</p>
+            </figure>
+          </article>
+          <article class="card muscle cell">
+            <header>
+              <span class="muscle-tag">I2</span>
+              <h3>讓他敢要</h3>
+              <span class="node">差保障</span>
+            </header>
+            <p class="heart">心法 · <b>不算命</b></p>
+            <p class="lin"><span class="lbl">理論血緣</span>perspective mistaking（Eyal 等人 2018，25 個實驗）：以為自己懂對方在想什麼，準確度並沒有比較高。想知道就去問。</p>
+
+            <figure class="q">
+              <blockquote>「毋意，毋必，毋固，毋我。」（領「<b>毋意</b>」：不臆測）</blockquote>
+              <figcaption><b>孔子</b> · <span class="src">《論語·子罕》</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">四個字的「不算命」：不替他臆測。與 P1 共用同一句。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「子曰：『由，誨女知之乎！知之為知之，不知為不知，是知也。』」</blockquote>
+              <figcaption><b>孔子</b> · <span class="src">《論語·為政》</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">不知道就說不知道。你不知道他在想什麼，那就去問，不要猜。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「故用兵之法：高陵勿向，背丘勿逆，佯北勿從，銳卒勿攻，餌兵勿食，歸師勿遏，<b>圍師必闕</b>，窮寇勿迫。」</blockquote>
+              <figcaption><b>孫子</b> · <span class="src">《孫子兵法·軍爭第七》</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">包圍的時候一定要留一個口。給退路的古典版——但要反過來講：留的那個口是給他自己走出來的，不是給我追進去的。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>這是兵法。我們用它的形狀、反轉它的意圖——留的那個口是給他自己走出來的，不是給我追進去的。不反轉就不引。</p>
+            </figure>
+          </article>
+          <article class="card muscle cell">
+            <header>
+              <span class="muscle-tag">I3</span>
+              <h3>讓他答應</h3>
+              <span class="node">差第一步</span>
+            </header>
+            <p class="heart">心法 · <b>底氣</b></p>
+            <p class="lin"><span class="lbl">理論血緣</span>SPIN 把「對方往前一步」跟「對方說了好聽話」分成兩件事（Advance 與 Continuation）。</p>
+
+            <figure class="q">
+              <blockquote>「昔者曾子謂子襄曰：『子好勇乎？吾嘗聞大勇於夫子矣：自反而不縮，雖褐寬博，吾不惴焉；<b>自反而縮，雖千萬人吾往矣</b>。』」</blockquote>
+              <figcaption><b>孟子述曾子述孔子</b> · <span class="src">《孟子·公孫丑上》</span>
+                <span class="mark" title="追到原始出處">✅</span>
+              </figcaption>
+              <p class="why">底氣不是口才好，是你已經先檢查過自己站不站得住。站得住，那句邀請才開得了口。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>歸屬是三層的：《孟子·公孫丑上》記曾子述孔子語。它不在《論語》裡，不可以寫成「孔子說」。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「誠者，物之終始；不誠無物。是故君子誠之為貴。誠者，非自成己而已也，所以成物也。成己，仁也；成物，知也。」</blockquote>
+              <figcaption><b>《中庸》</b> · <span class="src">《中庸》第二十五章（朱熹章句分章）</span>
+                <span class="mark" title="只到可靠二手，還沒親驗原件">⚠️</span>
+              </figcaption>
+              <p class="why">誠不只是完成自己，同時完成對方，而且是同一個動作。「錢是愛的代幣」那個因果順序的古典說法，自帶防操弄的門閂：不誠無物。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>「第二十五章」是朱熹《中庸章句》的分法，《禮記·中庸》原為一整篇不分章。</p>
+            </figure>
+            <figure class="q">
+              <blockquote>「合抱之木，生於毫末；九層之臺，起於累土；千里之行，始於足下。」</blockquote>
+              <figcaption><b>老子</b> · <span class="src">《老子》第六十四章（王弼本章次）</span>
+                <span class="mark" title="只到可靠二手，還沒親驗原件">⚠️</span>
+              </figcaption>
+              <p class="why">再遠的路都從腳下開始。它的價值不在新鮮，在無可反駁。</p>
+              <p class="disc"><span class="lbl">我們自己要先說清楚的</span>「第六十四章」是王弼／通行本的章次；郭店楚簡本較短，剛好停在「千里之行，始於足下」——我們要的那句正是最可靠的那一段。</p>
+            </figure>
+          </article></div>
+        </div>
+      </section>
+  <section class="section" id="ban">
+    <div class="wrap">
+      <p class="kicker">反面</p>
+      <h2>看起來完美貼合，但查出來不能用的九句</h2>
+      <p class="lead">這九句每一句都剛好貼我們某一塊肌肉，所以一定會被一再撿回來。查下去才發現作者是錯的、或者查無來源。<b>❌</b> 是整句不用；<b>⚠️</b> 是句子真的存在、但歸屬要寫對。概念要講就用自己的話講、不掛名字；該掛的名字就掛對。</p>
+      <p class="lead">其中最值得一提的是培訓市場引用率最高的那句「Tell me and I forget…」——它是《荀子·儒效》那段的鬆散意譯，而被掛上的兩個名字都不可能說過。原文就在上面 P2 那一格。</p>
+      <div class="bans">
+          <div class="ban hard"><p class="bantitle">❌ 「People will forget what you said, but they will never forget how you made them feel.」</p><p>看起來完美貼合 <b>A3 讓他記得</b>。</p><p><b>真作者是 Carl W. Buehner</b>，收於 Richard Evans《Quote Book》（1971）。坊間掛的那位美國詩人（1928–2014）從未說過；2003 年一封連鎖信造成誤植。</p><p>另有聲譽考量：真作者為 LDS 教會人物、語出教會語錄集，台灣企業培訓場景引用會帶宗教聯想。</p></div>
+          <div class="ban hard"><p class="bantitle">❌ 「Nobody cares how much you know, until they know how much you care.」</p><p>看起來完美貼合 <b>T「誰先給」</b>。</p><p>常被掛在美國第 26 任總統名下，<b>查無任何使用證據</b>；也被掛過 Zig Ziglar、John Maxwell。目前最早文獻是 1959 年維吉尼亞大學護理學院院長 Margaret Tyson 的畢業演說，但推測當時已在流傳，<b>原創者不明</b>。</p></div>
+          <div class="ban hard"><p class="bantitle">❌ 「Tell me and I forget, teach me and I may remember, involve me and I learn.」</p><p>看起來完美貼合 <b>P2 讓他有感</b>，而且是培訓市場引用率最高的一句。</p><p>坊間掛兩個名字：一位美國開國元勳、以及一位中國先秦教育家。<b>兩個都是假的。</b></p><p><b>它其實是《荀子·儒效》那段的鬆散意譯。</b> 荀子最早的英譯本是 <b>1928 年</b>，而那位開國元勳卒於 <b>1790 年</b>——時間上不可能。1953 年美國 HEW《Public Health Reports》刊印時還承認過中文來源，後來掛錯名是靠語錄網站擴散的。</p></div>
+          <div class="ban hard"><p class="bantitle">❌ 「If I had asked people what they wanted, they would have said faster horses.」</p><p>看起來完美貼合 <b>I1 讓他想要</b>（不要問他要什麼，要問他要去哪）。</p><p>掛在一位美國車廠創辦人名下，<b>查無任何證據</b>：他的自傳裡沒有，該車廠博物館約 200 條經過認證的語錄資料庫裡也沒有。目前最早的痕跡是郵輪設計師 <b>John McNeece</b>，<i>Cruise Industry News Quarterly</i>, 1999（當時<b>沒有</b>歸給任何人）；最早直接歸屬出現在 2001 年一封給 <i>Marketing Week</i> 的讀者投書。《哈佛商業評論》2011 年 8 月刊過 "Henry Ford Never Said the Fast Horse Quote"。</p></div>
+          <div class="ban hard"><p class="bantitle">❌ 「Culture eats strategy for breakfast.」</p><p>常被掛在那位奧地利裔管理學大師名下。<b>他的著作與訪談裡沒有任何記錄。</b>最早可追到 2000 年代初某車廠高管 Mark Fields（美聯社 2006 年報導它是他辦公室牆上的標語）；Krames, <i>Inside Drucker's Brain</i> (2009) 重述後把這個傳說固定下來。<b>該大師的研究機構明確表示他沒說過。</b></p></div>
+          <div class="ban soft"><p class="bantitle">⚠️ 「People don't want a quarter-inch drill, they want a quarter-inch hole.」</p><p>貼 <b>I1 讓他想要</b>，而且是結果思維最好用的一句。</p><p>句子在印刷品裡是<b>真的存在</b>的：Theodore Levitt, <i>The Marketing Imagination</i>(Free Press, 1983), p.128——<b>但 Levitt 在那裡把它歸給 Leo McGinneva。</b>Quote Investigator 另追到 1942 年賓州 Somerset 一則報紙廣告的近似版本。後來是 Christensen 的 HBR 著作把它推紅的。</p></div>
+          <div class="ban soft"><p class="bantitle">⚠️ 「桃李不言，下自成蹊」</p><p>貼 <b>P3 讓他放心</b>，出自《史記·卷一百九·李將軍列傳》太史公曰。</p><p><b>但司馬遷在原文裡明寫「諺曰」</b>——那是他<b>引用的一句既有諺語</b>，不是他的話。</p></div>
+          <div class="ban soft"><p class="bantitle">⚠️ 「其身正，不令而行；其身不正，雖令不從」</p><p>貼 <b>T3 讓他當真</b>，出現在上面同一段《史記》裡。</p><p><b>但司馬遷同樣明寫「傳曰」</b>，而且這句獨立見於<b>《論語·子路》</b>。</p></div>
+          <div class="ban soft"><p class="bantitle">⚠️ 「自反而縮，雖千萬人吾往矣」</p><p>貼 <b>I3 讓他答應</b>（底氣），<b>而且是整個 I 肌群最好的一句</b>，所以一定會被頻繁使用。</p><p>歸屬是<b>三層的</b>：《孟子·公孫丑上》記<b>曾子</b>述<b>孔子</b>語。</p><p><b>它不在《論語》裡。絕不可寫「孔子說」，也不可只寫「曾子說」。</b></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <p class="kicker">缺口</p>
+      <h2>一個我們公開承認的缺口</h2>
+      <div class="card gap">
+        <p><b>P3「用數據與第三方證明」這一格，沒有中國古典的祖宗。</b></p>
+        <p>查過了：經典講的壓倒性是「有德自然會顯」「不言之教」——那是<b>另一個主張</b>，不是「把證據端出來、讓別人替你證」。所以這一格的血緣是西方而且現代的。</p>
+        <p>把這件事講出來，反而證明這套框架不是事後硬套上去的。空著就空著，不硬造一句經部引文來填。</p>
+      </div>
+      <p class="lead more">四塊肌肉與十二個小肌群在做什麼、為什麼是這個順序，寫在<a href="/method">方法</a>那一頁。</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { padding-bottom: clamp(32px, 4vw, 48px); }
+  .head-lead { max-width: 44rem; margin-top: 14px; }
+  .atpi-rule { margin: 28px 0 22px; max-width: 420px; }
+
+  .tally { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+  .tally li { border-left: 3px solid var(--line); padding-left: 14px; }
+  .tally b { display: block; font-size: clamp(30px, 4vw, 40px); font-weight: 800;
+    line-height: 1.05; color: var(--act-deep); }
+  .tally span { display: block; margin-top: 4px; font-size: 14px; color: var(--ink-soft);
+    line-height: 1.6; }
+  .legend { margin: 26px 0 0; font-size: 14.5px; color: var(--ink-soft); line-height: 1.85;
+    max-width: 44rem; }
+
+  .bandhead { display: flex; align-items: flex-start; gap: 18px; flex-wrap: wrap; }
+  /* 大寫字母是這一塊的落款，不是標題——所以它淡、它不搶 h2。 */
+  .bandcode { font-size: clamp(54px, 7vw, 76px); font-weight: 900; line-height: .9;
+    color: var(--dim); opacity: .9; }
+  .bandname h2 { margin: 0; }
+  .bandask { margin: 6px 0 0; font-size: clamp(17px, 2vw, 19px); font-weight: 700;
+    color: var(--dim-deep); }
+  .bandlin { margin: 0 0 0 auto; max-width: 30rem; font-size: 15px; line-height: 1.8;
+    color: var(--ink-soft); background: var(--dim-tint); border-radius: var(--r-card);
+    padding: 14px 16px; }
+  .bandlin b { color: var(--ink); }
+
+  .cells { display: grid; gap: 18px; margin-top: 26px; }
+  .cell { padding: 22px 24px; }
+  .cell header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .cell h3 { margin: 0; font-size: clamp(20px, 2.4vw, 24px); }
+  .node { font-size: 13.5px; color: var(--ink-soft); }
+  .heart { margin: 10px 0 0; font-size: 14.5px; color: var(--ink-soft); }
+  .heart b { color: var(--ink); }
+  .lbl { display: block; font-size: 12px; font-weight: 700; letter-spacing: .1em;
+    color: var(--ink-soft); margin-bottom: 3px; }
+  .lin { margin: 16px 0 0; font-size: 15.5px; line-height: 1.85; }
+
+  .q { margin: 18px 0 0; padding: 16px 18px; background: var(--bg-alt);
+    border: 1px solid var(--line); border-radius: var(--r-card); }
+  .q blockquote { margin: 0; font-size: clamp(16.5px, 2vw, 18.5px); font-weight: 600;
+    line-height: 1.85; text-wrap: pretty; }
+  .q figcaption { margin-top: 10px; font-size: 14px; color: var(--ink-soft);
+    line-height: 1.7; }
+  .q figcaption b { color: var(--ink); }
+  .src { color: var(--ink-soft); }
+  .mark { cursor: help; }
+  .why { margin: 12px 0 0; font-size: 15.5px; line-height: 1.85; }
+  .disc { margin: 12px 0 0; padding-top: 12px; border-top: 1px dashed var(--line);
+    font-size: 14.5px; line-height: 1.8; color: var(--ink-soft); }
+
+  .bans { display: grid; gap: 14px; margin-top: 26px; }
+  .ban { border-radius: var(--r-card); padding: 18px 20px; font-size: 15px;
+    line-height: 1.85; border: 1px solid var(--line); }
+  .ban.hard { background: var(--a-tint); border-color: var(--a-deep); }
+  .ban.soft { background: var(--i-tint); border-color: var(--i-deep); }
+  .ban p { margin: 8px 0 0; }
+  .bantitle { margin: 0 !important; font-weight: 800; font-size: 16px; }
+
+  .gap { padding: 22px 24px; border-left: 5px solid var(--p-deep); margin-top: 22px; }
+  .gap p { margin: 10px 0 0; line-height: 1.9; }
+  .gap p:first-child { margin-top: 0; }
+  .more { margin-top: 28px; }
+
+  @media (max-width: 760px) {
+    .bandlin { margin-left: 0; max-width: none; }
+  }
+</style>
