@@ -1,0 +1,175 @@
+---
+/* 乾貨訂閱專屬著陸頁。LINE OA rich menu 右下格直接跳這。
+   跟 Newsletter 元件的差別：這頁只收 email，不提 LINE 入口——
+   使用者多半是從 LINE 來的，再推 LINE 等於原地踏步。
+   後端走 SHEET_API（跟官網文章頁、首頁的訂閱共用一支 Apps Script）。*/
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, SHEET_API } from '../consts';
+
+const title = '乾貨訂閱';
+const description = '每週一封信，從一個問題開始練——先練吸引，還是信任？';
+const source = 'subscribe-page';
+
+const schema = {
+  '@type': 'WebPage',
+  '@id': `${SITE.url}/subscribe/#webpage`,
+  name: title,
+  description,
+  url: `${SITE.url}/subscribe/`,
+  inLanguage: 'zh-Hant-TW',
+  isPartOf: { '@id': `${SITE.url}/#website` },
+};
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <section class="section">
+    <div class="wrap-text">
+      <p class="kicker">乾貨訂閱</p>
+      <h1>每週一封信<br>把影響力當<span class="hl">肌肉練</span></h1>
+      <p class="lead">
+        先練 A（吸引）還是 T（信任）？專業要怎麼被看見？推進為什麼不是推銷？
+        每週一封信，拆一塊肌肉的練法，附一個你今天就能試的小動作。
+      </p>
+
+      <h2>你會收到什麼</h2>
+      <ul class="plain">
+        <li><b>第一封立刻到</b>：〈先練 A 還是 T 的判斷法〉——90% 的人在這一題就答錯。</li>
+        <li><b>之後每週一封</b>：A／T／P／I 四塊肌肉輪流，一次只練一塊。</li>
+        <li><b>每封信都有一個小動作</b>：讀完就能用，不是讀完就忘。</li>
+      </ul>
+
+      <section class="form-sec" aria-labelledby="form-title">
+        <h2 id="form-title">把 Email 貼在這</h2>
+        <form class="form" data-source={source} data-endpoint={SHEET_API} novalidate>
+          <div class="fields">
+            <label class="visually-hidden" for="nl-email">Email</label>
+            <input id="nl-email" name="email" type="email" autocomplete="email" required
+                   placeholder="你的 Email" aria-describedby="nl-msg" />
+            <button class="btn btn-main" type="submit">訂閱</button>
+          </div>
+          <p class="msg" id="nl-msg" role="status" aria-live="polite"></p>
+          <p class="fine">我們不寄廣告，也不會把你的 Email 給任何人。隨時可以退訂。</p>
+        </form>
+      </section>
+
+      <p class="back">想先讀點什麼再決定？<a href="/articles">看文章</a>。</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  /* 低摩擦守則（規範 31）：追蹤或網路出事都不可以卡住使用者，一律只寫 console。 */
+  const form = document.querySelector<HTMLFormElement>('.form')!;
+  const email = form.querySelector<HTMLInputElement>('input[name="email"]')!;
+  const btn = form.querySelector<HTMLButtonElement>('button')!;
+  const msg = form.querySelector<HTMLElement>('.msg')!;
+  const endpoint = form.dataset.endpoint!;
+
+  const say = (text: string, good = false) => {
+    msg.textContent = text;
+    msg.classList.toggle('ok', good);
+    msg.classList.toggle('err', !good);
+  };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const value = email.value.trim();
+    if (!value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      say('請留下你的 Email。');
+      email.focus();
+      return;
+    }
+    btn.disabled = true;
+    const original = btn.textContent;
+    btn.textContent = '送出中…';
+    msg.textContent = '';
+
+    const payload = {
+      action: 'subscribe',
+      email: value,
+      name: '',
+      source: form.dataset.source || 'subscribe-page',
+      page: location.pathname,
+      timestamp: new Date().toISOString(),
+      track: (window as any).trackPayload?.() ?? {},
+    };
+
+    try {
+      /* text/plain＝簡單請求，不觸發 CORS 預檢（跟測驗端同一個做法） */
+      const r = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok || d.status !== 'ok') throw new Error(d.status || `HTTP ${r.status}`);
+
+      form.querySelector('.fields')!.remove();
+      say('訂閱好了，第一封信在路上。', true);
+      try { (window as any).track?.('lead_submit', { source: payload.source }); } catch {}
+    } catch (err) {
+      console.error('[subscribe]', err);
+      btn.disabled = false;
+      btn.textContent = original;
+      say('送出時卡了一下，再試一次？若還是不行，寫信到 hello@atpifit.com。');
+    }
+  });
+</script>
+
+<style>
+  .wrap-text { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+  .kicker {
+    font-size: 14px; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 8px;
+  }
+  h1 {
+    font-family: var(--font-serif, 'Noto Serif TC', serif);
+    font-weight: 900;
+    font-size: clamp(36px, 6vw, 56px);
+    line-height: 1.15;
+    letter-spacing: -.02em;
+    margin: 0 0 24px;
+  }
+  h1 .hl { color: var(--a, #e8734a); }
+  .lead { font-size: 18px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 48px; }
+  h2 { font-size: 22px; font-weight: 700; margin: 36px 0 12px; }
+  .plain { list-style: none; padding: 0; margin: 0 0 32px; }
+  .plain li { padding: 10px 0 10px 24px; position: relative; line-height: 1.6; }
+  .plain li::before {
+    content: ''; position: absolute; left: 0; top: 20px;
+    width: 12px; height: 4px; background: var(--a, #e8734a);
+    transform: skewX(-14deg);
+  }
+  .form-sec {
+    background: var(--warm, #F7F1EC);
+    border-radius: 16px;
+    padding: 32px;
+    margin: 48px 0 32px;
+  }
+  .form .fields {
+    display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px;
+  }
+  .form input[type="email"] {
+    flex: 1 1 260px; padding: 14px 18px;
+    border: 1px solid #d9c9b6; border-radius: 10px;
+    font: inherit; background: #fff;
+  }
+  .form .btn {
+    padding: 14px 28px;
+    border-radius: 10px; border: 0;
+    background: var(--ink, #2A1F14); color: #fff;
+    font-weight: 700; cursor: pointer; font: inherit;
+  }
+  .form .btn:hover { opacity: .9; }
+  .form .btn:disabled { opacity: .6; cursor: wait; }
+  .msg { margin-top: 12px; min-height: 1.5em; }
+  .msg.ok { color: #2a7c4e; }
+  .msg.err { color: #b53a2d; }
+  .fine { font-size: 12px; color: var(--ink-soft); margin-top: 12px; }
+  .back { margin-top: 32px; color: var(--ink-soft); }
+  .back a { color: var(--a, #e8734a); text-decoration: underline; }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0;
+    margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;
+  }
+</style>
