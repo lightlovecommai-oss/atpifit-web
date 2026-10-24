@@ -87,11 +87,14 @@ export const SHEET_API =
   'https://script.google.com/macros/s/AKfycbz7VxeV8ZmjSiGNO-G3ZwRLPg-H1H2NjXHy6brCU5yVaVoYOXB-LItU750j81Q3eno/exec';
 
 /* 關於平凡人光頭排第二（2026-09-10 拍板）：官網訪客多是「來查證的人」，
-   對他們第二重要的頁就是「教的人是誰」，不藏在最後。 */
+   對他們第二重要的頁就是「教的人是誰」，不藏在最後。
+   ⭐ 2026-10-24：「課程」改指 /gravity。/courses 是過渡期的課程頁，內容已全部搬進
+      超引力成交學長頁，該網址轉址過去（astro.config.mjs 的 redirects）。
+      標籤留「課程」不改成「超引力成交學」——導覽列是給不認識品牌的人用的。 */
 export const NAV = [
   { href: '/method', label: '方法' },
   { href: '/about', label: '關於平凡人光頭' },
-  { href: '/courses', label: '課程' },
+  { href: '/gravity', label: '課程' },
   { href: '/articles', label: '文章' },
   { href: '/glossary', label: '名詞' },
 ] as const;

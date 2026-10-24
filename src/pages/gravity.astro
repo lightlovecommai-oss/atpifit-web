@@ -11,8 +11,11 @@ import { SITE, LINKS, FOUNDER_PHOTO } from '../consts';
       段落照抄，不重寫；只有講座專屬那幾段（§7–§9、§11）沒有搬過來，那是另一個製作物的事。
    ⚠️ 舊版的舊生複訓開關（CTA_MODE）整組拿掉：舊生的路在 /courses/retrain，
       這頁退回純陌生人頁，主行動鈕永遠是免費 1v1 諮詢。
-   ⚠️ 方法論大圖只留「四個斷點」一張。12 小肌群牆與四塊肌肉在 /method/，
-      L1–L13 全貌、一週迴路、入場旅程在 /courses/——同一張圖不在兩頁各畫一次。
+   ⚠️ 方法論的主圖是「四個斷點」（§04）；L1–L13 的課表攤在 §06、交付物在 §07。
+      12 小肌群牆與四塊肌肉在 /method/——同一張圖不在兩頁各畫一次。
+   ⭐ 2026-10-24：/courses/ 是過渡期的課程頁，內容全部搬進這一頁，該頁退役轉址過來
+      （astro.config.mjs 的 redirects）。導覽列的「課程」也改指這裡。
+      /courses/retrain 是另一條路（電話邀請的舊生），不受影響、照常運作。
 
    ⚠️ 視覺＝科技版深色底（bodyClass="theme-dark"），這不是門面破例，是產品線區隔：
    影響力健身房＝館，暖版；超引力成交學＝實戰私教，科技版。色值真相＝
@@ -135,12 +138,74 @@ const how = [
 ];
 
 /* ⚠️ 不放價格：定價是諮詢現場攤開狀況之後才講的事，不在 LP 上比價（03-產品體系總覽 §C）。
-   這份只給 schema 的 Course 用——頁面上不再排「兩個課」的卡，那份在 /courses/。 */
+   ⭐ 2026-10-24：這份開始也餵 §06 課程結構的兩張覆蓋卡——所以多了 upto（跟 range 是同一件事
+      的兩種形式，給覆蓋條畫幾格用）。要改課程範圍兩邊都要改。 */
 const courses = [
-  { name: '超引力顧問課', range: 'L1–L8', dim: 'T',
+  { name: '超引力顧問課', range: 'L1–L8', upto: 8, dim: 'T',
     stages: '鍛鍊段＋放大段', who: '一對一還沒跑順，講完之後對方沒有下一步。' },
-  { name: '超引力公眾演說課', range: 'L1–L13', dim: 'I',
+  { name: '超引力公眾演說課', range: 'L1–L13', upto: 13, dim: 'I',
     stages: '鍛鍊段＋放大段＋演說段', who: '一對一已經會了，卡在一次只能面對一個人。' },
+];
+const TOTAL = 13;
+
+/* 三段 L1–L13。段落說明三句搬自已退役的 /courses/，一字不動。
+   from／to 畫薄片階梯用，code 給人讀——同一件事的兩種形式，改範圍要兩邊同步。
+
+   lessons ＝ 每一段的課表。真相＝productkit/1-手冊（內部）/15-課程梳理-L1-L12對到大包裝.md
+   （檔名是舊的，裡面已經是 L1–L13；該檔 §85 說「檔名維持舊名，另案處理」）。
+   ⚠️ L1–L8 這八個名字是老師 2026-10-17 逐堂裁定的定稿版，Skool 課程樹也用這八句，
+      一個字都不要改；要改回去改那份梳理表，再同步過來。
+   ⚠️ L9–L13 還沒有定稿課名，這裡填的是梳理表 §1 的「主題／一句話」欄，不是我自己編的。
+      其中 L12 整堂「尚待老師拍板」（梳理表 §47）——拍板後這一列可能整列換掉。
+      課名定稿之後回來換成定稿句。 */
+const stages = [
+  { from: 1, to: 4, code: 'L1–L4', name: '鍛鍊段',
+    body: '一課一塊肌肉。L1 練吸引、L2 練信任、L3 練專業、L4 練推進，四堂涵蓋十二個小肌群。這一段練的是單點零件，目的是先讓每一塊都動得起來。',
+    lessons: [
+      { n: 1, dim: 'A', t: '創造 PR99% 的超引力場' },
+      { n: 2, dim: 'T', t: '存入 3 層次的信任資產' },
+      { n: 3, dim: 'P', t: '做出 0 比價的專業體驗' },
+      { n: 4, dim: 'I', t: '練成 主動 +1 的感召成交' },
+    ] },
+  { from: 5, to: 8, code: 'L5–L8', name: '放大段',
+    body: '把四塊肌肉串成你自己的一對一路徑。同樣是那四塊，但這裡練的是怎麼在一場真實的對話裡把它們接起來。',
+    lessons: [
+      { n: 5, dim: '四塊', t: '跑通 4in1 超引力顧問腳本' },
+      { n: 6, dim: '四塊', t: '挑出 6 選 1 的甜蜜變現路徑' },
+      { n: 7, dim: 'T', t: '養熟 7×11×4 的成交水溫' },
+      { n: 8, dim: 'T', t: '守住 3 不賣的成交初心' },
+    ] },
+  { from: 9, to: 13, code: 'L9–L13', name: '演說段',
+    body: '把同一條路搬上舞台。從一對一換到一對多，<span class="nb">肌肉沒變，</span><span class="nb">動作變了。</span>',
+    lessons: [
+      { n: 9, dim: 'A', t: '銷講開場：一開口就讓全場願意聽' },
+      { n: 10, dim: 'P', t: '舞台版招牌動作：讓每個乾貨都有體驗感' },
+      { n: 11, dim: 'I', t: '銷講收單：收單不是逼，是送禮物' },
+      { n: 12, dim: '四塊', t: '三種長度的講稿：5 分、30 分、1.5 小時' },
+      { n: 13, dim: 'I', t: '公眾演說大師之路（含畢業考核）' },
+    ] },
+];
+
+/* 每一課做出來的那一份東西。真相＝productkit/4-學習單/交付物/L{n}-*.md 的開頭一句話，
+   照抄不改寫（只補句末句號）。規格在同夾的 00-交付物規格.md。
+   ⚠️ 目前實際存在的是 L1–L7 七份，所以這裡就只列七份——L8 以後還沒做出來，不補空殼。
+      做好了再加，不要先寫一個看起來有的。
+   ⚠️ tag 是維度標籤；L5／L6 是四塊一起跑、L7 是 T＋I，這幾張不吃 ATPI 單色。 */
+const kits = [
+  { l: 'L1', dim: 'A', tag: 'A 吸引', name: '超引力牛肉庫',
+    s: '把你創造過的「結果」分五類收好，隨時端得出來——這是你整套溝通的彈藥庫。' },
+  { l: 'L2', dim: 'T', tag: 'T 信任', name: '信賴感提問集',
+    s: '把你的問句照「皮→肉→骨」三層收成一本，現場照著問——這是信任這塊肌肉唯一可以事先備好、上場照唸的東西。' },
+  { l: 'L3', dim: 'P', tag: 'P 專業', name: '超引力圖像化收單圖',
+    s: '把你的服務畫成 3–4 格、當著他的面畫一次——讓「你有沒有料」從用聽的，變成用看的。' },
+  { l: 'L4', dim: 'I', tag: 'I 推進', name: '被動跟進乾貨磁鐵',
+    s: '做一個「他拿了會用、用了會回頭找你」的東西，配一句讓他回來的說法——這是被拒之後，唯一還在替你工作的東西。' },
+  { l: 'L5', dim: null, tag: '四塊一起', name: '超引力 1v1 變現腳本',
+    s: '把 60 分鐘的諮詢拆成一段一格小肌群、一段一個看得見的過關訊號。' },
+  { l: 'L6', dim: null, tag: '四塊一起', name: '個人甜蜜變現路徑分析報告',
+    s: '把健檢分數變成一條你實際會走的路——這一份不是給你答案，是讓你第一次看見自己的衝突。' },
+  { l: 'L7', dim: null, tag: 'T＋I', name: '超引力顧客關係表',
+    s: '把你想推進的每一段關係放進同一張表，用「他現在幾度」和「我們走到哪」定位。' },
 ];
 
 const faq = [
@@ -174,6 +239,8 @@ const stops = [
   { id: 'g-coach', label: '教你的人是誰' },
   { id: 'g-order', label: '有順序的' },
   { id: 'g-get', label: '你會帶走' },
+  { id: 'g-ladder', label: '怎麼安排' },
+  { id: 'g-kit', label: '你會做出來的' },
   { id: 'g-proof', label: '練過的人' },
   { id: 'g-fit', label: '誰適合來' },
   { id: 'g-how', label: '怎麼進來' },
@@ -497,8 +564,8 @@ const schema = [
   </section>
 
   <!-- ═══ 04 不是加法，是有順序的 ═══
-       這頁只留這一張方法論圖。12 小肌群牆與四塊肌肉在 /method/，
-       L1–L13 全貌、一週迴路、入場旅程在 /courses/——同一張圖不在兩頁各畫一次。 -->
+       這頁只留這一張方法論圖。12 小肌群牆與四塊肌肉在 /method/——
+       同一張圖不在兩頁各畫一次。L1–L13 的課表在下面 §06，不在這裡。 -->
   <section class="section" id="g-order">
     <div class="wrap">
       <header class="shead">
@@ -570,11 +637,123 @@ const schema = [
         ))}
       </ol>
 
-      <p class="gets-note">想先自己把課的全貌看完？<a href="/courses/"><span class="nb">十三個模組、</span><span class="nb">上課方式、</span><span class="nb">兩個課怎麼選，</span><span class="nb">都在課程頁</span></a>。<span class="nb">四塊肌肉底下那十二條小肌群，</span><a href="/method/"><span class="nb">在方法頁</span></a>。</p>
+      <p class="gets-note">想看十三個模組怎麼排？<a href="#g-ladder"><span class="nb">課表就在下一站</span></a>。<span class="nb">四塊肌肉底下那十二條小肌群，</span><a href="/method/"><span class="nb">在方法頁</span></a>。</p>
     </div>
   </section>
 
-  <!-- ═══ 06 練過的人 ═══
+  <!-- ═══ 06 課程結構：三段 L1–L13 ═══
+       ⭐ 2026-10-24 新增：這一站是退役的 /courses/ 搬過來的，跟 §04 方法論接起來——
+          先看順序（§04）、再看怎麼安排（§06）、再看會做出什麼（§07）、才看證明（§08）。
+       ⚠️ 階梯、段落說明、兩張覆蓋卡的字句一字不動照搬。課名真相在 frontmatter 的註解。
+       ⚠️ 前後都是 section-skew，這一站自己退回 section——三段連續斜切會暈。 -->
+  <section class="section" id="g-ladder">
+    <div class="wrap">
+      <header class="shead">
+        <span class="snum num" aria-hidden="true">{no('g-ladder')}</span>
+        <p class="kicker">怎麼安排</p>
+        <h2 class="reveal">三個段落，<span class="hl">十三個模組</span></h2>
+        <p class="lead sec-lead reveal" style="--rd:.06s">一個模組等於一週，<span class="nb">全系列從 L1 排到 L13。</span></p>
+      </header>
+
+      <!-- 三段 L1–L13 的階梯：欄寬跟模組數成正比（4:4:5）、片高從 L1 一路爬到 L13。
+           階梯感是版面在講的事，不是裝飾——不要排成三張並排的卡。 -->
+      <ol class="ladder">
+        {stages.map((s, i) => (
+          <li class="lstage reveal" style={`--rd:${0.1 + i * 0.08}s`}>
+            <ul class="lmods" aria-hidden="true">
+              {Array.from({ length: s.to - s.from + 1 }).map((_, k) => {
+                const n = s.from + k;
+                return <li style={`--h:${34 + (n - 1) * 6}px; --lo:${(0.28 + (n - 1) * 0.045).toFixed(3)}`}><i></i><b>L{n}</b></li>;
+              })}
+            </ul>
+            <p class="lstage-code">{s.code}</p>
+            <h3 class="lstage-name">{s.name}</h3>
+            <p class="lstage-body" set:html={s.body} />
+
+            {/* 課表直接長在自己那一段底下，不另開一張十三列的表：
+                段名在上面講過一次，再列一張表就要讀兩次才對得起來。
+                維度籤借 ATPI 四色，跟 §04 的四個斷點是同一組顏色——
+                讀者在這裡才會發現課表就是那四塊肌肉的排程。 */}
+            <ol class="llist">
+              {s.lessons.map((m) => (
+                <li class="lrow">
+                  <span class="ll-n num">L{m.n}</span>
+                  <span class="ll-d" data-dim={m.dim.length === 1 ? m.dim : undefined}>{m.dim}</span>
+                  <span class="ll-t">{m.t}</span>
+                </li>
+              ))}
+            </ol>
+          </li>
+        ))}
+      </ol>
+
+      <!-- 兩個課的覆蓋條：兩個課攤在同一條十三格的尺上，差別用看的就知道，
+           不用讀完兩段文字再自己比對。 -->
+      <h3 class="ladder-k">兩個課，怎麼選</h3>
+      <p class="ladder-sub">對外只有這兩個，<span class="nb">中間的段落不單獨販售。</span></p>
+      <div class="grid courses-grid">
+        {courses.map((c, i) => (
+          <article class="card muscle reveal lift" data-dim={c.dim} style={`--rd:${0.1 + i * 0.08}s`}>
+            <span class="muscle-tag">{c.range}</span>
+            <h3 class="course-name">{c.name}</h3>
+            <p class="stages-line">{c.stages}</p>
+            <div class="cov" aria-hidden="true">
+              {Array.from({ length: TOTAL }).map((_, k) => (
+                <i class:list={[{ on: k < c.upto }]}></i>
+              ))}
+            </div>
+            <p class="course-who"><b>適合的情況</b><br />{c.who}</p>
+          </article>
+        ))}
+      </div>
+      <p class="ladder-note">這個選擇不會由你自己在網頁上決定。它會在<span class="nb">免費 1v1 諮詢</span>的現場，把你的狀況<span class="nb">攤開來看過之後</span>才決定——<span class="nb">我們不預設賣哪一個。</span></p>
+    </div>
+  </section>
+
+  <!-- ═══ 07 你會做出來的東西 ═══
+       ⭐ 2026-10-24 新增。上一站講的是「課怎麼排」，那是我們的時間表；這一站講的是
+          「你手上會多出哪幾份東西」，那是他的。課綱在消費者眼裡是抽象的，交付物不是。
+       ⚠️ 七張卡的那一句照抄 productkit/4-學習單/交付物/L{n}-*.md 的開頭，不重寫。
+       ⚠️ 只有七份，因為目前就只做出七份（L1–L7）。不補 L8 以後的空殼。
+       ⚠️ 不做成跟 §05「你會帶走」一樣的編號規格列——那一站是抽象好處，這一站是具體物件，
+          長得一樣會讀成同一件事講兩次。這裡走卡片。 -->
+  <section class="section section-skew" id="g-kit">
+    <div class="wrap">
+      <header class="shead">
+        <span class="snum num" aria-hidden="true">{no('g-kit')}</span>
+        <p class="kicker">你會做出來的</p>
+        <h2 class="reveal">每一課的終點，<span class="hl">不是筆記</span></h2>
+        <p class="lead sec-lead reveal" style="--rd:.06s">是一份你自己做出來、<span class="nb">下一場對話就能帶著用的東西。</span>課上完，<span class="nb">這幾份會留在你手上。</span></p>
+      </header>
+
+      <ul class="kits">
+        {kits.map((k, i) => (
+          <li class="kit reveal lift" data-dim={k.dim ?? undefined} style={`--rd:${i * 0.05}s`}>
+            <div class="kit-h">
+              <span class="kit-l num">{k.l}</span>
+              <span class="kit-tag">{k.tag}</span>
+            </div>
+            <h3 class="kit-n">{k.name}</h3>
+            <p class="kit-s">{k.s}</p>
+          </li>
+        ))}
+      </ul>
+
+      <!-- 三種做法與「完成線設得很低」照 00-交付物規格 §一／§二⑤ 的立場寫，
+           這段是骨層：我們在意的是他有沒有開始動，不是交出來的東西好不好看。 -->
+      <div class="kit-how">
+        <p class="kit-how-t">每一份都有三種做法，<b>挑一種就好</b></p>
+        <ul class="kit-ways">
+          <li><b>丟給 AI</b>　每一份都附一段可以直接複製的提示詞</li>
+          <li><b>自己手寫</b>　一張 A4 印得下，不用開電腦</li>
+          <li><b>在影響力健身房打卡</b>　做完就記一塊肌肉，進度自己看得到</li>
+        </ul>
+        <p class="kit-how-n">「做完」這條線我們故意設得很低——<b><span class="nb">寧可一份粗的做完，</span><span class="nb">不要一份精緻的沒開始。</span></b><span class="nb">只要有改變就會出結果，</span><span class="nb">那才是你來的原因。</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 08 練過的人 ═══
        上面那份是文字結果（照抄來源的數字與原話），下面三張是 productkit 出好的見證卡原圖。
        卡片裡的原始對話／貼文截圖才是可信度來源，拆成 HTML 就只剩轉述。
        ⚠️ 圖是暖版，刻意讓它像實體卡疊在科技底上。
@@ -617,7 +796,7 @@ const schema = [
     </div>
   </section>
 
-  <!-- ═══ 07 誰適合／誰不適合 ═══
+  <!-- ═══ 09 誰適合／誰不適合 ═══
        兩欄並排，不把「不適合」藏在最底下。先說清楚比較公平，也是在篩掉諮詢現場會尷尬的人。 -->
   <section class="section section-skew" id="g-fit">
     <div class="wrap">
@@ -641,7 +820,7 @@ const schema = [
     </div>
   </section>
 
-  <!-- ═══ 08 怎麼進來 ═══
+  <!-- ═══ 10 怎麼進來 ═══
        三站，前兩站都免費而且明講。不講的話這兩步看起來像兩道要付錢的門檻。 -->
   <section class="section" id="g-how">
     <div class="wrap-text">
@@ -662,7 +841,7 @@ const schema = [
     </div>
   </section>
 
-  <!-- ═══ 09 FAQ ═══ -->
+  <!-- ═══ 11 FAQ ═══ -->
   <section class="section section-skew" id="g-faq">
     <div class="wrap-text">
       <header class="shead narrow">
@@ -1267,7 +1446,184 @@ const schema = [
   }
   .gets-note { margin-top: 24px; font-size: 15px; color: var(--ink-soft); line-height: 1.9; max-width: 62ch; }
 
-  /* ═══ 06 練過的人 ═══
+  /* ═══ 06 課程結構：三段 L1–L13 階梯 ═══
+     搬自 /courses/，科技底下的三個調整：
+     ① 薄片的 --act 在亮底是磚橘（錢鈕色），深底上拿它鋪 13 片會跟 .btn-main 搶注意力——
+        所以改用 --act-deep 的亮金，加 .3→.86 的透明度梯度把 L1→L13 的強度差拉開。
+     ② 段分界線 ::before 深底幾乎看不到，用 --line-soft 加 .55 透明度。
+     ③ .cov 底色若用 var(--ink)（深底是亮白）透明度 .09 直接消失，改白加 .08 疊得起來。 */
+  .ladder {
+    list-style: none; padding: 0; margin-top: 36px;
+    display: grid; grid-template-columns: 4fr 4fr 5fr;
+    gap: clamp(18px, 2.6vw, 38px);
+    /* 從頂端對齊，不是底部：三段的說明字數不一樣，底部對齊會把字少的那段整個往下推，
+       薄片的底線跟著錯開——那條底線一斷，三段就不再是同一道往上爬的階梯。 */
+    align-items: start;
+  }
+  .lstage { position: relative; }
+  /* 段與段之間的分界線，用斜的（跟全站薄片同角度） */
+  .lstage + .lstage::before {
+    content: ""; position: absolute;
+    left: calc(clamp(18px, 2.6vw, 38px) / -2); bottom: 0;
+    width: 1px; height: 100%;
+    background: var(--line-soft);
+    transform: skewX(var(--skew)); opacity: .55;
+  }
+  /* 固定高度＝最高那片（L13）＋標籤的高度。沒有它，三段的薄片各自貼著自己的底，
+     下面的文字就會跟著階梯一路往下錯開。 */
+  .lmods {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; align-items: flex-end; gap: 5px;
+    height: 128px;
+  }
+  .lmods > li { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .lmods i {
+    display: block; width: 100%; height: var(--h);
+    background: var(--act-deep); opacity: var(--lo);
+    border-radius: var(--slice-r);
+    transform: skewX(var(--skew));
+    box-shadow: 0 0 10px rgba(232, 200, 154, .18);
+  }
+  .lmods b { font-size: 11px; font-weight: 700; color: var(--ink-soft); letter-spacing: .02em; }
+
+  .lstage-code {
+    margin-top: 18px; font-size: 12px; font-weight: 700;
+    letter-spacing: .08em; color: var(--i-deep);
+  }
+  .lstage-name { margin-top: 4px; font-size: clamp(19px, 2.2vw, 23px); color: var(--ink); }
+  .lstage-body { margin-top: 8px; font-size: 15.5px; color: var(--ink-soft); line-height: 1.85; text-wrap: pretty; }
+
+  /* 每一段底下的課表。上緣那條細線把「段的說明」跟「段的課表」切開，
+     不然 13 列課名接在說明段後面會讀成同一段文字。 */
+  .llist {
+    list-style: none; padding: 16px 0 0; margin: 16px 0 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .lrow {
+    display: grid;
+    grid-template-columns: 2.4em 2.9em 1fr;
+    align-items: baseline; gap: 8px;
+    padding: 7px 0;
+  }
+  .lrow + .lrow { border-top: 1px dashed rgba(234, 241, 250, .07); }
+  .ll-n { font-size: 12.5px; font-weight: 700; color: var(--ink-3); letter-spacing: .03em; }
+  /* 維度籤：單字母的吃 ATPI 四色，「四塊」兩個字的不吃——
+     四塊一起跑的那幾課沒有專屬色，硬挑一色會說謊。 */
+  .ll-d {
+    justify-self: start;
+    font-size: 11px; font-weight: 800; letter-spacing: .04em;
+    color: var(--ink-3);
+    padding: 2px 6px; border-radius: 5px;
+    background: rgba(234, 241, 250, .06);
+    transform: skewX(var(--skew));
+  }
+  .ll-d[data-dim] { color: var(--dim); background: var(--dim-tint); }
+  .ll-t { font-size: 15px; color: var(--ink); line-height: 1.6; text-wrap: pretty; }
+
+  @media (max-width: 760px) {
+    /* 窄螢幕：三欄疊成三列，每一段自己一排薄片＋文字 */
+    .ladder { grid-template-columns: 1fr; gap: 30px; }
+    .lstage + .lstage::before { display: none; }
+    .lstage + .lstage { border-top: 1px solid var(--line-soft); padding-top: 26px; }
+    /* 單欄時薄片不能再 flex:1 撐滿——一片 100px 高 34px 就成了橫躺的色塊，
+       階梯感全沒了。固定窄寬度，高度差才重新變成畫面上最明顯的事。 */
+    .lmods { justify-content: flex-start; gap: 8px; height: 150px; }
+    .lmods > li { flex: 0 0 auto; width: 44px; }
+    .lstage-body { max-width: 44ch; }
+  }
+
+  /* ═══ 06 兩個課的覆蓋條 ═══
+     ⚠️ 用 .courses-grid 不用 .grid-2 的 auto-fit：auto-fit 會在中等寬度（900–1024px）
+        把兩張卡壓成一欄一卡，看起來像只買得到一門。寬度強制兩欄。 */
+  .ladder-k {
+    margin-top: clamp(46px, 6vw, 72px);
+    font-size: clamp(21px, 2.6vw, 26px); color: var(--ink);
+  }
+  .ladder-sub { margin-top: 8px; font-size: clamp(16px, 1.9vw, 18px); color: var(--ink-soft); max-width: 50ch; }
+  .courses-grid {
+    margin-top: 24px; gap: clamp(18px, 2.4vw, 28px);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 640px) { .courses-grid { grid-template-columns: 1fr; } }
+
+  .course-name { font-size: clamp(19px, 2.2vw, 22px); color: var(--ink); margin-top: 10px; }
+  .stages-line { margin-top: 10px; font-size: 15px; color: var(--ink-soft); }
+
+  .cov { display: flex; gap: 3px; margin-top: 16px; }
+  .cov i {
+    flex: 1; height: 16px;
+    background: rgba(234, 241, 250, .08);
+    border-radius: 3px;
+    transform: skewX(var(--skew));
+  }
+  .cov i.on {
+    background: var(--dim); opacity: .88;
+    box-shadow: 0 0 8px var(--dim-tint);
+  }
+
+  .course-who { margin-top: 18px; font-size: 15.5px; color: var(--ink-3); line-height: 1.75; text-wrap: pretty; }
+  .course-who b {
+    display: block; margin-bottom: 4px;
+    font-size: 12.5px; font-weight: 800; letter-spacing: .08em; color: var(--ink-soft);
+  }
+
+  .ladder-note {
+    margin-top: 28px; font-size: 15.5px; color: var(--ink-soft);
+    line-height: 1.9; max-width: 62ch; text-wrap: pretty;
+  }
+
+  /* ═══ 07 你會做出來的東西 ═══
+     七張不排 2×2／3×3 的正方格：七是奇數，最後一格會留一個洞。
+     寬螢幕上讓它流成四欄（4＋3，只空一格）而不是三欄（3＋3＋1，最後一排孤零零一張，
+     看起來像漏了兩份）。用 auto-fit 自己流，不寫死欄數。
+     ⚠️ 卡片本身不用 .card：那個類帶邊框＋內距，七張一起上整段會變成一面磚牆。
+        這裡只用左邊一條維度色的直線當分隔，重量輕得多。 */
+  .kits {
+    list-style: none; padding: 0;
+    margin-top: clamp(28px, 4vw, 44px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(238px, 1fr));
+    gap: clamp(16px, 2.2vw, 26px);
+  }
+  .kit {
+    position: relative;
+    padding: 2px 0 2px 16px;
+    border-left: 2px solid var(--dim, var(--line-soft));
+  }
+  .kit[data-dim] { border-left-color: var(--dim); }
+  .kit-h { display: flex; align-items: center; gap: 8px; }
+  .kit-l { font-size: 12.5px; font-weight: 700; color: var(--ink-3); letter-spacing: .03em; }
+  .kit-tag {
+    font-size: 11px; font-weight: 800; letter-spacing: .04em;
+    color: var(--dim, var(--ink-3));
+    padding: 2px 7px; border-radius: 5px;
+    background: var(--dim-tint, rgba(234, 241, 250, .06));
+    transform: skewX(var(--skew));
+  }
+  .kit-n { margin-top: 10px; font-size: clamp(17px, 1.9vw, 19px); color: var(--ink); line-height: 1.45; }
+  .kit-s { margin-top: 8px; font-size: 14.5px; color: var(--ink-soft); line-height: 1.8; text-wrap: pretty; }
+
+  /* 三種做法：這塊是「門檻很低」在講的，所以刻意不做成第四種卡片，
+     用一個淡底的框把它跟上面七張分開，讀起來像一句補充而不是又一組選項。 */
+  .kit-how {
+    margin-top: clamp(32px, 4.5vw, 52px);
+    padding: clamp(20px, 3vw, 30px);
+    border: 1px solid var(--line-soft); border-radius: 16px;
+    background: rgba(234, 241, 250, .025);
+  }
+  .kit-how-t { font-size: clamp(16px, 1.9vw, 18px); color: var(--ink); }
+  .kit-how-t b { color: var(--i-deep); }
+  .kit-ways { list-style: none; padding: 0; margin-top: 14px; display: grid; gap: 10px; }
+  .kit-ways li { font-size: 15px; color: var(--ink-soft); line-height: 1.7; }
+  .kit-ways b { color: var(--ink); }
+  .kit-how-n {
+    margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line-soft);
+    font-size: 15px; color: var(--ink-soft); line-height: 1.9; text-wrap: pretty;
+  }
+  .kit-how-n b { color: var(--ink); }
+  @media (min-width: 720px) { .kit-ways { grid-template-columns: repeat(3, 1fr); gap: 18px; } }
+
+  /* ═══ 08 練過的人 ═══
      文字結果排兩欄，六條掃得完；客戶自己說的那兩句放進底色框——
      品牌金句才給金色大引號，客戶原話走底色框，兩種引號不混用。 */
   .results {
@@ -1297,7 +1653,7 @@ const schema = [
   .proof-card img { display: block; width: 100%; height: auto; }
   .proof-note { margin-top: 16px; font-size: 13px; color: var(--ink-soft); }
 
-  /* ═══ 07 誰適合／誰不適合 ═══
+  /* ═══ 09 誰適合／誰不適合 ═══
      兩欄並排，不把「不適合」縮在最底下。綠勾那欄用信任綠、紅叉那欄用灰——
      「不適合」不是警告，是誠實，所以不給它紅色。 */
   .fit { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(20px, 3vw, 40px); margin-top: 34px; }
@@ -1325,7 +1681,7 @@ const schema = [
   .fit-yes li::before { background: var(--t); }
   .fit-no li { color: var(--ink-soft); opacity: .92; }
 
-  /* ═══ 08 怎麼進來（四色縱線＋現在位置脈動）═══ */
+  /* ═══ 10 怎麼進來（四色縱線＋現在位置脈動）═══ */
   .map { position: relative; margin-top: 30px; padding-left: 26px; }
   .map::before {
     content: ""; position: absolute; left: 8px; top: 14px; bottom: 14px; width: 3px; border-radius: 3px;
