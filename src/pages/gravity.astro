@@ -171,6 +171,52 @@ const courses = [
 ];
 const TOTAL = 14;
 
+/* ⭐ 2026-10-25 老師口述改版：§06 的主架構＝三層。
+   🔴 **三塊是「成交」裡面的三塊，不是跟成交並列的三角。** 我第一版把它排成
+      ①流量 ②成交 ③商品 三個同級的角，老師當場退回：
+      「在成交裡面應該要包含商品、流量跟腳本……只不過我的切入角度是由腳本來切，
+        也就是成交腳本，這個是我最強的。」
+      所以 is-main 那一格是**腳本**，不是「成交」——成交是這三塊的容器（＝超引力成交學本身）。
+   ⭐ 順序照他口述的「商品、流量、跟腳本」，而且這個順序在講一件事：
+      前兩塊都可以換，最後一塊換不掉。排成別的順序，那句定位就失去落點。
+      老師原話：「商品可以換，然後呢流量也可以換，但是成交能力是你只要抓到一個客戶
+      你就可以變現了……商品換了沒有差，因為我有成交能力，然後流量只是來做放大用的，
+      然後呢商品就是我找我認同的。」
+   ⚠️ 八個章節名全是老師逐條口述的定稿，照抄不改寫。F1–F4 的 out 是他從兩個選項裡逐堂挑的
+      （F1/F2/F3 挑選 1、F4 挑選 2），P1–P4 的 out 是他原本就一起給的。
+   ⚠️ 不放價格。三門初階課合售 6600、兩個 SKU 都免費附贈——金額是諮詢現場的事，
+      這頁只寫「報名任一課程都含」。
+   🟡「離錢最近」在這一段出現兩次，指的是兩件事：F1 的章節名講的是**通路**離錢遠近，
+      下面定位句講的是**腳本**這一塊離錢最近。同頁撞詞，已回報老師，等他裁要不要改一邊。
+   🟡 商品／流量兩塊庫裡零素材（只有章節名與產出名，沒有逐字稿、沒有教材）。所以這裡只放
+      標題與產出，不寫結果句——下面 L1–L14 每一列都有結果句，這兩塊空著是看得出來的洞，
+      刻意的。有了逐字稿再補，不要先編一句撐版面。 */
+const triangle = [
+  { no: '①', role: '商品', sw: '可以換', name: '商品靈魂定位',
+    items: [
+      { k: 'P1', t: '重新理解產品的四種賣法', out: '<span class="nb">賣價格／賣產品／賣服務／賣自己</span><span class="nb">四優勢</span>' },
+      { k: 'P2', t: '產品的結果思維', out: '你的結果案例庫' },
+      { k: 'P3', t: '設計個人專屬解決問題框架', out: '<span class="nb">服務的 n 步驟／x 元素</span>' },
+      { k: 'P4', t: '高單價值堆疊整理法', out: '一頁產品堆疊簡報' },
+    ] },
+  { no: '②', role: '流量', sw: '可以換', name: '專屬流量來源',
+    items: [
+      { k: 'F1', t: '離錢最近的流量變現法', out: '你的通路離錢遠近排序表' },
+      { k: 'F2', t: '選出專屬流量起手式', out: '<span class="nb">一條主通路＋第一個固定動作</span>' },
+      { k: 'F3', t: '整理沉澱客戶名單', out: '沉澱名單盤點表' },
+      { k: 'F4', t: '喚醒客戶的 +1 鉤子設計', out: '<span class="nb">一個 +1 鉤子＋發送名單</span>' },
+    ] },
+  { no: '③', role: '腳本', sw: '換不掉', name: '成交腳本', main: true,
+    note: '<span class="nb">這一塊就是我們切進去的角度。</span><span class="nb">底下兩個核心、十四個模組，</span><span class="nb">練的全是它。</span>' },
+];
+
+/* 2 大成交核心。老師 2026-10-25：成交的地基就這兩塊，十四個模組是這兩件事在不同場景的練法。
+   ⚠️ 不要替這兩個名字加形容詞或副標。庫裡零素材，寫出來的任何一句都是我自己編的。 */
+const cores = [
+  { k: '01', t: '講故事' },
+  { k: '02', t: '問問題' },
+];
+
 /* 三段 L1–L14。from／to 畫薄片階梯用，code 給人讀——改範圍要兩邊同步。
    ⭐ 2026-10-25：段落說明（原本三句話的 body）拿掉了。它寫的是「這一段在練什麼」，
       但下面課表每一列已經有維度籤＋課名＋結果句，同一件事講兩次，而且先講的那次最抽象。
@@ -701,12 +747,63 @@ const schema = [
       <header class="shead">
         <span class="snum num" aria-hidden="true">{no('g-ladder')}</span>
         <p class="kicker">怎麼安排</p>
-        <h2 class="reveal">三個段落，<span class="hl">十四個模組</span></h2>
-        <p class="lead sec-lead reveal" style="--rd:.06s">一個模組等於一週，<span class="nb">全系列從 L1 排到 L14。</span></p>
+        <h2 class="reveal"><span class="nb">成交裡的三塊，</span><span class="hl nb">我們從換不掉的那塊切</span></h2>
+        <p class="lead sec-lead reveal" style="--rd:.06s">商品、流量、腳本都在成交裡。<span class="nb">腳本底下兩大核心，</span><span class="nb">再往下拆成十四個模組。</span></p>
       </header>
 
-      <!-- 三段 L1–L14 的階梯：欄寬跟模組數成正比（4:4:6）、片高從 L1 一路爬到 L14。
+      <!-- 第一層：成交裡的三塊。
+           🔴 這三塊是「成交」**裡面**的三塊，不是跟成交並列的三個角。成交＝容器＝超引力成交學本身。
+              前一版排成①流量②成交③商品三個同級的角，老師當場退回。不要再排回去。
+           ⭐ 順序（商品→流量→腳本）本身在講一件事：前兩塊都可以換，最後一塊換不掉。
+              排成別的順序，底下那句定位就失去落點。
+           ⚠️ 腳本那一格刻意不列章節：它往下展開成第二、第三層，列了會變成同一件事講三次。
+              它的 is-main 樣式是在說「你接下來讀的整段都在這一格裡」。 -->
+      <p class="layer-k reveal">第一層</p>
+      <h3 class="layer-t reveal" style="--rd:.04s">成交裡的三塊</h3>
+      <p class="layer-s reveal" style="--rd:.06s">商品可以換，流量也可以換。<span class="nb">成交能力換不掉——</span><span class="nb">只要抓到一個客戶，你就能變現。</span></p>
+      <ol class="tri">
+        {triangle.map((g, i) => (
+          <li class:list={['tri-c', 'reveal', { 'is-main': g.main }]} style={`--rd:${0.08 + i * 0.07}s`}>
+            <p class="tri-h"><span class="tri-no num">{g.no}</span>{g.role}<span class="tri-sw">{g.sw}</span></p>
+            <h4 class="tri-name">{g.name}</h4>
+            {g.note
+              ? <p class="tri-note" set:html={g.note} />
+              : (
+                <ul class="tri-l">
+                  {g.items.map((m) => (
+                    <li>
+                      <span class="tri-k num">{m.k}</span>
+                      <div>
+                        <p class="tri-t">{m.t}</p>
+                        <p class="tri-out" set:html={`做出：${m.out}`} />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+          </li>
+        ))}
+      </ol>
+      <p class="tri-foot reveal">前兩塊各是一門初階課，<span class="nb">報名任一課程都含。</span></p>
+
+      <!-- 第二層：兩大成交核心。這兩塊是成交腳本的地基——下面十四個模組都是它們在不同場景的練法。 -->
+      <p class="layer-k reveal">第二層</p>
+      <h3 class="layer-t reveal" style="--rd:.04s">兩大成交核心</h3>
+      <p class="layer-s reveal" style="--rd:.06s">成交腳本的地基就這兩塊。<span class="nb">十四個模組，</span><span class="nb">都是這兩件事換個場景再練一次。</span></p>
+      <ol class="cores">
+        {cores.map((c, i) => (
+          <li class="core reveal lift" style={`--rd:${0.08 + i * 0.08}s`}>
+            <span class="core-k num">{c.k}</span>
+            <h4 class="core-t">{c.t}</h4>
+          </li>
+        ))}
+      </ol>
+
+      <!-- 第三層：三段 L1–L14 的階梯。欄寬跟模組數成正比（4:4:6）、片高從 L1 一路爬到 L14。
            階梯感是版面在講的事，不是裝飾——不要排成三張並排的卡。 -->
+      <p class="layer-k reveal">第三層</p>
+      <h3 class="layer-t reveal" style="--rd:.04s">十四個模組</h3>
+      <p class="layer-s reveal" style="--rd:.06s">一個模組等於一週，<span class="nb">全系列從 L1 排到 L14。</span></p>
       <ol class="ladder">
         {stages.map((s, i) => (
           <li class="lstage reveal" style={`--rd:${0.1 + i * 0.08}s`}>
@@ -1516,8 +1613,94 @@ const schema = [
         所以改用 --act-deep 的亮金，加 .3→.86 的透明度梯度把 L1→L14 的強度差拉開。
      ② 段分界線 ::before 深底幾乎看不到，用 --line-soft 加 .55 透明度。
      ③ .cov 底色若用 var(--ink)（深底是亮白）透明度 .09 直接消失，改白加 .08 疊得起來。 */
+  /* ═══ 06 三層骨架的層標 ═══
+     三層共用一組層標（第一層／第二層／第三層），字級與間距一致——
+     層與層的差別要靠內容的視覺語言講（三塊＝並列格、核心＝兩張大卡、模組＝往上爬的階梯），
+     不是靠標題大小。層標自己長得一樣，讀者才會把它們讀成同一條軸上的三格。 */
+  .layer-k {
+    margin-top: clamp(46px, 6vw, 74px);
+    font-size: 12px; font-weight: 700; letter-spacing: .14em;
+    color: var(--i-deep);
+  }
+  .layer-t { margin-top: 6px; font-size: clamp(21px, 2.6vw, 26px); color: var(--ink); }
+  .layer-s { margin-top: 8px; font-size: clamp(15px, 1.8vw, 17px); color: var(--ink-soft); max-width: 54ch; line-height: 1.8; }
+
+  /* ═══ 06 第一層：成交裡的三塊 ═══
+     三格等寬。腳本（第三格）是主角，但它的內容最少（往下展開成第二、三層），
+     所以不能靠「字多」取勝——用亮金框＋底色把它頂起來，它才不會看起來像被掏空的那一格。 */
+  .tri {
+    list-style: none; padding: 0; margin-top: 22px;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: clamp(14px, 2vw, 22px);
+    align-items: stretch;
+  }
+  .tri-c {
+    padding: 20px 18px;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--slice-r);
+    background: rgba(234, 241, 250, .022);
+  }
+  .tri-c.is-main {
+    border-color: rgba(232, 200, 154, .38);
+    background: rgba(232, 200, 154, .055);
+    box-shadow: 0 0 26px rgba(232, 200, 154, .07);
+  }
+  .tri-h {
+    display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap;
+    font-size: 14px; font-weight: 700; color: var(--ink);
+  }
+  .tri-no { color: var(--ink-3); font-size: 13px; }
+  /* 「可以換／換不掉」的小籤。壓得比角色名小一階——它是註腳不是標題，
+     但三格並排一讀就看得出哪一塊是換不掉的。 */
+  .tri-sw { font-size: 12.5px; font-weight: 500; color: var(--ink-3); }
+  .is-main .tri-sw { color: var(--act-deep); }
+  .tri-name {
+    margin-top: 8px; font-size: clamp(17px, 2vw, 19px); color: var(--ink);
+    padding-bottom: 12px; border-bottom: 1px solid var(--line-soft);
+  }
+  .is-main .tri-name { color: var(--act-deep); border-bottom-color: rgba(232, 200, 154, .26); }
+  .tri-note { margin-top: 14px; font-size: 14.5px; color: var(--ink-soft); line-height: 1.8; }
+
+  .tri-l { list-style: none; padding: 0; margin: 0; }
+  .tri-l > li {
+    display: grid; grid-template-columns: 2.3em 1fr; gap: 8px;
+    padding: 11px 0;
+  }
+  .tri-l > li + li { border-top: 1px dashed rgba(234, 241, 250, .07); }
+  .tri-k { padding-top: 2px; font-size: 12px; font-weight: 700; color: var(--ink-3); letter-spacing: .03em; }
+  .tri-t { font-size: 14.5px; font-weight: 700; color: var(--ink); line-height: 1.55; text-wrap: pretty; }
+  /* 產出壓一階，跟課表的結果句同一個層級關係：上面那行是章節名（我們的語言），
+     這行是他帶得走的東西（他要的）。 */
+  .tri-out { margin-top: 3px; font-size: 12.5px; color: var(--ink-3); line-height: 1.65; text-wrap: pretty; }
+  .tri-foot { margin-top: 16px; font-size: 14px; color: var(--ink-3); }
+
+  @media (max-width: 860px) {
+    /* 三欄疊單欄。順序不動：商品→流量→腳本。疊起來之後讀者往下捲，
+       讀到的就是「可以換、可以換、換不掉」——那個遞進本身就是這一段的論點。 */
+    .tri { grid-template-columns: 1fr; }
+  }
+
+  /* ═══ 06 第二層：兩大成交核心 ═══
+     只有兩個詞，所以卡要夠大、字要夠大——這兩塊是地基，排成小籤會讀成標籤。 */
+  .cores {
+    list-style: none; padding: 0; margin-top: 22px;
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: clamp(14px, 2vw, 22px);
+  }
+  .core {
+    display: flex; align-items: center; gap: 14px;
+    padding: 24px 22px;
+    border: 1px solid var(--line-soft);
+    border-left: 2px solid var(--act-deep);
+    border-radius: var(--slice-r);
+    background: rgba(234, 241, 250, .022);
+  }
+  .core-k { font-size: 13px; font-weight: 700; color: var(--ink-3); letter-spacing: .06em; }
+  .core-t { font-size: clamp(20px, 2.6vw, 25px); color: var(--ink); }
+  @media (max-width: 520px) { .cores { grid-template-columns: 1fr; } }
+
   .ladder {
-    list-style: none; padding: 0; margin-top: 36px;
+    list-style: none; padding: 0; margin-top: 22px;
     display: grid; grid-template-columns: 4fr 4fr 6fr;
     gap: clamp(18px, 2.6vw, 38px);
     /* 從頂端對齊，不是底部：三段的說明字數不一樣，底部對齊會把字少的那段整個往下推，
