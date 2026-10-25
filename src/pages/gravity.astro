@@ -139,12 +139,34 @@ const how = [
 
 /* ⚠️ 不放價格：定價是諮詢現場攤開狀況之後才講的事，不在 LP 上比價（03-產品體系總覽 §C）。
    ⭐ 2026-10-24：這份開始也餵 §06 課程結構的兩張覆蓋卡——所以多了 upto（跟 range 是同一件事
-      的兩種形式，給覆蓋條畫幾格用）。要改課程範圍兩邊都要改。 */
+      的兩種形式，給覆蓋條畫幾格用）。要改課程範圍兩邊都要改。
+
+   ⭐ 2026-10-25：加 perks（權益），老師口述。覆蓋條只講「上到第幾課」，那是課程範圍；
+      權益講的是「錢買到的東西」，兩個不是同一件事，所以兩個都要在卡上。
+   ⚠️ 三件事跟 productkit 的舊真相不一致，以老師這次口述為準，但 productkit 還沒改：
+      ① 回放從「1 年」改成「永久」（03-產品體系總覽 §103／§191 還寫 1 年）。
+         ⚠️ 下面 FAQ「要花多少時間」那題也跟著改了，兩處要一起看，不然同一頁自己打架。
+      ② 演說課老師口述寫 L1–L12，這裡照真相庫寫 L1–L13（03 §54／§128／§132 一致，
+         而且本頁上面的課表就列到 L13）。L1–L12 應該是舊編號的殘留。
+      ③ 老師口述那一條陪跑用的是簡稱，這裡照人名規則寫全名「平凡人光頭」。
+   ⚠️ 「場邊教練」是對會員的角色稱呼，內部職稱仍是暖暖包／顧問（字典 2026-09-01）——
+      這裡是對外面，所以用場邊教練，不要寫成顧問。 */
 const courses = [
   { name: '超引力顧問課', range: 'L1–L8', upto: 8, dim: 'T',
-    stages: '鍛鍊段＋放大段', who: '一對一還沒跑順，講完之後對方沒有下一步。' },
+    stages: '鍛鍊段＋放大段', who: '一對一還沒跑順，<span class="nb">講完之後對方沒有下一步。</span>',
+    perks: [
+      '永久課程回放會籍 L1–L8<span class="nb">（內容不斷更新）</span>',
+      '1 年場邊教練陪跑',
+      '可申請場邊教練系統',
+    ] },
   { name: '超引力公眾演說課', range: 'L1–L13', upto: 13, dim: 'I',
-    stages: '鍛鍊段＋放大段＋演說段', who: '一對一已經會了，卡在一次只能面對一個人。' },
+    stages: '鍛鍊段＋放大段＋演說段', who: '一對一已經會了，<span class="nb">卡在一次只能面對一個人。</span>',
+    perks: [
+      '永久課程回放會籍 L1–L13<span class="nb">（內容不斷更新）</span>',
+      '1 年場邊教練陪跑',
+      '1 年<span class="nb">平凡人光頭親自陪跑</span>',
+      '可申請講師合作系統',
+    ] },
 ];
 const TOTAL = 13;
 
@@ -239,7 +261,7 @@ const faq = [
   { q: '「成交」這個詞會不會太業務導向？',
     a: '成交在這裡的意思是讓人願意行動，不是話術與施壓。這套課從頭到尾的立場是：先有真實與信任，行動才會發生。技巧是工具，真實才是地基。' },
   { q: '要花多少時間？我很忙。',
-    a: '一個模組等於一週。乾貨錄播自己安排時間看，直播討論課固定時段，課間在影響力健身房打卡練 2 到 3 天，一天一個小動作。回放一年、討論會籍一年，一年內都可以回來重看、回來參加討論課。' },
+    a: '一個模組等於一週。乾貨錄播自己安排時間看，直播討論課固定時段，課間在影響力健身房打卡練 2 到 3 天，一天一個小動作。課程回放是永久會籍而且會持續更新，所以這一週沒跟上不等於錯過；場邊教練陪跑一年，這一年內都可以回來重看、回來參加討論課。' },
   { q: '超引力成交學有幾種課？我要怎麼知道自己適合哪一個？',
     a: '對外只有兩個：超引力顧問課，內容是 L1 到 L8，包含鍛鍊段與放大段；超引力公眾演說課，內容是 L1 到 L13，也就是前面全部再加上演說段。這個選擇不會由你自己在網頁上決定，它會在諮詢現場把你的狀況攤開來看過之後才決定，我們不預設賣哪一個。' },
   { q: '超引力成交學跟影響力健身房是什麼關係？',
@@ -727,7 +749,17 @@ const schema = [
                 <i class:list={[{ on: k < c.upto }]}></i>
               ))}
             </div>
-            <p class="course-who"><b>適合的情況</b><br />{c.who}</p>
+            {/* b 已經是 display:block，不要再補 <br>——會多出一整行空白，
+                跟底下「包含」那個同款小標對不齊。 */}
+            <p class="course-who"><b>適合的情況</b><span set:html={c.who} /></p>
+            {/* 權益擺在「適合的情況」後面：先讓他判斷是不是自己，再列買到什麼。
+                倒過來寫會變成先報菜單——他還不確定該不該看這一欄。 */}
+            <p class="perks-h">包含</p>
+            <ul class="perks">
+              {c.perks.map((p) => (
+                <li set:html={p} />
+              ))}
+            </ul>
           </article>
         ))}
       </div>
@@ -1595,6 +1627,27 @@ const schema = [
   .course-who b {
     display: block; margin-bottom: 4px;
     font-size: 12.5px; font-weight: 800; letter-spacing: .08em; color: var(--ink-soft);
+  }
+
+  /* 權益清單。上緣一條虛線把「這是不是我」跟「我買到什麼」切開——
+     兩段都是文字，不切的話會讀成同一段。
+     標記用維度色的小斜片，跟覆蓋條同一個形狀語言，不用打勾圖示：
+     打勾在這裡會變成功能比較表的語氣，而這兩張卡不是拿來互相比輸贏的。 */
+  .perks-h {
+    margin-top: 18px; padding-top: 16px;
+    border-top: 1px dashed var(--line-soft);
+    font-size: 12.5px; font-weight: 800; letter-spacing: .08em; color: var(--ink-soft);
+  }
+  .perks { list-style: none; padding: 0; margin-top: 10px; display: grid; gap: 9px; }
+  .perks li {
+    position: relative; padding-left: 16px;
+    font-size: 15px; color: var(--ink); line-height: 1.7; text-wrap: pretty;
+  }
+  .perks li::before {
+    content: ''; position: absolute; left: 0; top: .62em;
+    width: 7px; height: 3px; border-radius: 1px;
+    background: var(--dim); opacity: .85;
+    transform: skewX(var(--skew));
   }
 
   .ladder-note {
