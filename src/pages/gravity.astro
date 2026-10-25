@@ -148,41 +148,62 @@ const courses = [
 ];
 const TOTAL = 13;
 
-/* 三段 L1–L13。段落說明三句搬自已退役的 /courses/，一字不動。
-   from／to 畫薄片階梯用，code 給人讀——同一件事的兩種形式，改範圍要兩邊同步。
+/* 三段 L1–L13。from／to 畫薄片階梯用，code 給人讀——改範圍要兩邊同步。
+   ⭐ 2026-10-25：段落說明（原本三句話的 body）拿掉了。它寫的是「這一段在練什麼」，
+      但下面課表每一列已經有維度籤＋課名＋結果句，同一件事講兩次，而且先講的那次最抽象。
+      要改段落定位請改 §06 的 sec-lead，不要把 body 加回來。
 
    lessons ＝ 每一段的課表。真相＝productkit/1-手冊（內部）/15-課程梳理-L1-L12對到大包裝.md
    （檔名是舊的，裡面已經是 L1–L13；該檔 §85 說「檔名維持舊名，另案處理」）。
-   ⚠️ L1–L8 這八個名字是老師 2026-10-17 逐堂裁定的定稿版，Skool 課程樹也用這八句，
+   ⚠️ t（課名）：L1–L8 這八個名字是老師 2026-10-17 逐堂裁定的定稿版，Skool 課程樹也用這八句，
       一個字都不要改；要改回去改那份梳理表，再同步過來。
-   ⚠️ L9–L13 還沒有定稿課名，這裡填的是梳理表 §1 的「主題／一句話」欄，不是我自己編的。
-      其中 L12 整堂「尚待老師拍板」（梳理表 §47）——拍板後這一列可能整列換掉。
-      課名定稿之後回來換成定稿句。 */
+      L9–L13 還沒有定稿課名，填的是梳理表 §1 的主題欄。其中 L12 整堂「尚待老師拍板」
+      （梳理表 §47）——拍板後那一列可能整列換掉。
+
+   ⚠️ b（結果句）＝練完之後**對方**會怎樣，不是你學到什麼。這是刻意的：
+      課名是我們的語言（「存入 3 層次的信任資產」），結果句才是他買的東西。
+      來源不是我自己想的，兩個地方壓出來的——
+      ① L1–L7：各交付物 .md 的「門檻／過關線」，規格書 §二④ 規定那一條「一律寫對方的反應」，
+         所以它本來就是結果句。例：L1 的門檻是「三次裡至少 1 次他追問」。
+      ② L8–L13：梳理表 §1 的「一句話（健身版）」欄。
+      改結果句之前先回去看那兩個來源，不要在這頁自己編新的承諾。
+   ⚠️ 赤字語言禁用：不寫薄／弱／缺口／補。L6 來源寫的是「別補弱，放大最強兩維」，
+      這裡改成「哪一條最省力」——換的是說法，不是意思。 */
 const stages = [
   { from: 1, to: 4, code: 'L1–L4', name: '鍛鍊段',
-    body: '一課一塊肌肉。L1 練吸引、L2 練信任、L3 練專業、L4 練推進，四堂涵蓋十二個小肌群。這一段練的是單點零件，目的是先讓每一塊都動得起來。',
     lessons: [
-      { n: 1, dim: 'A', t: '創造 PR99% 的超引力場' },
-      { n: 2, dim: 'T', t: '存入 3 層次的信任資產' },
-      { n: 3, dim: 'P', t: '做出 0 比價的專業體驗' },
-      { n: 4, dim: 'I', t: '練成 主動 +1 的感召成交' },
+      { n: 1, dim: 'A', t: '創造 PR99% 的超引力場',
+        b: '<span class="nb">你講完在做什麼，</span><span class="nb">他會追問「然後呢」，</span><span class="nb">而不是禮貌點頭。</span>' },
+      { n: 2, dim: 'T', t: '存入 3 層次的信任資產',
+        b: '<span class="nb">他開始講真正在意的事，</span><span class="nb">不再只回你客套話。</span>' },
+      { n: 3, dim: 'P', t: '做出 0 比價的專業體驗',
+        b: '<span class="nb">他能自己把你的服務複述一遍，</span><span class="nb">然後不再跟你比價。</span>' },
+      { n: 4, dim: 'I', t: '練成 主動 +1 的感召成交',
+        b: '<span class="nb">談完都帶走一個下一步，</span><span class="nb">而且是他自己講出口的。</span>' },
     ] },
   { from: 5, to: 8, code: 'L5–L8', name: '放大段',
-    body: '把四塊肌肉串成你自己的一對一路徑。同樣是那四塊，但這裡練的是怎麼在一場真實的對話裡把它們接起來。',
     lessons: [
-      { n: 5, dim: '四塊', t: '跑通 4in1 超引力顧問腳本' },
-      { n: 6, dim: '四塊', t: '挑出 6 選 1 的甜蜜變現路徑' },
-      { n: 7, dim: 'T', t: '養熟 7×11×4 的成交水溫' },
-      { n: 8, dim: 'T', t: '守住 3 不賣的成交初心' },
+      { n: 5, dim: '四塊', t: '跑通 4in1 超引力顧問腳本',
+        b: '<span class="nb">一場 60 分鐘的諮詢，</span><span class="nb">你隨時知道自己走到哪一段。</span>' },
+      { n: 6, dim: '四塊', t: '挑出 6 選 1 的甜蜜變現路徑',
+        b: '<span class="nb">你知道哪一條路最省力，</span><span class="nb">不用六條都試一遍。</span>' },
+      { n: 7, dim: 'T', t: '養熟 7×11×4 的成交水溫',
+        b: '<span class="nb">看得出每段關係現在幾度、</span><span class="nb">下一步該推哪裡。</span>' },
+      { n: 8, dim: 'T', t: '守住 3 不賣的成交初心',
+        b: '<span class="nb">成交能力變強之後，</span><span class="nb">退款與口碑還守得住。</span>' },
     ] },
   { from: 9, to: 13, code: 'L9–L13', name: '演說段',
-    body: '把同一條路搬上舞台。從一對一換到一對多，<span class="nb">肌肉沒變，</span><span class="nb">動作變了。</span>',
     lessons: [
-      { n: 9, dim: 'A', t: '銷講開場：一開口就讓全場願意聽' },
-      { n: 10, dim: 'P', t: '舞台版招牌動作：讓每個乾貨都有體驗感' },
-      { n: 11, dim: 'I', t: '銷講收單：收單不是逼，是送禮物' },
-      { n: 12, dim: '四塊', t: '三種長度的講稿：5 分、30 分、1.5 小時' },
-      { n: 13, dim: 'I', t: '公眾演說大師之路（含畢業考核）' },
+      { n: 9, dim: 'A', t: '銷講開場',
+        b: '<span class="nb">一開口，</span><span class="nb">全場就決定要聽你講完。</span>' },
+      { n: 10, dim: 'P', t: '舞台版招牌動作',
+        b: '<span class="nb">台下不只是聽懂，</span><span class="nb">是當場感覺到。</span>' },
+      { n: 11, dim: 'I', t: '銷講收單',
+        b: '<span class="nb">敢在台上開口邀請，</span><span class="nb">而且是用送禮物的方式。</span>' },
+      { n: 12, dim: '四塊', t: '三種長度的講稿',
+        b: '<span class="nb">5 分、30 分、1.5 小時，</span><span class="nb">臨時被改時間也講得完——</span><span class="nb">招式不變、配速變。</span>' },
+      { n: 13, dim: 'I', t: '公眾演說大師之路（含畢業考核）',
+        b: '<span class="nb">台上講的不只是方法，</span><span class="nb">是你非講不可的那件事。</span>' },
     ] },
 ];
 
@@ -668,18 +689,22 @@ const schema = [
             </ul>
             <p class="lstage-code">{s.code}</p>
             <h3 class="lstage-name">{s.name}</h3>
-            <p class="lstage-body" set:html={s.body} />
 
             {/* 課表直接長在自己那一段底下，不另開一張十三列的表：
                 段名在上面講過一次，再列一張表就要讀兩次才對得起來。
                 維度籤借 ATPI 四色，跟 §04 的四個斷點是同一組顏色——
-                讀者在這裡才會發現課表就是那四塊肌肉的排程。 */}
+                讀者在這裡才會發現課表就是那四塊肌肉的排程。
+                課名底下那一句是結果句（對方會怎樣），不是課程介紹——
+                課名是我們的語言，結果句才是他要買的東西，所以兩行都要在。 */}
             <ol class="llist">
               {s.lessons.map((m) => (
                 <li class="lrow">
                   <span class="ll-n num">L{m.n}</span>
                   <span class="ll-d" data-dim={m.dim.length === 1 ? m.dim : undefined}>{m.dim}</span>
-                  <span class="ll-t">{m.t}</span>
+                  <div class="ll-c">
+                    <p class="ll-t">{m.t}</p>
+                    <p class="ll-b" set:html={m.b} />
+                  </div>
                 </li>
               ))}
             </ol>
@@ -1491,22 +1516,23 @@ const schema = [
     letter-spacing: .08em; color: var(--i-deep);
   }
   .lstage-name { margin-top: 4px; font-size: clamp(19px, 2.2vw, 23px); color: var(--ink); }
-  .lstage-body { margin-top: 8px; font-size: 15.5px; color: var(--ink-soft); line-height: 1.85; text-wrap: pretty; }
 
-  /* 每一段底下的課表。上緣那條細線把「段的說明」跟「段的課表」切開，
-     不然 13 列課名接在說明段後面會讀成同一段文字。 */
+  /* 每一段底下的課表。上緣那條細線把段名跟課表切開。 */
   .llist {
-    list-style: none; padding: 16px 0 0; margin: 16px 0 0;
+    list-style: none; padding: 14px 0 0; margin: 14px 0 0;
     border-top: 1px solid var(--line-soft);
   }
+  /* 兩行一列（課名／結果句），所以對齊改 start 不用 baseline——
+     baseline 會拿第二行去對左邊的 L 號，籤跟號碼整個往下掉。 */
   .lrow {
     display: grid;
     grid-template-columns: 2.4em 2.9em 1fr;
-    align-items: baseline; gap: 8px;
-    padding: 7px 0;
+    align-items: start; gap: 8px;
+    padding: 10px 0;
   }
   .lrow + .lrow { border-top: 1px dashed rgba(234, 241, 250, .07); }
-  .ll-n { font-size: 12.5px; font-weight: 700; color: var(--ink-3); letter-spacing: .03em; }
+  /* L 號與籤靠上對齊到課名那一行的視覺中線（課名 line-height 1.5 × 15px ≒ 22px） */
+  .ll-n { padding-top: 3px; font-size: 12.5px; font-weight: 700; color: var(--ink-3); letter-spacing: .03em; }
   /* 維度籤：單字母的吃 ATPI 四色，「四塊」兩個字的不吃——
      四塊一起跑的那幾課沒有專屬色，硬挑一色會說謊。 */
   .ll-d {
@@ -1518,7 +1544,10 @@ const schema = [
     transform: skewX(var(--skew));
   }
   .ll-d[data-dim] { color: var(--dim); background: var(--dim-tint); }
-  .ll-t { font-size: 15px; color: var(--ink); line-height: 1.6; text-wrap: pretty; }
+  .ll-t { font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.5; text-wrap: pretty; }
+  /* 結果句壓一階：課名是標、這句是他真正在讀的——字級小但行距放寬，
+     不要靠縮小字級把它變成註腳。 */
+  .ll-b { margin-top: 4px; font-size: 13.5px; color: var(--ink-soft); line-height: 1.7; text-wrap: pretty; }
 
   @media (max-width: 760px) {
     /* 窄螢幕：三欄疊成三列，每一段自己一排薄片＋文字 */
@@ -1529,7 +1558,8 @@ const schema = [
        階梯感全沒了。固定窄寬度，高度差才重新變成畫面上最明顯的事。 */
     .lmods { justify-content: flex-start; gap: 8px; height: 150px; }
     .lmods > li { flex: 0 0 auto; width: 44px; }
-    .lstage-body { max-width: 44ch; }
+    /* 疊成單欄之後課表會吃滿整個寬度，一行三十幾個字讀起來很吃力 */
+    .ll-c { max-width: 44ch; }
   }
 
   /* ═══ 06 兩個課的覆蓋條 ═══
