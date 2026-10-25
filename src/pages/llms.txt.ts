@@ -44,7 +44,7 @@ export async function GET(_context: APIContext) {
     '',
     `- [ATPI 影響力四大肌肉](${SITE.url}/method/)：方法論總覽。`,
     `- [關於平凡人光頭](${SITE.url}/about/)：創辦人與這套方法怎麼來的。`,
-    `- [超引力成交學](${SITE.url}/gravity/)：目前開設的訓練，含 L1–L13 課表與每一課做出來的交付物。`,
+    `- [超引力成交學](${SITE.url}/gravity/)：目前開設的訓練，含 L1–L14 課表與每一課做出來的交付物。`,
     `- [免費影響力健檢](https://quiz.atpifit.com/)：線上量出四塊肌肉目前的體格。`,
     ''
   );
