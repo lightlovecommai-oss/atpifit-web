@@ -181,11 +181,16 @@ const TOTAL = 14;
       所以三角的三個頂點是**商品／流量／腳本**，中間寫**超引力成交學**（＝容器）。
    ⭐ 課數＝**4／4／14**（老師 2026-10-25 口述；他先說 16，同一輪自己更正為 14）。
       14 就是主線 L1–L14，跟下面的階梯同一組數字，不要各寫各的。
-   ⭐ 順序照他口述的「商品、流量、跟腳本」，而且這個順序在講一件事：
-      前兩塊都可以換，最後一塊換不掉。排成別的順序，那句定位就失去落點。
-      老師原話：「商品可以換，然後呢流量也可以換，但是成交能力是你只要抓到一個客戶
-      你就可以變現了……商品換了沒有差，因為我有成交能力，然後流量只是來做放大用的，
-      然後呢商品就是我找我認同的。」
+   🔴 **對外不寫「可以換／換不掉」**（老師 2026-10-25 第五次口述：「把網頁裡面可以換跟
+      換不掉這個概念拿掉，**消費者要的是全部**」）。
+      那組籤在內部是對的——老師原話「商品可以換，然後呢流量也可以換，但是成交能力是你只要
+      抓到一個客戶你就可以變現了」——但它是**講給我們自己聽的取捨邏輯**：解釋我們為什麼從
+      腳本切。放到銷售頁上，讀者會把它讀成「那我只要買第三塊就好，前兩塊可以不要」，
+      等於親手把三角拆成三個選項。**但這一段整句話就是「買的是整個三角」。**
+      對外的說法是**缺一不可**（老師講 p27 時的原話：「成交變現裡面有三塊，缺一不可」）。
+      ⚠️ 內部文件（字典、03、04）保留可以換／換不掉，那是架構真相。只有**對外文案**不寫。
+   ⭐ 順序照他口述的「商品、流量、跟腳本」，不要重排。順序本身還是有論點的，
+      只是那個論點現在走內部：真相在字典〈變現三角〉。
    ⚠️ 八個章節名全是老師逐條口述的定稿，照抄不改寫。F1–F4 的 out 是他從兩個選項裡逐堂挑的
       （F1/F2/F3 挑選 1、F4 挑選 2），P1–P4 的 out 是他原本就一起給的。
    ⚠️ 不放價格。三門初階課合售 6600、兩個 SKU 都免費附贈——金額是諮詢現場的事，
@@ -196,13 +201,12 @@ const TOTAL = 14;
       但我就是會教離錢最近的事。我也不教完美的商品，只做到離錢最近的程度。成交腳本也是同一個概念。」
       所以三個角的 near 句是同一句話套三次——它是**取捨標準**（每個角都只做到離錢最近就停），
       不是某一個角的形容詞。要刪就三個一起刪，不要只留一個，留一個就讀成那個角比較特別。
-      「換不掉」沒有作廢，但它只負責回答**為什麼從腳本切**，不是三角的定位句。
       F1 的章節名〈離錢最近的流量變現法〉照舊不動。
    🟡 商品／流量兩塊庫裡零素材（只有章節名與產出名，沒有逐字稿、沒有教材）。所以這裡只放
       標題與產出，不寫結果句——下面 L1–L14 每一列都有結果句，這兩塊空著是看得出來的洞，
       刻意的。有了逐字稿再補，不要先編一句撐版面。 */
 const triangle = [
-  { no: '①', role: '商品', sw: '可以換', name: '商品靈魂定位', n: '4 課',
+  { no: '①', role: '商品', name: '商品靈魂定位', n: '4 課',
     near: '<span class="nb">不教完美的商品，</span><span class="nb">只做到離錢最近的程度。</span>',
     items: [
       { k: 'P1', t: '重新理解產品的四種賣法', out: '<span class="nb">賣價格／賣產品／賣服務／賣自己</span><span class="nb">四優勢</span>' },
@@ -210,7 +214,7 @@ const triangle = [
       { k: 'P3', t: '設計個人專屬解決問題框架', out: '<span class="nb">服務的 n 步驟／x 元素</span>' },
       { k: 'P4', t: '高單價值堆疊整理法', out: '一頁產品堆疊簡報' },
     ] },
-  { no: '②', role: '流量', sw: '可以換', name: '專屬流量來源', n: '4 課',
+  { no: '②', role: '流量', name: '專屬流量來源', n: '4 課',
     near: '<span class="nb">不追求大流量，</span><span class="nb">不教流量百萬，</span><span class="nb">只教離錢最近的那條。</span>',
     items: [
       { k: 'F1', t: '離錢最近的流量變現法', out: '你的通路離錢遠近排序表' },
@@ -218,8 +222,8 @@ const triangle = [
       { k: 'F3', t: '整理沉澱客戶名單', out: '沉澱名單盤點表' },
       { k: 'F4', t: '喚醒客戶的 +1 鉤子設計', out: '<span class="nb">一個 +1 鉤子＋發送名單</span>' },
     ] },
-  { no: '③', role: '腳本', sw: '換不掉', name: '成交腳本', n: '14 課', main: true,
-    near: '<span class="nb">同一個概念。</span><span class="nb">換不掉的那一塊，</span><span class="nb">我們從這裡切進去。</span>',
+  { no: '③', role: '腳本', name: '成交腳本', n: '14 課', main: true,
+    near: '<span class="nb">同一個概念。</span><span class="nb">我們就是從這一塊切進去的。</span>',
     note: '<span class="nb">我們切進去的角度。</span><span class="nb">底下兩個核心、十四個模組，</span><span class="nb">練的全是它。</span>' },
 ];
 
@@ -761,7 +765,7 @@ const schema = [
         <span class="snum num" aria-hidden="true">{no('g-ladder')}</span>
         <p class="kicker">怎麼安排</p>
         <h2 class="reveal"><span class="nb">超引力成交學，</span><span class="hl nb">買的是這整個三角</span></h2>
-        <p class="lead sec-lead reveal" style="--rd:.06s">商品、流量、腳本。<span class="nb">三塊都只做到離錢最近的那一段，</span><span class="nb">而換不掉的是最後一塊——</span><span class="nb">我們就從那裡切進去。</span></p>
+        <p class="lead sec-lead reveal" style="--rd:.06s">商品、流量、腳本，<span class="nb">三塊缺一不可。</span><span class="nb">而三塊我們都只做到離錢最近的那一段——</span><span class="nb">不追求完美，追求你現在就用得上。</span></p>
       </header>
 
       <!-- 變現三角。
@@ -769,8 +773,10 @@ const schema = [
               一二三層」。三角是一張圖，三角底下的兩個核心與十四個模組是同一塊的展開，不是階段。
            🔴 三個頂點是商品／流量／腳本，**中間是超引力成交學**——學員買的是整個三角，
               不是三角裡的某一角。前一版把成交排成「其中一角」，被老師當場退回，不要排回去。
-           ⭐ 頂點放腳本是刻意的：那是換不掉的那一塊，也是我們切進去的角度。
-              左下→右下→頂點＝商品→流量→腳本，走的就是「可以換、可以換、換不掉」的遞進。
+           ⭐ 頂點放腳本是刻意的：那是我們切進去的角度，也是三塊裡最大的一塊（14 課）。
+              左下→右下→頂點＝商品→流量→腳本，照老師口述的順序，不要重排。
+           🔴 **不要把「可以換／換不掉」加回節點上**（老師 2026-10-25：「消費者要的是全部」）。
+              那組籤會讓讀者以為前兩塊可以不買，但這一段整句話就是「買的是整個三角」。
            ⚠️ 三角本體用 SVG 畫（polygon 撐滿 viewBox，preserveAspectRatio=none），節點是 HTML
               疊在上面——文字要可選取、可縮放、吃得到 Aa 字級，所以不把字畫進 SVG。
            ⚠️ 課數 4／4／14 要跟底下階梯的 L1–L14 對得起來；改一邊就要改另一邊。
@@ -783,7 +789,7 @@ const schema = [
         </svg>
         {triangle.map((g) => (
           <div class:list={['tri3-n', `is-${g.no === '①' ? 'bl' : g.no === '②' ? 'br' : 'top'}`, { 'is-main': g.main }]}>
-            <p class="tri3-r"><span class="tri3-no num">{g.no}</span>{g.role}<span class="tri3-sw">{g.sw}</span></p>
+            <p class="tri3-r"><span class="tri3-no num">{g.no}</span>{g.role}</p>
             <p class="tri3-name">{g.name}<span class="tri3-cnt num">{g.n}</span></p>
             <p class="tri3-near" set:html={g.near} />
           </div>
@@ -1689,10 +1695,6 @@ const schema = [
     font-size: clamp(16px, 2vw, 19px); font-weight: 700; color: var(--ink);
   }
   .tri3-no { color: var(--ink-3); font-size: .78em; }
-  /* 「可以換／換不掉」是註腳不是標題，壓小一階；只有換不掉的那一角給亮金，
-     因為那是我們切進去的理由。 */
-  .tri3-sw { font-size: 12.5px; font-weight: 500; color: var(--ink-3); }
-  .is-main .tri3-sw { color: var(--act-deep); }
   .tri3-name {
     margin-top: 5px;
     display: flex; align-items: baseline; justify-content: center; gap: 8px; flex-wrap: wrap;
