@@ -198,10 +198,12 @@ const TOTAL = 14;
       ⚠️ 內部文件（字典、03、04）保留可以換／換不掉，那是架構真相。只有**對外文案**不寫。
    ⭐ 順序照他口述的「商品、流量、跟腳本」（對外第三個角寫成交），不要重排。順序本身還是有論點的，
       只是那個論點現在走內部：真相在字典〈變現三角〉。
-   ⚠️ 八個章節名全是老師逐條口述的定稿，照抄不改寫。F1–F4 的 out 是他從兩個選項裡逐堂挑的
-      （F1/F2/F3 挑選 1、F4 挑選 2），P1–P4 的 out 是他原本就一起給的。
-   ⚠️ 不放價格。三門初階課合售 6600、兩個 SKU 都免費附贈——金額是諮詢現場的事，
-      這頁只寫「報名任一課程都含」。
+   ⚠️ 八個章節名全是老師逐條口述的定稿，照抄不改寫。客 1–客 4 的 out 是他從兩個選項裡逐堂挑的
+      （客1/客2/客3 挑選 1、客4 挑選 2），商 1–商 4 的 out 是他原本就一起給的。
+   🔴 **1113 編號改中文**：~~P1–P4／F1–F4／S1–S4~~ → **商 1–商 4／客 1–客 4／成 1–成 4**。
+      字母在兩次改名之後全對不上（P=Product 還撞 ATPI 的 P、F=Flow 已不叫流量、S=Script 已不叫腳本）。
+   🔴 **1113 量詞一律用「塊」不用「門」**（老師：「我沒有用門這個詞」）。三塊、這一塊、整塊。
+   ⚠️ 價格只露 6,600（1030 老師裁定要能直接買）；3.28 萬與 10.8 萬照舊不上頁，那是諮詢現場的事。
    🔴「離錢最近」＝**整個三角共用的那條線**，三個角各說一次是對的，不是撞詞。
       我同日稍早判它是「同頁出現兩次會混淆」、裁成定位句一律改寫「換不掉」——**那條判定作廢**。
       老師當場更正：「**離錢最近已經是商品定位了**。就是我不追求大流量，也不會教你怎麼流量百萬，
@@ -227,29 +229,38 @@ const triangle = [
   { no: '①', role: '商品', name: '商品靈魂定位', n: '4 課',
     near: '<span class="nb">不教完美的商品，</span><span class="nb">只做到離錢最近的程度。</span>',
     items: [
-      { k: 'P1', t: '重新理解產品的四種賣法', out: '<span class="nb">賣價格／賣產品／賣服務／賣自己</span><span class="nb">四優勢</span>' },
-      { k: 'P2', t: '產品的結果思維', out: '你的結果案例庫' },
-      { k: 'P3', t: '設計個人專屬解決問題框架', out: '<span class="nb">服務的 n 步驟／x 元素</span>' },
-      { k: 'P4', t: '高單價值堆疊整理法', out: '一頁產品堆疊簡報' },
+      { k: '商1', t: '重新理解產品的四種賣法', out: '<span class="nb">賣價格／賣產品／賣服務／賣自己</span><span class="nb">四優勢</span>' },
+      { k: '商2', t: '產品的結果思維', out: '你的結果案例庫' },
+      { k: '商3', t: '設計個人專屬解決問題框架', out: '<span class="nb">服務的 n 步驟／x 元素</span>' },
+      { k: '商4', t: '高單價值堆疊整理法', out: '一頁產品堆疊簡報' },
     ] },
   { no: '②', role: '客源', name: '專屬客源管道', n: '4 課',
     near: '<span class="nb">不追求大流量，</span><span class="nb">不教流量百萬，</span><span class="nb">只教離錢最近的那條。</span>',
     items: [
-      { k: 'F1', t: '離錢最近的客源變現法', out: '你的通路離錢遠近排序表' },
-      { k: 'F2', t: '選出專屬客源起手式', out: '<span class="nb">一條主通路＋第一個固定動作</span>' },
-      { k: 'F3', t: '整理沉澱客戶名單', out: '沉澱名單盤點表' },
-      { k: 'F4', t: '喚醒客戶的 +1 鉤子設計', out: '<span class="nb">一個 +1 鉤子＋發送名單</span>' },
+      { k: '客1', t: '離錢最近的客源變現法', out: '你的通路離錢遠近排序表' },
+      { k: '客2', t: '選出專屬客源起手式', out: '<span class="nb">一條主通路＋第一個固定動作</span>' },
+      { k: '客3', t: '整理沉澱客戶名單', out: '沉澱名單盤點表' },
+      { k: '客4', t: '喚醒客戶的 +1 鉤子設計', out: '<span class="nb">一個 +1 鉤子＋發送名單</span>' },
     ] },
   { no: '③', role: '成交', name: '成交腳本', n: '14 課', main: true,
     near: '<span class="nb">同一個概念。</span><span class="nb">我們就是從這一塊切進去的。</span>',
     note: '<span class="nb">我們切進去的角度。</span><span class="nb">底下兩個核心、十四個模組，</span><span class="nb">練的全是它。</span>' },
 ];
 
-/* 2 大成交核心。老師 2026-10-25：成交的地基就這兩塊，十四個模組是這兩件事在不同場景的練法。
-   ⚠️ 不要替這兩個名字加形容詞或副標。庫裡零素材，寫出來的任何一句都是我自己編的。 */
+/* 成 1–成 4 四堂。那一塊的招生名＝〈超引力成交〉（沒有「學」——umbrella 不可以跟其中一角同名，
+   1113 定；~~超引力成交學初階~~ 作廢）。
+   ⚠️ 講故事底層＝欣賞、問問題底層＝真誠，兩個底層不可省略（字典定的）。
+   ⚠️ 1030 老師裁定：官網需露出全部四堂（舊版只有兩堂技巧，前兩堂整個沒露）。
+   ⚠️ 1113 老師改序：講故事回到技巧 1、問問題退到技巧 2，理由＝問問題比較難學。
+      這翻掉 10-27 的「問問題在前」，字典已同步。
+   🟡 成 1／成 2 的好處句庫裡零素材，刻意空著；成 3／成 4 來自 22-技巧對小肌群。 */
 const cores = [
-  { k: '01', t: '講故事' },
-  { k: '02', t: '問問題' },
+  { k: '成1', t: '「超引力」溝通的精髓' },
+  { k: '成2', t: '打造越來越壯的影響力肌肉' },
+  { k: '成3', t: '核心技巧 1：講故事　底層＝欣賞',
+    b: '你講完就停住，他會當場追問一個你還沒講的細節——「那後來呢？」' },
+  { k: '成4', t: '核心技巧 2：問問題　底層＝真誠',
+    b: '你問一句，他答三句，答完自己又往下接一句你沒問的。' },
 ];
 
 /* 三段 L1–L14。from／to 畫薄片階梯用，code 給人讀——改範圍要兩邊同步。
@@ -852,17 +863,25 @@ const schema = [
           </li>
         ))}
       </ol>
-      <p class="tri-foot reveal">這兩塊各是一門初階課，<span class="nb">報名任一課程都含。</span></p>
+      <!-- ⭐ 1030 老師裁定：起步 12 堂合售 6,600 要上官網、要能直接買。
+           🟡 1113 老師裁「先維持預約」——購買鈕之後再接，現在走諮詢預約。
+              productkit/03-產品體系總覽 §C 已改成：入門品露價、兩個主 SKU 照舊不露。
+           ⚠️ 「三個月賺回 6,600」那句承諾不上這頁（1113 老師：我會用講的），它屬於 1v1 諮詢簡報。 -->
+      <p class="tri-foot reveal">三塊各 4 堂，合起來是<b>〈超引力成交學・起步 12 堂〉</b>，<span class="nb">合售 <b>NT$6,600</b>；</span><span class="nb">報名任一主課程都含。</span></p>
+      <p class="tri-foot reveal"><span class="nb">十二堂走完，</span><span class="nb">你手上有一個能賣的東西、</span><span class="nb">一條找得到客戶的路、</span><span class="nb">一套講得出口的說法。</span></p>
 
       <!-- 成交那一塊的展開：兩大成交核心 → 十四個模組。
            這兩段是同一塊的裡外，不是第二層第三層。標題不要再掛層標。 -->
-      <h3 class="layer-t reveal" style="--rd:.04s">成交那塊，先練兩大核心</h3>
-      <p class="layer-s reveal" style="--rd:.06s">成交腳本的地基就這兩塊。<span class="nb">十四課，</span><span class="nb">都是這兩件事換個場景再練一次。</span></p>
+      <h3 class="layer-t reveal" style="--rd:.04s">成交那塊，先從這 4 堂開始</h3>
+      <p class="layer-s reveal" style="--rd:.06s">成交這一塊的起步 4 堂叫〈超引力成交〉。<span class="nb">兩個底層核心——講故事與問問題——</span><span class="nb">就藏在裡面。</span></p>
       <ol class="cores">
         {cores.map((c, i) => (
           <li class="core reveal lift" style={`--rd:${0.08 + i * 0.08}s`}>
             <span class="core-k num">{c.k}</span>
-            <h4 class="core-t">{c.t}</h4>
+            <div>
+              <h4 class="core-t">{c.t}</h4>
+              {c.b && <p class="core-b">{c.b}</p>}
+            </div>
           </li>
         ))}
       </ol>
@@ -1813,23 +1832,24 @@ const schema = [
     .tri { grid-template-columns: 1fr; }
   }
 
-  /* ═══ 06 成交那一角的地基：兩大成交核心 ═══
-     只有兩個詞，所以卡要夠大、字要夠大——這兩塊是地基，排成小籤會讀成標籤。 */
+  /* ═══ 06 成交那一塊的地基：成 1–成 4 四堂〈超引力成交〉 ═══
+     四堂標題比舊的兩個詞長，用 flex-start 對齊、字級縮一點以免截斷。 */
   .cores {
     list-style: none; padding: 0; margin-top: 22px;
     display: grid; grid-template-columns: repeat(2, 1fr);
     gap: clamp(14px, 2vw, 22px);
   }
   .core {
-    display: flex; align-items: center; gap: 14px;
-    padding: 24px 22px;
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 20px 20px;
     border: 1px solid var(--line-soft);
     border-left: 2px solid var(--act-deep);
     border-radius: var(--slice-r);
     background: rgba(234, 241, 250, .022);
   }
-  .core-k { font-size: 13px; font-weight: 700; color: var(--ink-3); letter-spacing: .06em; }
-  .core-t { font-size: clamp(20px, 2.6vw, 25px); color: var(--ink); }
+  .core-k { font-size: 13px; font-weight: 700; color: var(--ink-3); letter-spacing: .06em; flex-shrink: 0; padding-top: 2px; }
+  .core-t { font-size: clamp(14px, 1.9vw, 17px); color: var(--ink); line-height: 1.5; }
+  .core-b { margin-top: 7px; font-size: 13px; color: var(--ink-2); line-height: 1.65; }
   @media (max-width: 520px) { .cores { grid-template-columns: 1fr; } }
 
   .ladder {
